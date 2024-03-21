@@ -4,6 +4,18 @@ public class Pion {
     private char couleur;
     private int posX;
     private int posX;
+    private char[] mouvement = new char[8];
+
+    public char[] getMouvement() {
+        return mouvement;
+    }
+
+    public void setMouvement(char[] mouvement) {
+        this.mouvement = mouvement;
+    }
+=======
+    private int posY;
+>>>>>>> origin/main
 
     public int getPosX(){
         return this.posX;
@@ -17,7 +29,11 @@ public class Pion {
         return this.couleur;
     }
 
-    public Pion(char coul,int X, int Y){
+    public void setCouleur(char couleur) {
+        this.couleur = couleur;
+    }
+
+    public Pion(char coul, int X, int Y){
         this.couleur = coul;
         this.posX = X;
         this.posY = Y;
