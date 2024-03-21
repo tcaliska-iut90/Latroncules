@@ -4,15 +4,8 @@ public class Pion {
     private char couleur;
     private int posX;
     private int posX;
-    private char[] mouvement = new char[8];
 
-    public char[] getMouvement() {
-        return mouvement;
-    }
 
-    public void setMouvement(char[] mouvement) {
-        this.mouvement = mouvement;
-    }
 
 
     public int getPosX(){
