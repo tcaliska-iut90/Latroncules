@@ -36,5 +36,4 @@ public class Pion {
     public void setPosY(int y){
         this.posY = y;
     }
-
 }
