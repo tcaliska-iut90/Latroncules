@@ -1,4 +1,4 @@
-package Class;
+package src;
 
 public class Grille {
 }
