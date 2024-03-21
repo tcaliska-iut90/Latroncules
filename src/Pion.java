@@ -13,9 +13,7 @@ public class Pion {
     public void setMouvement(char[] mouvement) {
         this.mouvement = mouvement;
     }
-=======
-    private int posY;
->>>>>>> origin/main
+
 
     public int getPosX(){
         return this.posX;
