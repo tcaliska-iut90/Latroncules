@@ -3,7 +3,7 @@ package src;
 public class Pion {
     private char couleur;
     private int posX;
-    private int posX;
+    private int posY;
 
     public int getPosX(){
         return this.posX;
