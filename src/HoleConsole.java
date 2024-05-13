@@ -1,5 +1,6 @@
 import boardifier.control.Logger;
 import boardifier.model.GameException;
+import boardifier.view.ConsoleColor;
 import boardifier.view.View;
 import boardifier.control.StageFactory;
 import boardifier.model.Model;

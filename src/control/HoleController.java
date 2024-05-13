@@ -20,7 +20,7 @@ public class HoleController extends Controller {
     BufferedReader consoleIn;
     boolean firstPlayer;
 
-    public HoleController(Model model, View view) {
+   public HoleController(Model model, View view) {
         super(model, view);
         firstPlayer = true;
     }
@@ -89,10 +89,10 @@ public class HoleController extends Controller {
         // check if the pawn is still in its pot
         ContainerElement pot = null;
         if (model.getIdPlayer() == 0) {
-            pot = gameStage.getBlackPot();
+           // pot = gameStage.getBlackPot();
         }
         else {
-            pot = gameStage.getRedPot();
+            //pot = gameStage.getRedPot();
         }
         if (pot.isEmptyAt(pawnIndex,0)) return false;
         GameElement pawn = pot.getElement(pawnIndex,0);

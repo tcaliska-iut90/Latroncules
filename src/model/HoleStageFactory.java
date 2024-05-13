@@ -4,6 +4,7 @@ import boardifier.model.ContainerElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
+import boardifier.view.ConsoleColor;
 
 /**
  * HoleStageFactory must create the game elements that are defined in HoleStageModel
@@ -42,58 +43,62 @@ public class HoleStageFactory extends StageElementsFactory {
         // assign the board to the game stage model
         stageModel.setBoard(board);
 
-        //create the black pot in 18,0 in the virtual space
-        HolePawnPot blackPot = new HolePawnPot(18,0, stageModel);
-        // assign the black pot to the game stage model
-        stageModel.setBlackPot(blackPot);
-        //create the black pot in 25,0 in the virtual space
-        HolePawnPot redPot = new HolePawnPot(25,0, stageModel);
-        // assign the red pot to the game stage model
-        stageModel.setRedPot(redPot);
+
+
 
         /* create the pawns
             NB: their coordinates are by default 0,0 but since they are put
             within the pots, their real coordinates will be computed by the view
          */
-        Pawn[] blackPawns = new Pawn[4];
-        for(int i=0;i<4;i++) {
-            blackPawns[i] = new Pawn(i + 1, Pawn.PAWN_BLACK, stageModel);
+        Pawn[] bluePawns = new Pawn[16];
+        for(int i=0;i<16;i++) {
+            if (i%2 == 0)
+                bluePawns[i] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
+            else
+                bluePawns[i] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
         }
-        // assign the black pawns to the game stage model
-        stageModel.setBlackPawns(blackPawns);
-        Pawn[] redPawns = new Pawn[4];
-        for(int i=0;i<4;i++) {
-            redPawns[i] = new Pawn(i + 1, Pawn.PAWN_RED, stageModel);
+        // assign the blue pawns to the game stage model
+        stageModel.setBluePawns(bluePawns);
+
+        Pawn[] redPawns = new Pawn[16];
+        for(int i=0;i<16;i++) {
+            if (i%2 == 0)
+                redPawns[i] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
+            else
+                redPawns[i] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, stageModel);
+
         }
-        // assign the black pawns to the game stage model
         stageModel.setRedPawns(redPawns);
 
-        // finally put the pawns to their pot
-        for (int i=0;i<4;i++) {
-            blackPot.addElement(blackPawns[i], i,0);
-            redPot.addElement(redPawns[i], i,0);
+        Arrow[] arrows = new Arrow[16];
+        for (int i = 0; i < arrows.length; i++) {
+            if (i%2 == 0)
+                arrows[i] = new Arrow(Arrow.MAJOR_DIAGONAL, stageModel);
+            else
+                arrows[i] = new Arrow(Arrow.MINOR_DIAGONAL, stageModel);
+        }
+        stageModel.setArrows(arrows);
+
+
+        for (int i = 0; i < bluePawns.length; i++) {
+            if (i<8){
+                board.addElement(redPawns[i], 6, i);
+                board.addElement(bluePawns[i], 0, i);
+            }
+            else {
+                board.addElement(redPawns[i], 7, 15-i);
+                board.addElement(bluePawns[i], 1, 15-i);
+            }
         }
 
-        /* Example with a main container that takes the ownership of the location
-           of the element that are put within.
-           If we put text, board, black/red pots within this container, their initial
-           location in the virtual space is no more relevant.
-           In such a case, we also need to create a look for the main container, see HoleStageView
-           comment at the end of the class.
+        for (int i = 0; i < 16; i++) {
+            if (i<8) {
+                board.addElement(arrows[i], 2, i);
+            }
+            else {
+                board.addElement(arrows[i], 3, 15-i);
 
-        // create the main container with 2 rows and 3 columns, in 0,0 in the virtual space
-        ContainerElement mainContainer = new ContainerElement("rootcontainer",0,0,2,3, stageModel);
-        // for cell 0,1, span over the row below => the column 1 goes from top to bottom of the container
-        mainContainer.setCellSpan(0,1,2,1);
-        // for cell 0,2, span over the row below => the column 2 goes from top to bottom of the container
-        mainContainer.setCellSpan(0,2,2,1);
-        // assign the
-        stageModel.setMainContainer(mainContainer);
-        // assign elements to main container cells
-        mainContainer.addElement(text,0,0);
-        mainContainer.addElement(board, 1,0);
-        mainContainer.addElement(blackPot,0,1);
-        mainContainer.addElement(redPot,0,2);
-        */
+            }
+        }
     }
 }

@@ -29,25 +29,18 @@ import boardifier.model.*;
  */
 public class HoleStageModel extends GameStageModel {
 
-    // define stage state variables
-    private int blackPawnsToPlay;
-    private int redPawnsToPlay;
 
     // define stage game elements
     private HoleBoard board;
-    private HolePawnPot blackPot;
-    private HolePawnPot redPot;
-    private Pawn[] blackPawns;
+    private Pawn[] bluePawns;
     private Pawn[] redPawns;
+    private Arrow[] arrows;
     private TextElement playerName;
     // Uncomment next line if the example with a main container is used. see end of HoleStageFactory and HoleStageView
     //private ContainerElement mainContainer;
 
     public HoleStageModel(String name, Model model) {
         super(name, model);
-        blackPawnsToPlay = 4;
-        redPawnsToPlay = 4;
-        setupCallbacks();
     }
 
     //Uncomment this 2 methods if example with a main container is used
@@ -70,29 +63,13 @@ public class HoleStageModel extends GameStageModel {
         addContainer(board);
     }
 
-    public HolePawnPot getBlackPot() {
-        return blackPot;
+    public Pawn[] getBluePawns() {
+        return bluePawns;
     }
-    public void setBlackPot(HolePawnPot blackPot) {
-        this.blackPot = blackPot;
-        addContainer(blackPot);
-    }
-
-    public HolePawnPot getRedPot() {
-        return redPot;
-    }
-    public void setRedPot(HolePawnPot redPot) {
-        this.redPot = redPot;
-        addContainer(redPot);
-    }
-
-    public Pawn[] getBlackPawns() {
-        return blackPawns;
-    }
-    public void setBlackPawns(Pawn[] blackPawns) {
-        this.blackPawns = blackPawns;
-        for(int i=0;i<blackPawns.length;i++) {
-            addElement(blackPawns[i]);
+    public void setBluePawns(Pawn[] bluePawns) {
+        this.bluePawns = bluePawns;
+        for(int i=0;i<bluePawns.length;i++) {
+            addElement(bluePawns[i]);
         }
     }
 
@@ -114,25 +91,33 @@ public class HoleStageModel extends GameStageModel {
         addElement(playerName);
     }
 
+    public Arrow[] getArrows() {return arrows;}
+    public void setArrows(Arrow[] arrows) {
+        this.arrows = arrows;
+        for (int i = 0; i < arrows.length; i++) {
+            addElement(arrows[i]);
+        }
+    }
 
     private void setupCallbacks() {
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
-            // just check when pawns are put in 3x3 board
+           /* // just check when pawns are put in 3x3 board
             if (gridDest != board) return;
             Pawn p = (Pawn) element;
             if (p.getColor() == 0) {
-                blackPawnsToPlay--;
+                bluePawnsToPlay--;
             }
             else {
                 redPawnsToPlay--;
             }
-            if ((blackPawnsToPlay == 0) && (redPawnsToPlay == 0)) {
+            if ((bluePawnsToPlay == 0) && (redPawnsToPlay == 0)) {
                 computePartyResult();
-            }
+            }*/
         });
     }
 
     private void computePartyResult() {
+        /*
         int idWinner = -1;
         // get the empty cell, which should be in 2D at [0,0], [0,2], [1,1], [2,0] or [2,2]
         // i.e. or in 1D at index 0, 2, 4, 6 or 8
@@ -143,22 +128,22 @@ public class HoleStageModel extends GameStageModel {
         int countRed = 0;
         Pawn p = null;
         int row, col;
-        for (i = 0; i < 9; i+=2) {
-            if (board.isEmptyAt(i / 3, i % 3)) break;
+        for (i = 0; i < 64; i+=2) {
+            if (board.isEmptyAt(i / 8, i % 8)) break;
         }
         // get the 4 adjacent cells (if they exist) starting by the upper one
-        row = (i / 3) - 1;
-        col = i % 3;
+        row = (i / 8) - 1;
+        col = i % 8;
         for (int j = 0; j < 4; j++) {
             // skip invalid cells
             if ((row >= 0) && (row <= 2) && (col >= 0) && (col <= 2)) {
                 p = (Pawn) (board.getElement(row, col));
-                if (p.getColor() == Pawn.PAWN_BLACK) {
+                if (p.getColor() == Pawn.PAWN_BLUE) {
                     nbBlack++;
-                    countBlack += p.getNumber();
+                    countBlack += p.getRole();
                 } else {
                     nbRed++;
-                    countRed += p.getNumber();
+                    countRed += p.getRole();
                 }
             }
             // change row & col to set them at the correct value for the next iteration
@@ -191,6 +176,7 @@ public class HoleStageModel extends GameStageModel {
         model.setIdWinner(idWinner);
         // stop de the game
         model.stopStage();
+        */
     }
 
     @Override

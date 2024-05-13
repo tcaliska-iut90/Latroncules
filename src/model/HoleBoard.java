@@ -17,8 +17,8 @@ import java.awt.*;
  */
 public class HoleBoard extends ContainerElement {
     public HoleBoard(int x, int y, GameStageModel gameStageModel) {
-        // call the super-constructor to create a 3x3 grid, named "holeboard", and in x,y in space
-        super("holeboard", x, y, 3 , 3, gameStageModel);
+        // call the super-constructor to create a 8x8 grid, named "holeboard", and in x,y in space
+        super("holeboard", x, y, 8 , 8, gameStageModel);
     }
 
     public void setValidCells(int number) {
@@ -57,21 +57,21 @@ public class HoleBoard extends ContainerElement {
                             p = (Pawn)getElement(i-1,j-1);
 
                             // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
+                            if ((p != null) && ( p.getRole()%2 == number%2)) {
                                 lst.add(new Point(j,i));
                                 continue; // go to the next point
                             }
                         }
                         p = (Pawn)getElement(i-1,j);
                         // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
+                        if ((p != null) && ( p.getRole()%2 != number%2)) {
                             lst.add(new Point(j,i));
                             continue; // go to the next point
                         }
                         if (j+1<=2) {
                             p = (Pawn)getElement(i-1,j+1);
                             // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
+                            if ((p != null) && ( p.getRole()%2 == number%2)) {
                                 lst.add(new Point(j,i));
                                 continue; // go to the next point
                             }
@@ -82,21 +82,21 @@ public class HoleBoard extends ContainerElement {
                         if (j-1>=0) {
                             p = (Pawn)getElement(i+1,j-1);
                             // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
+                            if ((p != null) && ( p.getRole()%2 == number%2)) {
                                 lst.add(new Point(j,i));
                                 continue; // go to the next point
                             }
                         }
                         p = (Pawn)getElement(i+1,j);
                         // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
+                        if ((p != null) && ( p.getRole()%2 != number%2)) {
                             lst.add(new Point(j,i));
                             continue; // go to the next point
                         }
                         if (j+1<=2) {
                             p = (Pawn)getElement(i+1,j+1);
                             // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
+                            if ((p != null) && ( p.getRole()%2 == number%2)) {
                                 lst.add(new Point(j,i));
                                 continue; // go to the next point
                             }
@@ -106,7 +106,7 @@ public class HoleBoard extends ContainerElement {
                     if (j-1>=0) {
                         p = (Pawn)getElement(i,j-1);
                         // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
+                        if ((p != null) && ( p.getRole()%2 != number%2)) {
                             lst.add(new Point(j,i));
                             continue; // go to the next point
                         }
@@ -114,7 +114,7 @@ public class HoleBoard extends ContainerElement {
                     if (j+1<=2) {
                         p = (Pawn)getElement(i,j+1);
                         // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
+                        if ((p != null) && ( p.getRole()%2 != number%2)) {
                             lst.add(new Point(j,i));
                             continue; // go to the next point
                         }
