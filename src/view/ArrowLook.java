@@ -17,7 +17,7 @@ public class ArrowLook extends ElementLook {
         if (arrow.getDirection() == Arrow.VERTICAL){
             shape[0][0] = ConsoleColor.WHITE + ConsoleColor.RED_BACKGROUND + "\u2195" + ConsoleColor.RESET;
         } else if (arrow.getDirection() == Arrow.HORIZONTAL) {
-            shape[0][0] = ConsoleColor.WHITE + ConsoleColor.RED_BACKGROUND + "\u2195" + ConsoleColor.RESET;
+            shape[0][0] = ConsoleColor.WHITE + ConsoleColor.RED_BACKGROUND + "\u2194" + ConsoleColor.RESET;
         } else if (arrow.getDirection() == Arrow.MAJOR_DIAGONAL) {
             shape[0][0] = ConsoleColor.WHITE + "\u2199" + "\u2197" + ConsoleColor.RESET;
         }
