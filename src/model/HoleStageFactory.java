@@ -70,12 +70,9 @@ public class HoleStageFactory extends StageElementsFactory {
         }
         stageModel.setRedPawns(redPawns);
 
-        Arrow[] arrows = new Arrow[16];
+        Arrow[] arrows = new Arrow[4];
         for (int i = 0; i < arrows.length; i++) {
-            if (i%2 == 0)
-                arrows[i] = new Arrow(Arrow.MAJOR_DIAGONAL, stageModel);
-            else
-                arrows[i] = new Arrow(Arrow.MINOR_DIAGONAL, stageModel);
+            arrows[i] = i == 0 ? new Arrow(Arrow.VERTICAL, stageModel) : i == 1 ? new Arrow(Arrow.HORIZONTAL, stageModel) : i == 2 ? new Arrow(Arrow.MAJOR_DIAGONAL, stageModel) : new Arrow(Arrow.MINOR_DIAGONAL, stageModel);
         }
         stageModel.setArrows(arrows);
 
@@ -91,14 +88,47 @@ public class HoleStageFactory extends StageElementsFactory {
             }
         }
 
-        for (int i = 0; i < 16; i++) {
-            if (i<8) {
-                board.addElement(arrows[i], 2, i);
+        for (int i = 0; i < 16; i+=2) {
+            if (i <8) {
+                board.addElement(arrows[2], 0, i);
+                board.addElement(arrows[3], 0, i);
+                board.addElement(arrows[2], 6, i);
+                board.addElement(arrows[3], 6, i);
+
+                if (i<4) {
+                    board.addElement(arrows[3], 2, i);
+                    board.addElement(arrows[1], 2, i);
+                    board.addElement(arrows[3], 4, i);
+                    board.addElement(arrows[0], 4, i);
+                }
+                else {
+                    board.addElement(arrows[1], 2, i);
+                    board.addElement(arrows[2], 2, i);
+                    board.addElement(arrows[0], 4, i);
+                    board.addElement(arrows[2], 4, i);
+                }
             }
             else {
-                board.addElement(arrows[i], 3, 15-i);
+                board.addElement(arrows[2], 1, i-7);
+                board.addElement(arrows[3], 1, i-7);
+                board.addElement(arrows[2], 7, i-7);
+                board.addElement(arrows[3], 7, i-7);
 
+                if (i<12){
+                    board.addElement(arrows[0], 3, i);
+                    board.addElement(arrows[2], 3, i);
+                    board.addElement(arrows[1], 5, i);
+                    board.addElement(arrows[2], 5, i);
+                }
+                else {
+                    board.addElement(arrows[0], 3, i);
+                    board.addElement(arrows[3], 3, i);
+                    board.addElement(arrows[1], 5, i);
+                    board.addElement(arrows[3], 5, i);
+                }
             }
         }
+
+
     }
 }

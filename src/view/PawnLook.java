@@ -17,6 +17,7 @@ public class PawnLook extends ElementLook {
 
     protected void render() {
 
+
         Pawn pawn = (Pawn)element;
         if (pawn.getColor() == Pawn.PAWN_BLUE && pawn.getRole() == Pawn.HORSEMAN) {
             shape[0][0] = ConsoleColor.WHITE + ConsoleColor.BLUE_BACKGROUND + pawn.getRole() + ConsoleColor.RESET;
@@ -31,5 +32,7 @@ public class PawnLook extends ElementLook {
         else {
             shape[0][0] = ConsoleColor.WHITE + ConsoleColor.RED_BACKGROUND + pawn.getRole() + ConsoleColor.RESET;
         }
+
+
     }
 }

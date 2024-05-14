@@ -13,6 +13,7 @@ public class ArrowLook extends ElementLook {
 
     @Override
     protected void render() {
+        /*
         Arrow arrow = (Arrow) element;
         if (arrow.getDirection() == Arrow.VERTICAL){
             shape[0][0] = ConsoleColor.WHITE + ConsoleColor.RED_BACKGROUND + "\u2195" + ConsoleColor.RESET;
@@ -24,6 +25,8 @@ public class ArrowLook extends ElementLook {
         else {
             shape[0][0] = ConsoleColor.WHITE + "\u2196" + "\u2198" +ConsoleColor.RESET;
         }
+
+         */
 
     }
 }

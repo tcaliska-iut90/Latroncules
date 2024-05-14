@@ -30,7 +30,7 @@ public class HoleStageView extends GameStageView {
             addLook(new PawnLook(model.getRedPawns()[i]));
         }
 
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < ((HoleStageModel) gameStageModel).getArrows().length; i++) {
             addLook(new ArrowLook(model.getArrows()[i]));
         }
 
