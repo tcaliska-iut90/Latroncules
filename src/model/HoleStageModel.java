@@ -32,6 +32,8 @@ public class HoleStageModel extends GameStageModel {
 
     // define stage game elements
     private HoleBoard board;
+    private Arrow[][] boardArrows1;
+    private Arrow[][] boardArrows2;
     private Pawn[] bluePawns;
     private Pawn[] redPawns;
     private Arrow[] arrows;
@@ -61,6 +63,14 @@ public class HoleStageModel extends GameStageModel {
     public void setBoard(HoleBoard board) {
         this.board = board;
         addContainer(board);
+    }
+
+    public void setBoardArrows1(Arrow[][] a){
+        this.boardArrows1 = a;
+    }
+
+    public void setBoardArrows2(Arrow[][] a){
+        this.boardArrows2 = a;
     }
 
     public Pawn[] getBluePawns() {

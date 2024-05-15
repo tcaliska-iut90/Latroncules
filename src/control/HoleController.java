@@ -9,7 +9,9 @@ import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
+import model.HoleBoard;
 import model.HoleStageModel;
+import model.Pawn;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,7 +57,7 @@ public class HoleController extends Controller {
                 System.out.print(p.getName()+ " > ");
                 try {
                     String line = consoleIn.readLine();
-                    if (line.length() == 3) {
+                    if (line.length() == 4) {
                         ok = analyseAndPlay(line);
                     }
                     if (!ok) {
@@ -77,33 +79,49 @@ public class HoleController extends Controller {
     }
     private boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
-        // get the pawn value from the first char
-        int pawnIndex = (int) (line.charAt(0) - '1');
-        if ((pawnIndex<0)||(pawnIndex>3)) return false;
-        // get the ccords in the board
-        int col = (int) (line.charAt(1) - 'A');
-        int row = (int) (line.charAt(2) - '1');
+        HoleBoard board = gameStage.getBoard();
+
+
+        // Obtenir les coordonnées du pion
+        int colPawn = (int) (line.charAt(0) - 'A');
+        int rowPawn = (int)(line.charAt(1) - '1');
+        if ((colPawn<0)||(colPawn>8) || (rowPawn < 0) || (rowPawn > 8)) return false;
+
+        System.out.println("Pas col et row pawn");
+        // Obtenir les coordonnées d'arrivé du pion
+        int finCol = (int) (line.charAt(2) - 'A');
+        int finRow = (int) (line.charAt(3) - '1');
+
         // check coords validity
-        if ((row<0)||(row>2)) return false;
-        if ((col<0)||(col>2)) return false;
-        // check if the pawn is still in its pot
-        ContainerElement pot = null;
+        if ((finRow<0)||(finRow>8)) return false;
+        if ((finCol<0)||(finCol>8)) return false;
+        System.out.println("Pas col et row fin");
+
+
+        // check if the pawn is the good color
+        int color ;
+
         if (model.getIdPlayer() == 0) {
-           // pot = gameStage.getBlackPot();
+           color = Pawn.PAWN_BLUE;
         }
         else {
-            //pot = gameStage.getRedPot();
+            color = Pawn.PAWN_RED;
         }
-        if (pot.isEmptyAt(pawnIndex,0)) return false;
-        GameElement pawn = pot.getElement(pawnIndex,0);
+        Pawn p = (Pawn) board.getElement(rowPawn, colPawn);
+        if (p.getColor() != color) return false;
+        System.out.println("Pas la couleru");
+
+
         // compute valid cells for the chosen pawn
+        //Vérifier si le type du pion, les flèches et voir les déplacement possibles
+        /*
         gameStage.getBoard().setValidCells(pawnIndex+1);
         if (!gameStage.getBoard().canReachCell(row,col)) return false;
 
-        ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", row, col);
+        ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", finRow, finCol);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
-        play.start();
+        play.start();*/
         return true;
     }
 }

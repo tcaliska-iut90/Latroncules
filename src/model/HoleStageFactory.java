@@ -88,46 +88,61 @@ public class HoleStageFactory extends StageElementsFactory {
             }
         }
 
+        Arrow[][] boardArrow1 = new Arrow[8][8];
+        Arrow[][] boardArrow2 = new Arrow[8][8];
         for (int i = 0; i < 16; i+=2) {
             if (i <8) {
-                board.addElement(arrows[2], 0, i);
-                board.addElement(arrows[3], 0, i);
-                board.addElement(arrows[2], 6, i);
-                board.addElement(arrows[3], 6, i);
-
+                boardArrow1[0][i] = arrows[2];
+                boardArrow2[0][i] = arrows[3];
+                boardArrow1[6][i] = arrows[2];
+                boardArrow2[6][i] = arrows[3];
                 if (i<4) {
-                    board.addElement(arrows[3], 2, i);
-                    board.addElement(arrows[1], 2, i);
-                    board.addElement(arrows[3], 4, i);
-                    board.addElement(arrows[0], 4, i);
+                    boardArrow1[2][i] = arrows[3];
+                    boardArrow2[2][i] = arrows[1];
+                    boardArrow1[4][i] = arrows[3];
+                    boardArrow2[4][i] = arrows[0];
                 }
                 else {
-                    board.addElement(arrows[1], 2, i);
-                    board.addElement(arrows[2], 2, i);
-                    board.addElement(arrows[0], 4, i);
-                    board.addElement(arrows[2], 4, i);
+                    boardArrow1[2][i] = arrows[1];
+                    boardArrow2[2][i] = arrows[2];
+                    boardArrow1[4][i] = arrows[0];
+                    boardArrow2[4][i] = arrows[2];
                 }
             }
             else {
-                board.addElement(arrows[2], 1, i-7);
-                board.addElement(arrows[3], 1, i-7);
-                board.addElement(arrows[2], 7, i-7);
-                board.addElement(arrows[3], 7, i-7);
+                boardArrow1[1][i-7] = arrows[2];
+                boardArrow2[1][i-7] = arrows[3];
+                boardArrow1[7][i-7] = arrows[2];
+                boardArrow2[7][i-7] = arrows[3];
 
                 if (i<12){
-                    board.addElement(arrows[0], 3, i);
-                    board.addElement(arrows[2], 3, i);
-                    board.addElement(arrows[1], 5, i);
-                    board.addElement(arrows[2], 5, i);
+                    boardArrow1[3][i-7] = arrows[0];
+                    boardArrow2[3][i-7] = arrows[2];
+                    boardArrow1[5][i-7] = arrows[1];
+                    boardArrow2[5][i-7] = arrows[2];
                 }
                 else {
-                    board.addElement(arrows[0], 3, i);
-                    board.addElement(arrows[3], 3, i);
-                    board.addElement(arrows[1], 5, i);
-                    board.addElement(arrows[3], 5, i);
+                    boardArrow1[3][i-7] = arrows[0];
+                    boardArrow2[3][i-7] = arrows[3];
+                    boardArrow1[5][i-7] = arrows[1];
+                    boardArrow2[5][i-7] = arrows[3];
                 }
             }
         }
+        stageModel.setBoardArrows1(boardArrow1);
+        stageModel.setBoardArrows2(boardArrow2);
+
+        /* Test Affichage
+        for (int i = 0; i < boardArrow1.length; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < boardArrow1[i].length; j++) {
+                if (boardArrow1[i][j] != null)
+                    System.out.print(boardArrow1[i][j].getDirection() + " " + boardArrow2[i][j].getDirection() + " |");
+                else
+                    System.out.print("|     |");
+            }
+            System.out.println();
+        }*/
 
 
     }
