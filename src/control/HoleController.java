@@ -131,11 +131,6 @@ public class HoleController extends Controller {
 
     private boolean verifPawnMove(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
 
-        for (int i = 0; i < board.getNbRows(); i++) {
-            for (int j = 0; j < board.getNbCols(); j++) {
-                System.out.println(board.getElement(i, j)+ " " + i + " " + j);
-            }
-        }
         //Test mouvement possible en fonction de la couleur
         if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow) ) {
             System.out.println("Un pion peut aller que tout droit");
@@ -162,7 +157,6 @@ public class HoleController extends Controller {
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
-
         return true;
     }
 }
