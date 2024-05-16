@@ -144,6 +144,7 @@ public class HoleController extends Controller {
             return false;
         }
 
+
         //Test pion devant le pion joueur
         if (board.getElement(finCol, finRow) != null){
             System.out.println(board.getElement(finCol, finRow) + " " + rowPawn + " " + colPawn);
