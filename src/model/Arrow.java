@@ -11,6 +11,7 @@ public class Arrow extends GameElement {
     public static int MAJOR_DIAGONAL = 2;
     public static int MINOR_DIAGONAL = 3;
 
+    
     private int direction;
 
     public Arrow(int direction ,GameStageModel gameStageModel){
