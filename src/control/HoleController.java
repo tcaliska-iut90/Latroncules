@@ -97,23 +97,20 @@ public class HoleController extends Controller {
 
         // check if the pawn is the good color
         int color ;
-
         if (model.getIdPlayer() == 0) {
            color = Pawn.PAWN_BLUE;
         }
         else {
             color = Pawn.PAWN_RED;
         }
+
         Pawn p = (Pawn) board.getElement(rowPawn, colPawn);
         if (p.getColor() != color) return false;
 
-        System.out.println(colPawn + " " + finCol);
-        System.out.println(rowPawn  + " " + finRow);
-        System.out.println(( rowPawn != finRow + 1));
+
         //Vérifier le type du pion
-        if (p.getRole() == Pawn.INFANTRYMAN){
-            if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn != finRow + 1)) return false;
-            if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn != finRow - 1)) return false;
+        if (p.getRole() == Pawn.INFANTRYMAN) {
+            if (!verifPawnMove(p, color,colPawn, rowPawn, finRow, finCol)) return false;
         }
 
 
@@ -128,5 +125,19 @@ public class HoleController extends Controller {
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
         return true;
+    }
+
+    private boolean verifPawnMove(Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
+            if (color == Pawn.PAWN_BLUE ) {
+                if (colPawn != finCol || rowPawn + 1 != finRow ) {
+                    System.out.println("Un pion peut aller que tout droit");
+                    return false;
+                }
+            }
+            if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow)){
+                System.out.println("Un pion peut aller que tout droit");
+                return false;
+            }
+            return true;
     }
 }
