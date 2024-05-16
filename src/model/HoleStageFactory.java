@@ -132,6 +132,12 @@ public class HoleStageFactory extends StageElementsFactory {
         stageModel.setBoardArrows1(boardArrow1);
         stageModel.setBoardArrows2(boardArrow2);
 
+        for (int i = 0; i < board.getNbRows(); i++) {
+            for (int j = 0; j < board.getNbCols(); j++) {
+                System.out.println(board.getElement(i, j)+ " " + i + " " + j);
+            }
+        }
+
         /* Test Affichage
         for (int i = 0; i < boardArrow1.length; i++) {
             System.out.print("| ");

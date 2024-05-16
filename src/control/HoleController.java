@@ -23,9 +23,9 @@ public class HoleController extends Controller {
     boolean firstPlayer;
 
    public HoleController(Model model, View view) {
-        super(model, view);
-        firstPlayer = true;
-    }
+       super(model, view);
+       firstPlayer = true;
+   }
 
     /**
      * Defines what to do within the single stage of the single party
@@ -107,10 +107,9 @@ public class HoleController extends Controller {
         Pawn p = (Pawn) board.getElement(rowPawn, colPawn);
         if (p.getColor() != color) return false;
 
-
         //Vérifier le type du pion
         if (p.getRole() == Pawn.INFANTRYMAN) {
-            if (!verifPawnMove(p, color,colPawn, rowPawn, finRow, finCol)) return false;
+            if (!verifPawnMove(board, p, color,colPawn, rowPawn, finRow, finCol)) return false;
         }
 
 
@@ -127,17 +126,32 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifPawnMove(Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
-            if (color == Pawn.PAWN_BLUE ) {
-                if (colPawn != finCol || rowPawn + 1 != finRow ) {
-                    System.out.println("Un pion peut aller que tout droit");
-                    return false;
-                }
+    private boolean verifPawnMove(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
+
+        for (int i = 0; i < board.getNbRows(); i++) {
+            for (int j = 0; j < board.getNbCols(); j++) {
+                System.out.println(board.getElement(i, j)+ " " + i + " " + j);
             }
-            if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow)){
-                System.out.println("Un pion peut aller que tout droit");
-                return false;
-            }
-            return true;
+        }
+        //Test mouvement possible en fonction de la couleur
+        if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow) ) {
+            System.out.println("Un pion peut aller que tout droit");
+            return false;
+
+        }
+        if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow)){
+            System.out.println("Un pion peut aller que tout droit");
+            return false;
+        }
+
+        //Test pion devant le pion joueur
+        if (board.getElement(finCol, finRow) != null){
+            System.out.println(board.getElement(finCol, finRow) + " " + rowPawn + " " + colPawn);
+            System.out.println(finRow + " " + finCol);
+            System.out.println("Un pion se trouve devant ce pion");
+            return false;
+        }
+
+        return true;
     }
 }
