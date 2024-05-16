@@ -147,7 +147,7 @@ public class HoleController extends Controller {
         //Test pion devant le pion joueur
         if (board.getElement(finCol, finRow) != null){
             System.out.println(board.getElement(finCol, finRow) + " " + rowPawn + " " + colPawn);
-            System.out.println(finRow + " " + finCol);
+            System.out.println(finRow + " " + finCol + " yes");
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
