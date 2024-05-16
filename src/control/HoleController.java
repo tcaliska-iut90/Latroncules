@@ -111,6 +111,9 @@ public class HoleController extends Controller {
         if (p.getRole() == Pawn.INFANTRYMAN) {
             if (!verifPawnMove(board, p, color,colPawn, rowPawn, finRow, finCol)) return false;
         }
+        else {
+            if (!verifMoveCavalier(board, p, color,colPawn, rowPawn, finRow, finCol)) return false;
+        }
 
 
         // compute valid cells for the chosen pawn
@@ -147,8 +150,15 @@ public class HoleController extends Controller {
 
         //Test pion devant le pion joueur
         if (board.getElement(finCol, finRow) != null){
-            System.out.println(board.getElement(finCol, finRow) + " " + rowPawn + " " + colPawn);
-            System.out.println(finRow + " " + finCol + " yes");
+            System.out.println("Un pion se trouve devant ce pion");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean verifMoveCavalier(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
+        if (board.getElement(finCol, finRow) != null){
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
