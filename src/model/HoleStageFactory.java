@@ -24,6 +24,8 @@ import boardifier.view.ConsoleColor;
  */
 public class HoleStageFactory extends StageElementsFactory {
     private HoleStageModel stageModel;
+
+    //false pour le jeu normal
     public static boolean testVict = true;
 
 
