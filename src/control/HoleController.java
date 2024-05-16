@@ -144,7 +144,7 @@ public class HoleController extends Controller {
 
 
         //Test pion devant le pion joueur
-        if (board.getElement(finCol, finRow) != null){
+        if (board.getElement(finRow, finCol) != null){
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
@@ -153,7 +153,7 @@ public class HoleController extends Controller {
     }
 
     private boolean verifMoveCavalier(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
-        if (board.getElement(finCol, finRow) != null){
+        if (board.getElement(finRow, finRow) != null){
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
