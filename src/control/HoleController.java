@@ -87,7 +87,6 @@ public class HoleController extends Controller {
         int rowPawn = (int)(line.charAt(1) - '1');
         if ((colPawn<0)||(colPawn>8) || (rowPawn < 0) || (rowPawn > 8)) return false;
 
-        System.out.println("Pas col et row pawn");
         // Obtenir les coordonnées d'arrivé du pion
         int finCol = (int) (line.charAt(2) - 'A');
         int finRow = (int) (line.charAt(3) - '1');
@@ -95,8 +94,6 @@ public class HoleController extends Controller {
         // check coords validity
         if ((finRow<0)||(finRow>8)) return false;
         if ((finCol<0)||(finCol>8)) return false;
-        System.out.println("Pas col et row fin");
-
 
         // check if the pawn is the good color
         int color ;
@@ -109,19 +106,27 @@ public class HoleController extends Controller {
         }
         Pawn p = (Pawn) board.getElement(rowPawn, colPawn);
         if (p.getColor() != color) return false;
-        System.out.println("Pas la couleru");
+
+        System.out.println(colPawn + " " + finCol);
+        System.out.println(rowPawn  + " " + finRow);
+        System.out.println(( rowPawn != finRow + 1));
+        //Vérifier le type du pion
+        if (p.getRole() == Pawn.INFANTRYMAN){
+            if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn != finRow + 1)) return false;
+            if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn != finRow - 1)) return false;
+        }
 
 
         // compute valid cells for the chosen pawn
         //Vérifier si le type du pion, les flèches et voir les déplacement possibles
-        /*
-        gameStage.getBoard().setValidCells(pawnIndex+1);
-        if (!gameStage.getBoard().canReachCell(row,col)) return false;
 
-        ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", finRow, finCol);
+        //gameStage.getBoard().setValidCells(pawnIndex+1);
+        //if (!gameStage.getBoard().canReachCell(row,col)) return false;
+
+        ActionList actions = ActionFactory.generatePutInContainer(model, p, "holeboard", finRow, finCol);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
-        play.start();*/
+        play.start();
         return true;
     }
 }

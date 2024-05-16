@@ -24,11 +24,11 @@ public class HoleConsole {
         }
         Model model = new Model();
         if (mode == 0) {
-            model.addHumanPlayer("player1");
-            model.addHumanPlayer("player2");
+            model.addHumanPlayer("PlayerBlue");
+            model.addHumanPlayer("PlayerRed");
         }
         else if (mode == 1) {
-            model.addHumanPlayer("player");
+            model.addHumanPlayer("PlayerBlue");
             model.addComputerPlayer("computer");
         }
         else if (mode == 2) {
