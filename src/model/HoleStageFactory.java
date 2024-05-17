@@ -26,7 +26,7 @@ public class HoleStageFactory extends StageElementsFactory {
     private HoleStageModel stageModel;
 
     //false pour le jeu normal
-    public static boolean testVict = true;
+    public static boolean testVict = false;
 
 
     public HoleStageFactory(GameStageModel gameStageModel) {

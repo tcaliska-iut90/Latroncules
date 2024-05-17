@@ -20,7 +20,7 @@ public class HoleBoard extends ContainerElement {
         // call the super-constructor to create a 8x8 grid, named "holeboard", and in x,y in space
         super("holeboard", x, y, 8 , 8, gameStageModel);
     }
-
+/*
     public void setValidCells(int number) {
         Logger.debug("called",this);
         resetReachableCells(false);
@@ -30,99 +30,15 @@ public class HoleBoard extends ContainerElement {
                 reachableCells[p.y][p.x] = true;
             }
         }
+    }*/
+
+    public String[] getValidCell(Arrow a1, Arrow a2, int row, int col){
+        String[] s = new String[4];
+        if (a1.getDirection() == 0 || a2.getDirection() == 0){
+
+        }
+        return s;
     }
 
-    public List<Point> computeValidCells(int number) {
-        List<Point> lst = new ArrayList<>();
-        Pawn p = null;
-        // if the grid is empty, is it the first turn and thus, all cells are valid
-        if (isEmpty()) {
-            // i are rows
-            for(int i=0;i<3;i++) {
-                // j are cols
-                for (int j = 0; j < 3; j++) {
-                    // cols is in x direction and rows are in y direction, so create a point in (j,i)
-                    lst.add(new Point(j,i));
-                }
-            }
-            return lst;
-        }
-        // else, take each empty cell and check if it is valid
-        for(int i=0;i<3;i++) {
-            for(int j=0;j<3;j++) {
-                if (isEmptyAt(i,j)) {
-                    // check adjacence in row-1
-                    if (i-1 >= 0) {
-                        if (j-1>=0) {
-                            p = (Pawn)getElement(i-1,j-1);
 
-                            // check if same parity
-                            if ((p != null) && ( p.getRole()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
-                        }
-                        p = (Pawn)getElement(i-1,j);
-                        // check if different parity
-                        if ((p != null) && ( p.getRole()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-                        if (j+1<=2) {
-                            p = (Pawn)getElement(i-1,j+1);
-                            // check if same parity
-                            if ((p != null) && ( p.getRole()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
-                        }
-                    }
-                    // check adjacence in row+1
-                    if (i+1 <= 2) {
-                        if (j-1>=0) {
-                            p = (Pawn)getElement(i+1,j-1);
-                            // check if same parity
-                            if ((p != null) && ( p.getRole()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
-                        }
-                        p = (Pawn)getElement(i+1,j);
-                        // check if different parity
-                        if ((p != null) && ( p.getRole()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-                        if (j+1<=2) {
-                            p = (Pawn)getElement(i+1,j+1);
-                            // check if same parity
-                            if ((p != null) && ( p.getRole()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
-                        }
-                    }
-                    // check adjacence in row
-                    if (j-1>=0) {
-                        p = (Pawn)getElement(i,j-1);
-                        // check if different parity
-                        if ((p != null) && ( p.getRole()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-                    }
-                    if (j+1<=2) {
-                        p = (Pawn)getElement(i,j+1);
-                        // check if different parity
-                        if ((p != null) && ( p.getRole()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-
-                    }
-                }
-            }
-        }
-        return lst;
-    }
 }
