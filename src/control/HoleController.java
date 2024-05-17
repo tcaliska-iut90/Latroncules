@@ -112,7 +112,7 @@ public class HoleController extends Controller {
             if (!verifPawnMove(board, p, color,colPawn, rowPawn, finRow, finCol)) return false;
         }
         else {
-            if (!verifMoveCavalier(board, p, color,colPawn, rowPawn, finRow, finCol)) return false;
+            if (!verifMoveCavalier(board, p, color,colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
 
@@ -152,9 +152,14 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifMoveCavalier(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
+    private boolean verifMoveCavalier(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel model){
+        if (model.getBoardArrows1()[rowPawn][colPawn] != null){
+
+        }
+
+
         if (board.getElement(finRow, finRow) != null){
-            System.out.println("Un pion se trouve devant ce pion");
+            System.out.println("Un pion se trouve sur la case d'arrivée");
             return false;
         }
         return true;

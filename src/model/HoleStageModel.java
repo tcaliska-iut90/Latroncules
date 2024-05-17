@@ -69,9 +69,13 @@ public class HoleStageModel extends GameStageModel {
         this.boardArrows1 = a;
     }
 
+    public Arrow[][] getBoardArrows1() {return boardArrows1;}
+
     public void setBoardArrows2(Arrow[][] a){
         this.boardArrows2 = a;
     }
+
+    public Arrow[][] getBoardArrows2() {return boardArrows2;}
 
     public Pawn[] getBluePawns() {
         return bluePawns;
