@@ -2,6 +2,7 @@ package model;
 
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
+import boardifier.model.Model;
 
 
 /**
@@ -18,11 +19,11 @@ public class HoleBoard extends ContainerElement {
     }
 
 
-    public int[][] getValidCell(Arrow a1, Arrow a2, int row, int col){
+    public int[][] getValidCell(Model model, Arrow a1, Arrow a2, int row, int col){
         int[][] result = new int[4][2];
         int indexi = 0;
         int[][] temp;
-        System.out.println(row + ", " + col);
+        int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
         if (a1.getDirection() == 0 || a2.getDirection() == 0){
             temp = getCellVerticalArrow(row, col);
@@ -31,8 +32,6 @@ public class HoleBoard extends ContainerElement {
             result[indexi + 1][0] = temp[1][0];
             result[indexi + 1][1] = temp[1][1];
             indexi +=2;
-            System.out.println("Verticale");
-
         }
         if (a1.getDirection() == 1 || a2.getDirection() ==1) {
             temp = getCellHorizontalArrow(row, col);
@@ -41,7 +40,6 @@ public class HoleBoard extends ContainerElement {
             result[indexi + 1][0] = temp[1][0];
             result[indexi + 1][1] = temp[1][1];
             indexi +=2;
-            System.out.println("Horizontal");
         }
         
         if (a1.getDirection() == 2 || a2.getDirection() == 2){
@@ -51,8 +49,8 @@ public class HoleBoard extends ContainerElement {
             result[indexi + 1][0] = temp[1][0];
             result[indexi + 1][1] = temp[1][1];
             indexi +=2;
-            System.out.println("Majeur diagonale");
         }
+
         if (a1.getDirection() == 3 || a2.getDirection() == 3){
             temp = getCellMinorDiagonalArrow(row, col);
 
@@ -60,18 +58,15 @@ public class HoleBoard extends ContainerElement {
             result[indexi][1] = temp[0][1];
             result[indexi + 1][0] = temp[1][0];
             result[indexi + 1][1] = temp[1][1];
-            System.out.println("Mineur diagonale");
         }
 
-        System.out.print("[ ");
         for (int i = 0; i < result.length; i++) {
-            System.out.print("[ ");
-            for (int j = 0; j < result[i].length; j++) {
-                System.out.print(result[i][j] + " ,");
+            Pawn p = (Pawn)this.getElement(result[i][0], result[i][1]);
+            if (p != null && p.getColor() == colorEnemy){
+                result[i][0] = result[i][0] + (result[i][0] - row);
+                result[i][1] = result[i][1] + (result[i][1] - col);
             }
-            System.out.println("]");
         }
-        System.out.print("]");
         return result;
     }
 

@@ -152,10 +152,10 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel model){
-        if (model.getBoardArrows1()[rowPawn][colPawn] != null){
+    private boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModelmodel){
+        if (holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn] != null){
             boolean valueFound = false;
-            int [][] temp = board.getValidCell(model.getBoardArrows1()[rowPawn][colPawn], model.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
+            int [][] temp = board.getValidCell(model, holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn], holeStageModelmodel.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
 
             for (int i = 0; i < temp.length; i++) {
                 if (temp[i][0] == finRow && temp[i][1] == finCol) {
@@ -163,7 +163,10 @@ public class HoleController extends Controller {
                     break;
                 }
             }
-            if (!valueFound)return false;
+            if (!valueFound){
+                System.out.println("Mouvement impossible sur cette case");
+                return false;
+            }
         }
 
         if (board.getElement(finRow, finCol) != null){
