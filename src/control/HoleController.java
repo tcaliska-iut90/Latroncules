@@ -68,7 +68,7 @@ public class HoleController extends Controller {
             }
         }
     }
-
+    @Override
     public void endOfTurn() {
 
         model.setNextPlayer();
@@ -109,10 +109,10 @@ public class HoleController extends Controller {
 
         //Vérifier le type du pion
         if (p.getRole() == Pawn.INFANTRYMAN) {
-            if (!verifPawnMove(board, p, color,colPawn, rowPawn, finRow, finCol)) return false;
+            if (!verifPawnMove(board, color,colPawn, rowPawn, finRow, finCol)) return false;
         }
         else {
-            if (!verifMoveCavalier(board, p, color,colPawn, rowPawn, finRow, finCol, gameStage)) return false;
+            if (!verifMoveCavalier(board,colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
 
@@ -129,7 +129,7 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifPawnMove(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol){
+    private boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol){
 
         //Test mouvement possible en fonction de la couleur
         if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow) ) {
@@ -152,16 +152,25 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifMoveCavalier(HoleBoard board, Pawn p, int color, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel model){
+    private boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel model){
         if (model.getBoardArrows1()[rowPawn][colPawn] != null){
+            boolean valueFound = false;
+            int [][] temp = board.getValidCell(model.getBoardArrows1()[rowPawn][colPawn], model.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
 
+            for (int i = 0; i < temp.length; i++) {
+                if (temp[i][0] == finRow && temp[i][1] == finCol) {
+                    valueFound = true;
+                    break;
+                }
+            }
+            if (!valueFound)return false;
         }
 
-
-        if (board.getElement(finRow, finRow) != null){
+        if (board.getElement(finRow, finCol) != null){
             System.out.println("Un pion se trouve sur la case d'arrivée");
             return false;
         }
+
         return true;
     }
 }
