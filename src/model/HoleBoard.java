@@ -24,7 +24,6 @@ public class HoleBoard extends ContainerElement {
         System.out.println(a1.getDirection() + ", " + a2.getDirection());
         ValidCell = new int[4][2];
         int indexi = 0;
-        int[][] temp;
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
         if (a1.getDirection() == 0 || a2.getDirection() == 0){
@@ -41,7 +40,6 @@ public class HoleBoard extends ContainerElement {
         }
         if (a1.getDirection() == 3 || a2.getDirection() == 3){
             getCellMinorDiagonalArrow(row, col, indexi);
-            indexi += 2;
         }
 
         for (int i = 0; i < ValidCell.length; i++) {
@@ -57,7 +55,6 @@ public class HoleBoard extends ContainerElement {
 
     public int[][] getValidCell(Model model, int row, int col){
         ValidCell = new int[8][2];
-        int[][] temp;
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
         getCellVerticalArrow(row, col, 0);
