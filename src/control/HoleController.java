@@ -22,10 +22,10 @@ public class HoleController extends Controller {
     BufferedReader consoleIn;
     boolean firstPlayer;
 
-   public HoleController(Model model, View view) {
-       super(model, view);
-       firstPlayer = true;
-   }
+    public HoleController(Model model, View view) {
+        super(model, view);
+        firstPlayer = true;
+    }
 
     /**
      * Defines what to do within the single stage of the single party
@@ -34,7 +34,7 @@ public class HoleController extends Controller {
     public void stageLoop() {
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
-        while(! model.isEndStage()) {
+        while (!model.isEndStage()) {
             playTurn();
             endOfTurn();
             update();
@@ -47,14 +47,13 @@ public class HoleController extends Controller {
         Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
-            HoleDecider decider = new HoleDecider(model,this);
+            HoleDecider decider = new HoleDecider(model, this);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
-        }
-        else {
+        } else {
             boolean ok = false;
             while (!ok) {
-                System.out.print(p.getName()+ " > ");
+                System.out.print(p.getName() + " > ");
                 try {
                     String line = consoleIn.readLine();
                     if (line.length() == 4) {
@@ -63,11 +62,12 @@ public class HoleController extends Controller {
                     if (!ok) {
                         System.out.println("incorrect instruction. retry !");
                     }
+                } catch (IOException e) {
                 }
-                catch(IOException e) {}
             }
         }
     }
+
     @Override
     public void endOfTurn() {
 
@@ -77,6 +77,7 @@ public class HoleController extends Controller {
         HoleStageModel stageModel = (HoleStageModel) model.getGameStage();
         stageModel.getPlayerName().setText(p.getName());
     }
+
     private boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         HoleBoard board = gameStage.getBoard();
@@ -84,35 +85,38 @@ public class HoleController extends Controller {
 
         // Obtenir les coordonnées du pion
         int colPawn = (int) (line.charAt(0) - 'A');
-        int rowPawn = (int)(line.charAt(1) - '1');
-        if ((colPawn<0)||(colPawn>8) || (rowPawn < 0) || (rowPawn > 8)) return false;
+        int rowPawn = (int) (line.charAt(1) - '1');
+        if ((colPawn < 0) || (colPawn > 8) || (rowPawn < 0) || (rowPawn > 8)) return false;
 
         // Obtenir les coordonnées d'arrivé du pion
         int finCol = (int) (line.charAt(2) - 'A');
         int finRow = (int) (line.charAt(3) - '1');
 
         // check coords validity
-        if ((finRow<0)||(finRow>8)) return false;
-        if ((finCol<0)||(finCol>8)) return false;
+        if ((finRow < 0) || (finRow > 8) || (finCol < 0) || (finCol > 8)) return false;
 
         // check if the pawn is the good color
-        int color ;
+        int color;
         if (model.getIdPlayer() == 0) {
-           color = Pawn.PAWN_BLUE;
-        }
-        else {
+            color = Pawn.PAWN_BLUE;
+        } else {
             color = Pawn.PAWN_RED;
         }
 
         Pawn p = (Pawn) board.getElement(rowPawn, colPawn);
-        if (p.getColor() != color) return false;
+        try {
+            if (p.getColor() != color) return false;
+        } catch (NullPointerException e) {
+            System.out.println("Aucun pion n'est présent sur cette case");
+            return false;
+        }
+
 
         //Vérifier le type du pion
         if (p.getRole() == Pawn.INFANTRYMAN) {
-            if (!verifPawnMove(board, color,colPawn, rowPawn, finRow, finCol)) return false;
-        }
-        else {
-            if (!verifMoveCavalier(board,colPawn, rowPawn, finRow, finCol, gameStage)) return false;
+            if (!verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
+        } else {
+            if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
 
@@ -129,22 +133,22 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol){
+    private boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
 
         //Test mouvement possible en fonction de la couleur
-        if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow) ) {
+        if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) {
             System.out.println("Un pion peut aller que tout droit");
             return false;
 
         }
-        if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow)){
+        if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow)) {
             System.out.println("Un pion peut aller que tout droit");
             return false;
         }
 
 
         //Test pion devant le pion joueur
-        if (board.getElement(finRow, finCol) != null){
+        if (board.getElement(finRow, finCol) != null) {
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
@@ -152,28 +156,30 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModelmodel){
-        if (holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn] != null){
-            boolean valueFound = false;
-            int [][] temp = board.getValidCell(model, holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn], holeStageModelmodel.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
+    private boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModelmodel) {
+        int[][] temp;
+        boolean valueFound = false;
 
-            for (int i = 0; i < temp.length; i++) {
-                if (temp[i][0] == finRow && temp[i][1] == finCol) {
-                    valueFound = true;
-                    break;
-                }
-            }
-            if (!valueFound){
-                System.out.println("Mouvement impossible sur cette case");
-                return false;
-            }
+        if (holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn] != null) {
+            temp = board.getValidCell(model, holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn], holeStageModelmodel.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
+        } else {
+            temp = board.getValidCell(model, rowPawn, colPawn);
         }
 
-        if (board.getElement(finRow, finCol) != null){
-            System.out.println("Un pion se trouve sur la case d'arrivée");
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i][0] == finRow && temp[i][1] == finCol) {
+                valueFound = true;
+                break;
+            }
+        }
+        if (!valueFound) {
+            System.out.println("Mouvement impossible sur cette case");
             return false;
         }
 
+        for (int i = 0; i < temp.length; i++) {
+            System.out.println(temp[i][0] + ", " + temp[i][1]);
+        }
         return true;
     }
 }
