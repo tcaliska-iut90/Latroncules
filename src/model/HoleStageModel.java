@@ -36,8 +36,8 @@ public class HoleStageModel extends GameStageModel {
     private Arrow[][] boardArrows2;
     private Pawn[] bluePawns;
     private Pawn[] redPawns;
-    private Pawn[] redPawnsTaking = new Pawn[16];
-    private Pawn[] bluePawnsTaking = new Pawn[8];
+    private Pawn[] redPawnsTaking;
+    private Pawn[] bluePawnsTaking;
     private Arrow[] arrows;
     private TextElement playerName;
 
@@ -90,6 +90,14 @@ public class HoleStageModel extends GameStageModel {
     public Pawn[] getBluePawnsTaking() {
         return bluePawnsTaking;
     }
+
+    public void setBluePawnsTaking(Pawn[] bluePawnsTaking) {
+        this.bluePawnsTaking = bluePawnsTaking;
+    }
+
+    /*
+    Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
+     */
     public void addBluePawnsTaking(Pawn p){
         for (int i = 0; i < redPawnsTaking.length; i++) {
             if (redPawnsTaking[i] == null){
@@ -98,14 +106,44 @@ public class HoleStageModel extends GameStageModel {
             }
         }
     }
+    /*
+    Permet de retirer le pion passé en paramètre du tableau des pions bleue
+     */
+    public void removeBluePawns(Pawn p){
+        for (int i = 0; i < bluePawnsTaking.length; i++) {
+            if (bluePawnsTaking[i] == p) {
+                bluePawnsTaking[i].removeFromStage();
+                bluePawnsTaking[i] = null;
+            }
+        }
+    }
     public Pawn[] getRedPawnsTaking() {
         return redPawnsTaking;
     }
+
+    public void setRedPawnsTaking(Pawn[] redPawnsTaking) {
+        this.redPawnsTaking = redPawnsTaking;
+    }
+
+    /*
+    Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe bleue
+     */
     public void addRedPawnsTaking(Pawn p){
         for (int i = 0; i < redPawnsTaking.length; i++) {
             if (redPawnsTaking[i] == null){
                 redPawnsTaking[i] = p;
                 break;
+            }
+        }
+    }
+    /*
+    Permet de retirer le pion passé en paramètre du tableau des pions rouges
+     */
+    public void removeRedPawns(Pawn p){
+        for (int i = 0; i < redPawnsTaking.length; i++) {
+            if (redPawnsTaking[i] == p) {
+                redPawnsTaking[i].removeFromStage();
+                redPawnsTaking[i] = null;
             }
         }
     }

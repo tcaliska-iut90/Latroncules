@@ -4,6 +4,7 @@ import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
 import boardifier.model.Model;
 
+import java.awt.*;
 
 
 /**
@@ -21,6 +22,9 @@ public class HoleBoard extends ContainerElement {
     }
 
 
+    /*
+    Donne les coup possibles lorsque qu'un cavalier est sur une case fléchés
+     */
     public int[][] getValidCell(Model model, Arrow a1, Arrow a2, int row, int col){
         ValidCell = new int[4][2];
         int indexi = 0;
@@ -43,7 +47,6 @@ public class HoleBoard extends ContainerElement {
         }
 
         for (int i = 0; i < ValidCell.length; i++) {
-            System.out.println(ValidCell[i][0] +", " +ValidCell[i][1]);
             Pawn p = (Pawn)this.getElement(ValidCell[i][0], ValidCell[i][1]);
             if (p != null && p.getColor() == colorEnemy){
                 ValidCell[i][0] = ValidCell[i][0] + (ValidCell[i][0] - row);
@@ -54,6 +57,9 @@ public class HoleBoard extends ContainerElement {
     }
 
 
+    /*
+    Donne les coup possibles lorsque qu'un cavalier est sur une case non fléchés
+     */
     public int[][] getValidCell(Model model, int row, int col){
         ValidCell = new int[8][2];
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
@@ -134,24 +140,66 @@ public class HoleBoard extends ContainerElement {
     public void takingPawn(HoleStageModel stageModel, HoleBoard board, Model model, int row, int col, int colorPawn){
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
-        for (int i = row -1; i < row +1; i++) {
-            for (int j = col -1 ; j < col +1; j++) {
-                i = i < 0 ? 0 : i > 7 ? 7 : i;
-                j = j < 0 ? 0 : j > 7 ? 7 : j;
-                Pawn pawnEnemy = (Pawn) board.getElement(i, j);
-                if ((pawnEnemy != null && pawnEnemy.getColor() == colorEnemy) && board.getElement(i +(i - row), j +(j-col)) != null){
-                    Pawn pawn = (Pawn)board.getElement(i +(i - row), j +(j-col));
-                    deletePawnsTaking(pawn, colorPawn, stageModel, pawnEnemy, i, j, board);
-                }
+        for (int i = row -1; i <= row +1; i++) {
+            for (int j = col -1 ; j <= col +1; j++) {
+               if ((i >= 0 && i <= 7) && (j >= 0 && j <= 7)) {
+                   Pawn p = (Pawn) board.getElement(i, j);
+                   System.out.println(i + ", " + j);
+                   if (checkPiece(board, i, j, colorEnemy) && isCapturable(board,i, j, colorPawn)){
+                       deletePawnsTaking(stageModel, p, board, colorPawn);
+                       //System.out.println("Le joueur" + model.getCurrentPlayer().getName() + " à pris le pion se trouvant au coordoné " + (String.valueOf(col) + 'A') + (String.valueOf(row) + '1'));
+                   }
+               }
             }
         }
     }
 
-    private void deletePawnsTaking(Pawn pawn, int colorPawn, HoleStageModel stageModel, Pawn pawnEnemy, int rowPawnEnemy, int colPawnEnemy, HoleBoard board){
-        board.removeElement(pawnEnemy);
-        if (pawn.getColor() == colorPawn){
-            if (colorPawn == Pawn.PAWN_BLUE) stageModel.addRedPawnsTaking(pawnEnemy);
-            else stageModel.addBluePawnsTaking(pawnEnemy);
+    /*
+    Cette méthode renvoie un booléen lorsque le pion sur la case de coordonnée row,col est capturable par l'équipe de la couleur playerColor
+     */
+    private boolean isCapturable(HoleBoard board, int row, int col, int playerColor) {
+        // Vérifie alignement vertical
+        if (row > 0 && row < 7 && checkPiece(board, row - 1, col, playerColor) && checkPiece(board, row + 1, col, playerColor)) {
+            return true;
         }
+        // Vérifie alignement horizontal
+        if (col > 0 && col < 7 && checkPiece(board, row, col - 1, playerColor) && checkPiece(board, row, col + 1, playerColor)) {
+            return true;
+        }
+        // Vérifie alignement oblique haut-gauche à bas-droite
+        if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row - 1, col - 1, playerColor) && checkPiece(board, row + 1, col + 1, playerColor)) {
+            return true;
+        }
+        // Vérifie alignement oblique haut-droit à bas-gauche
+        if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row + 1, col - 1, playerColor) && checkPiece(board, row - 1, col + 1, playerColor)) {
+            return true;
+        }
+        // Vérifie les coins pour former un L
+        if ((row > 0 && checkPiece(board, row - 1, col, playerColor) && ((col > 0 && checkPiece(board, row, col - 1, playerColor)) || (col < 7 && checkPiece(board, row, col + 1, playerColor)))) ||
+                (x < 7 && checkPiece(board, row + 1, col, playerColor) && ((col > 0 && checkPiece(board, row, col - 1, playerColor)) || (col < 7 && checkPiece(board, row, col + 1, playerColor))))) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    private void deletePawnsTaking(HoleStageModel stageModel, Pawn pawnEnemy, HoleBoard board, int colorPawn) {
+        board.removeElement(pawnEnemy);
+        if (colorPawn == Pawn.PAWN_BLUE){
+            stageModel.addRedPawnsTaking(pawnEnemy);
+            stageModel.removeRedPawns(pawnEnemy);
+
+        }
+        else {
+            stageModel.addBluePawnsTaking(pawnEnemy);
+            stageModel.removeBluePawns(pawnEnemy);
+        }
+
+    }
+
+    private boolean checkPiece(HoleBoard board, int row, int col, int playerColor){
+        Pawn p = (Pawn) board.getElement(row, col);
+        return p != null && p.getColor() == playerColor;
     }
 }
