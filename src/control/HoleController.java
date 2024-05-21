@@ -119,10 +119,22 @@ public class HoleController extends Controller {
             if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
+        //System.out.println("Le role avant est " + p.getRole() + " et sa colone est " + rowPawn);
+
         ActionList actions = ActionFactory.generatePutInContainer(model, p, "holeboard", finRow, finCol);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
+        board.takingPawn(gameStage, board, model, finRow, finCol, color);
+
+
+        //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
+        if((p.getRole() == Pawn.INFANTRYMAN && p.getColor() == Pawn.PAWN_BLUE && finRow == 7) || (p.getRole() == Pawn.INFANTRYMAN && p.getColor() == Pawn.PAWN_RED && finRow == 0)){
+            p.setRole(Pawn.HORSEMAN);
+            //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
+        }
+
+
         return true;
     }
 
@@ -139,6 +151,7 @@ public class HoleController extends Controller {
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
+        //Test mouvement impossible
         if (board.getElement(finRow, finCol - 1) != null && board.getElement(finRow, finCol + 1) != null) {
             System.out.println("Impossible, coup interdit");
             return false;
