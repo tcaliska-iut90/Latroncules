@@ -3,7 +3,6 @@ package model;
 import boardifier.model.ElementTypes;
 import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
-import boardifier.model.Player;
 
 /**
  * A basic pawn element, with only 2 fixed parameters : number and color
@@ -38,6 +37,14 @@ public class Pawn extends GameElement {
     //Modifier le nom de la méthode
     public int getColor() {
         return color;
+    }
+
+    public int getRow() {
+        return (int)((this.getY()-1)/2);
+    }
+
+    public int getCol() {
+        return (int)((this.getX()-3)/6);
     }
 
 }
