@@ -5,6 +5,7 @@ import boardifier.control.Controller;
 import boardifier.control.Decider;
 import boardifier.model.GameElement;
 import boardifier.model.Model;
+import boardifier.model.Player;
 import boardifier.model.PointPosition;
 import boardifier.model.action.ActionList;
 import model.HoleBoard;
@@ -18,18 +19,24 @@ import java.util.Random;
 
 public class HoleDecider extends Decider {
 
+    protected Player currentPlayer;
     private static final Random loto = new Random(Calendar.getInstance().getTimeInMillis());
 
     public HoleDecider(Model model, Controller control) {
         super(model, control);
     }
+    public HoleDecider(Model model, Controller control, Player currentPlayer) {
+        super(model, control);
+        this.currentPlayer = currentPlayer;
+    }
+
 
     @Override
     public ActionList decide() {
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel)model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
-        GameElement pawn; // the pawn that is moved
+        Pawn pawn; // the pawn that is moved
         int rowDest; // the dest. row in board
         int colDest; // the dest. col in board
 
@@ -37,7 +44,7 @@ public class HoleDecider extends Decider {
         //1ère IA (position stratégique et minimisation des risques) :
         //Initialisation :
         //Créer une liste de tous les mouvements valides pour le joueur actuel.
-        //List<GameElement> pawns = board.getPawns(model.getCurrentPlayer());
+        //List<Pawn> pawns = board.getPawns(currentPlayer);
         ActionList actions = new ActionList();
 
         //Initialiser une liste de positions stratégiques sur le plateau (par exemple, les cases centrales).

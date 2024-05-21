@@ -1,6 +1,7 @@
 package boardifier.model;
 
 import boardifier.model.animation.Animation;
+import model.Pawn;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

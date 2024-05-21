@@ -47,7 +47,7 @@ public class HoleController extends Controller {
         Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
-            HoleDecider decider = new HoleDecider(model, this);
+            HoleDecider decider = new HoleDecider(model, this, p);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
         } else {

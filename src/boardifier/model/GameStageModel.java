@@ -1,5 +1,7 @@
 package boardifier.model;
 
+import model.Pawn;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,4 +219,17 @@ public abstract class GameStageModel {
         return list;
     }
 
+    public List<Pawn> getPawns(Player player) {
+        List<Pawn> pawns = new ArrayList<>();
+        for (GameElement element : elements) {
+            if (element instanceof Pawn) {
+                Pawn pawn = (Pawn) element;
+                if (pawn.getColor() == 1 && (player.getName()=="computer" || player.getName()=="computer2") || pawn.getColor() == 0 && player.getName()=="computer1"){
+                    System.out.println("pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getY()+" et col = "+pawn.getX());
+                    pawns.add(pawn);
+                }
+            }
+        }
+        return pawns;
+    }
 }
