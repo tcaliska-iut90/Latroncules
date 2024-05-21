@@ -119,7 +119,7 @@ public class HoleController extends Controller {
             if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
-        System.out.println("Le role avant est " + p.getRole() + " et sa colone est " + rowPawn);
+        //System.out.println("Le role avant est " + p.getRole() + " et sa colone est " + rowPawn);
 
         ActionList actions = ActionFactory.generatePutInContainer(model, p, "holeboard", finRow, finCol);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
@@ -128,11 +128,12 @@ public class HoleController extends Controller {
 
 
         //regarde le role d'un pion bleu et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
-        if(p.getRole() == Pawn.INFANTRYMAN && p.getRole() == Pawn.PAWN_BLUE && finRow == 7){
-            p.setRole(0);
+        if(p.getRole() == 1 && p.getColor() == Pawn.PAWN_BLUE && finRow == 7){
+            p.setRole(Pawn.HORSEMAN);
+            //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
         }
 
-        System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
+
 
         return true;
     }
