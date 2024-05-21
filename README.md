@@ -26,6 +26,7 @@ Figure 2 : placement initial des pions
 On détermine le premier joueur par tirage au sort, ou par accord commun.
 Chacun son tour, un joueur doit déplacer un de ses pions en suivant les règles données dans la section 2.2.
 Cette alternance se poursuit jusqu'à ce que la partie s'arrête, selon les conditions données en section 2.4
+
 2.2°/ Déplacements des pions
 
 Un fantassin ne peut se déplacer que d'une seule case à la fois, TOUT DROIT, en direction du camp opposé. Il ne peut en aucun cas sauter par dessus un autre pion.
@@ -58,6 +59,7 @@ Figure 6 : le cavalier cerclé a 3 possibilités de mouvement lui permettant de 
 2.3° Promotion
 
 Si un fantassin parvient à rejoindre l'autre bord du plateau (le haut pour les rouges et le bas pour les bleus), il devient automatiquement un cavalier.
+
 2.4°/ Fin de partie
 
 La partie s'arrête avec un gagnant quand l'un des joueurs n'a plus de pion, ou bien quand on décide de mettre fin à la partie car il n'est plus possible de prendre d'autres pions. Dans ce cas, c'est le joueur qui a le plus de pions restant sur le plateau qui a gagné.
