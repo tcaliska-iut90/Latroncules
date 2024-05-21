@@ -4,7 +4,6 @@ import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
 import boardifier.model.Model;
 
-import java.awt.*;
 
 
 /**
@@ -23,7 +22,6 @@ public class HoleBoard extends ContainerElement {
 
 
     public int[][] getValidCell(Model model, Arrow a1, Arrow a2, int row, int col){
-        System.out.println(a1.getDirection() + ", " + a2.getDirection());
         ValidCell = new int[4][2];
         int indexi = 0;
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
@@ -45,6 +43,7 @@ public class HoleBoard extends ContainerElement {
         }
 
         for (int i = 0; i < ValidCell.length; i++) {
+            System.out.println(ValidCell[i][0] +", " +ValidCell[i][1]);
             Pawn p = (Pawn)this.getElement(ValidCell[i][0], ValidCell[i][1]);
             if (p != null && p.getColor() == colorEnemy){
                 ValidCell[i][0] = ValidCell[i][0] + (ValidCell[i][0] - row);
@@ -80,7 +79,7 @@ public class HoleBoard extends ContainerElement {
         else ValidCell[indexi][0] = row - 1;
         ValidCell[indexi][1] = col;
 
-        if (row == 8) ValidCell[indexi +1][0] = row;
+        if (row == 7) ValidCell[indexi +1][0] = row;
         else ValidCell[indexi +1][0] = row + 1;
         ValidCell[indexi + 1][1] = col;
     }
@@ -92,20 +91,20 @@ public class HoleBoard extends ContainerElement {
         else ValidCell[indexi][1] = col - 1;
 
         ValidCell[indexi + 1][0] = row;
-        if (col == 8)ValidCell[indexi +1 ][1] = col;
+        if (col == 7)ValidCell[indexi +1 ][1] = col;
         else ValidCell[indexi + 1][1] = col + 1;
     }
 
     private void getCellMajorDiagonalArrow(int row, int col, int indexi){
         if (row == 0 || col ==0){
-            ValidCell[indexi][0] = row;
+            ValidCell[indexi][0] = row ;
             ValidCell[indexi][1] = col;
         }else {
             ValidCell[indexi][0] = row - 1;
             ValidCell[indexi][1] = col - 1;
         }
 
-        if (row == 8 || col == 8){
+        if (row == 7 || col == 7){
             ValidCell[indexi + 1][0] = row;
             ValidCell[indexi + 1][1] = col;
         }else {
@@ -115,7 +114,7 @@ public class HoleBoard extends ContainerElement {
     }
 
     private void getCellMinorDiagonalArrow(int row, int col, int indexi){
-        if (row == 0 || col ==0){
+        if (row == 0 || col == 7){
             ValidCell[indexi][0] = row;
             ValidCell[indexi][1] = col;
         }else {
@@ -123,7 +122,7 @@ public class HoleBoard extends ContainerElement {
             ValidCell[indexi][1] = col + 1;
         }
 
-        if (row == 8 || col == 8){
+        if (row == 7 || col == 0){
             ValidCell[indexi + 1][0] = row;
             ValidCell[indexi + 1][1] = col;
         }else {
@@ -137,19 +136,18 @@ public class HoleBoard extends ContainerElement {
 
         for (int i = row -1; i < row +1; i++) {
             for (int j = col -1 ; j < col +1; j++) {
+                i = i < 0 ? 0 : i > 7 ? 7 : i;
+                j = j < 0 ? 0 : j > 7 ? 7 : j;
                 Pawn pawnEnemy = (Pawn) board.getElement(i, j);
-                if (pawnEnemy != null && pawnEnemy.getColor() == colorEnemy){
-
-                    if (board.getElement(i +(i - row), j +(j-col)) != null){
-                        Pawn pawn = (Pawn)board.getElement(i +(i - row), j +(j-col));
-                        deletePawnsTaking(pawn, colorPawn, stageModel, pawnEnemy, i, j, board);
-                    }
+                if ((pawnEnemy != null && pawnEnemy.getColor() == colorEnemy) && board.getElement(i +(i - row), j +(j-col)) != null){
+                    Pawn pawn = (Pawn)board.getElement(i +(i - row), j +(j-col));
+                    deletePawnsTaking(pawn, colorPawn, stageModel, pawnEnemy, i, j, board);
                 }
             }
         }
     }
 
-    private void deletePawnsTaking(Pawn pawn, int colorPawn, HoleStageModel stageModel, Pawn pawnEnemy, int rowPawnEnemy, int intcolPawnEnemy, HoleBoard board){
+    private void deletePawnsTaking(Pawn pawn, int colorPawn, HoleStageModel stageModel, Pawn pawnEnemy, int rowPawnEnemy, int colPawnEnemy, HoleBoard board){
         board.removeElement(pawnEnemy);
         if (pawn.getColor() == colorPawn){
             if (colorPawn == Pawn.PAWN_BLUE) stageModel.addRedPawnsTaking(pawnEnemy);
