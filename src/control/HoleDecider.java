@@ -56,11 +56,8 @@ public class HoleDecider extends Decider {
         List<GameElement> pawns = board.getElements(model.getIdPlayer());
         // get the list of all possible moves for each pawn
         ActionList actions = ActionFactory.generatePutInContainer(model, pawns.get(0), "holeboard", 0, 0);
-        // get the list of all possible moves for each pawn
         for (GameElement p : pawns) {
-            // get the list of all possible moves for the pawn
             List<Point> moves = board.getValidMoves(p);
-            // for each possible move, add an action to the list of actions
             for (Point move : moves) {
                 actions.add(ActionFactory.generatePutInContainer(model, p, "holeboard", move.y, move.x));
             }
