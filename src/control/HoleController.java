@@ -128,11 +128,12 @@ public class HoleController extends Controller {
         board.takingPawn(gameStage, board, model, finRow, finCol, color);
 
 
-        //regarde le role d'un pion bleu et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
-        if(p.getRole() == 1 && p.getColor() == Pawn.PAWN_BLUE && finRow == 7){
+        //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
+        if((p.getRole() == Pawn.INFANTRYMAN && p.getColor() == Pawn.PAWN_BLUE && finRow == 7) || (p.getRole() == Pawn.INFANTRYMAN && p.getColor() == Pawn.PAWN_RED && finRow == 0)){
             p.setRole(Pawn.HORSEMAN);
             //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
         }
+
 
         return true;
     }
