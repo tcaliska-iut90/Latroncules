@@ -175,6 +175,9 @@ public class HoleStageFactory extends StageElementsFactory {
                 System.out.println(board.getElement(i, j)+ " " + i + " " + j);
             }
         }
+        stageModel.setBluePawnsTaking(new Pawn[16]);
+        stageModel.setRedPawnsTaking(new Pawn[16]);
+
 
         /* Test Affichage
         for (int i = 0; i < boardArrow1.length; i++) {
