@@ -44,7 +44,7 @@ public class HoleDecider extends Decider {
         //1ère IA (position stratégique et minimisation des risques) :
         //Initialisation :
         //Créer une liste de tous les mouvements valides pour le joueur actuel.
-        //List<Pawn> pawns = board.getPawns(currentPlayer);
+        List<Pawn> pawns = stage.getPawns(currentPlayer);
         ActionList actions = new ActionList();
 
         //Initialiser une liste de positions stratégiques sur le plateau (par exemple, les cases centrales).

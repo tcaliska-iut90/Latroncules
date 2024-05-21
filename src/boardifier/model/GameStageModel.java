@@ -224,8 +224,8 @@ public abstract class GameStageModel {
         for (GameElement element : elements) {
             if (element instanceof Pawn) {
                 Pawn pawn = (Pawn) element;
-                if (pawn.getColor() == 1 && (player.getName()=="computer" || player.getName()=="computer2") || pawn.getColor() == 0 && player.getName()=="computer1"){
-                    System.out.println("pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getY()+" et col = "+pawn.getX());
+                if (pawn.getColor() == 1 && (player.getName().equals("computer") || player.getName().equals("computer2")) || pawn.getColor() == 0 && player.getName().equals("computer1")){
+                    System.out.println("Pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getRow()+" col="+pawn.getCol());
                     pawns.add(pawn);
                 }
             }
