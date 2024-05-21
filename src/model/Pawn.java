@@ -27,6 +27,10 @@ public class Pawn extends GameElement {
         this.color = color;
     }
 
+    public void setRole(int role) {
+        this.role = role;
+    }
+
     public int getRole() {
         return role;
     }
