@@ -152,9 +152,13 @@ public class HoleController extends Controller {
             return false;
         }
         //Test mouvement impossible
-        if (board.getElement(finRow, finCol - 1) != null && board.getElement(finRow, finCol + 1) != null) {
-            System.out.println("Impossible, coup interdit");
-            return false;
+        if (finCol > 0 && finCol < 7) {
+            Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
+            Pawn p2 =(Pawn) board.getElement(finRow, finCol + 1);
+            if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
         }
 
         return true;
