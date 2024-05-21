@@ -26,7 +26,7 @@ public class HoleStageFactory extends StageElementsFactory {
     private HoleStageModel stageModel;
 
     //false pour le jeu normal
-    public static boolean testVict = false;
+    public static boolean testVict = true;
 
 
     public HoleStageFactory(GameStageModel gameStageModel) {
@@ -83,12 +83,12 @@ public class HoleStageFactory extends StageElementsFactory {
 
 
 
-            board.addElement(bluePawns[0], 5, 6);
+            board.addElement(bluePawns[0], 6, 6);
             board.addElement(bluePawns[1], 6, 5);
 
 
-            board.addElement(redPawns[0], 3, 4);
-            board.addElement(redPawns[1], 4, 3);
+            board.addElement(redPawns[0], 1, 4);
+            board.addElement(redPawns[1], 1, 3);
 
 
         }else {

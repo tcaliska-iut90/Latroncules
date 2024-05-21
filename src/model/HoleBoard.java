@@ -129,4 +129,12 @@ public class HoleBoard extends ContainerElement {
             ValidCell[indexi + 1][1] = col - 1;
         }
     }
+
+    public void takingPawn(){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+            }
+        }
+    }
 }

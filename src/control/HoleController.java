@@ -119,13 +119,6 @@ public class HoleController extends Controller {
             if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
-
-        // compute valid cells for the chosen pawn
-        //Vérifier si le type du pion, les flèches et voir les déplacement possibles
-
-        //gameStage.getBoard().setValidCells(pawnIndex+1);
-        //if (!gameStage.getBoard().canReachCell(row,col)) return false;
-
         ActionList actions = ActionFactory.generatePutInContainer(model, p, "holeboard", finRow, finCol);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
@@ -136,20 +129,18 @@ public class HoleController extends Controller {
     private boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
 
         //Test mouvement possible en fonction de la couleur
-        if (color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) {
+        if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
             System.out.println("Un pion peut aller que tout droit");
             return false;
 
         }
-        if (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow)) {
-            System.out.println("Un pion peut aller que tout droit");
-            return false;
-        }
-
-
         //Test pion devant le pion joueur
         if (board.getElement(finRow, finCol) != null) {
             System.out.println("Un pion se trouve devant ce pion");
+            return false;
+        }
+        if (board.getElement(finRow, finCol - 1) != null && board.getElement(finRow, finCol + 1) != null) {
+            System.out.println("Impossible, coup interdit");
             return false;
         }
 
