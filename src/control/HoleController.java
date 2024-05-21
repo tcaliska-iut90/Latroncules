@@ -125,6 +125,7 @@ public class HoleController extends Controller {
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
+        board.takingPawn(gameStage, board, model, finRow, finCol, color);
 
 
         //regarde le role d'un pion bleu et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
@@ -132,8 +133,6 @@ public class HoleController extends Controller {
             p.setRole(Pawn.HORSEMAN);
             //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
         }
-
-
 
         return true;
     }
@@ -151,6 +150,7 @@ public class HoleController extends Controller {
             System.out.println("Un pion se trouve devant ce pion");
             return false;
         }
+        //Test mouvement impossible
         if (board.getElement(finRow, finCol - 1) != null && board.getElement(finRow, finCol + 1) != null) {
             System.out.println("Impossible, coup interdit");
             return false;

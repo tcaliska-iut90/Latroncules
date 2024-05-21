@@ -4,6 +4,8 @@ import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
 import boardifier.model.Model;
 
+import java.awt.*;
+
 
 /**
  * Hole main board represent the element where pawns are put when played
@@ -130,11 +132,28 @@ public class HoleBoard extends ContainerElement {
         }
     }
 
-    public void takingPawn(){
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+    public void takingPawn(HoleStageModel stageModel, HoleBoard board, Model model, int row, int col, int colorPawn){
+        int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
+        for (int i = row -1; i < row +1; i++) {
+            for (int j = col -1 ; j < col +1; j++) {
+                Pawn pawnEnemy = (Pawn) board.getElement(i, j);
+                if (pawnEnemy != null && pawnEnemy.getColor() == colorEnemy){
+
+                    if (board.getElement(i +(i - row), j +(j-col)) != null){
+                        Pawn pawn = (Pawn)board.getElement(i +(i - row), j +(j-col));
+                        deletePawnsTaking(pawn, colorPawn, stageModel, pawnEnemy, i, j, board);
+                    }
+                }
             }
+        }
+    }
+
+    private void deletePawnsTaking(Pawn pawn, int colorPawn, HoleStageModel stageModel, Pawn pawnEnemy, int rowPawnEnemy, int intcolPawnEnemy, HoleBoard board){
+        board.removeElement(pawnEnemy);
+        if (pawn.getColor() == colorPawn){
+            if (colorPawn == Pawn.PAWN_BLUE) stageModel.addRedPawnsTaking(pawnEnemy);
+            else stageModel.addBluePawnsTaking(pawnEnemy);
         }
     }
 }

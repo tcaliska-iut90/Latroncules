@@ -36,26 +36,16 @@ public class HoleStageModel extends GameStageModel {
     private Arrow[][] boardArrows2;
     private Pawn[] bluePawns;
     private Pawn[] redPawns;
+    private Pawn[] redPawnsTaking = new Pawn[16];
+    private Pawn[] bluePawnsTaking = new Pawn[8];
     private Arrow[] arrows;
     private TextElement playerName;
-    // Uncomment next line if the example with a main container is used. see end of HoleStageFactory and HoleStageView
-    //private ContainerElement mainContainer;
+
 
     public HoleStageModel(String name, Model model) {
         super(name, model);
     }
 
-    //Uncomment this 2 methods if example with a main container is used
-    /*
-    public ContainerElement getMainContainer() {
-        return mainContainer;
-    }
-
-    public void setMainContainer(ContainerElement mainContainer) {
-        this.mainContainer = mainContainer;
-        addContainer(mainContainer);
-    }
-     */
 
     public HoleBoard getBoard() {
         return board;
@@ -94,6 +84,29 @@ public class HoleStageModel extends GameStageModel {
         this.redPawns = redPawns;
         for(int i=0;i<redPawns.length;i++) {
             addElement(redPawns[i]);
+        }
+    }
+
+    public Pawn[] getBluePawnsTaking() {
+        return bluePawnsTaking;
+    }
+    public void addBluePawnsTaking(Pawn p){
+        for (int i = 0; i < redPawnsTaking.length; i++) {
+            if (redPawnsTaking[i] == null){
+                redPawnsTaking[i] = p;
+                break;
+            }
+        }
+    }
+    public Pawn[] getRedPawnsTaking() {
+        return redPawnsTaking;
+    }
+    public void addRedPawnsTaking(Pawn p){
+        for (int i = 0; i < redPawnsTaking.length; i++) {
+            if (redPawnsTaking[i] == null){
+                redPawnsTaking[i] = p;
+                break;
+            }
         }
     }
 
