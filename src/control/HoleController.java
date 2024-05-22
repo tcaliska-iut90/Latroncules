@@ -144,7 +144,6 @@ public class HoleController extends Controller {
         if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
             System.out.println("Un pion peut aller que tout droit");
             return false;
-
         }
         //Test pion devant le pion joueur
         if (board.getElement(finRow, finCol) != null) {
