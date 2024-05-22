@@ -40,7 +40,7 @@ public class HoleController extends Controller {
         endGame();
     }
 
-    public void playTurn() {
+    public String playTurn() {
         // get the new player
         Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
@@ -48,6 +48,7 @@ public class HoleController extends Controller {
             HoleDecider decider = new HoleDecider(model, this, p);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
+            return "Computer";
         } else {
             boolean ok = false;
             while (!ok) {
@@ -63,6 +64,7 @@ public class HoleController extends Controller {
                 } catch (IOException e) {
                 }
             }
+            return "Human";
         }
     }
 
