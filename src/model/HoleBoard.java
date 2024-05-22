@@ -144,7 +144,6 @@ public class HoleBoard extends ContainerElement {
             for (int j = col -1 ; j <= col +1; j++) {
                if ((i >= 0 && i <= 7) && (j >= 0 && j <= 7)) {
                    Pawn p = (Pawn) board.getElement(i, j);
-                   System.out.println(i + ", " + j);
                    if (checkPiece(board, i, j, colorEnemy) && isCapturable(board,i, j, colorPawn)){
                        deletePawnsTaking(stageModel, p, board, colorPawn);
                        //System.out.println("Le joueur" + model.getCurrentPlayer().getName() + " à pris le pion se trouvant au coordoné " + (String.valueOf(col) + 'A') + (String.valueOf(row) + '1'));
@@ -157,7 +156,7 @@ public class HoleBoard extends ContainerElement {
     /*
     Cette méthode renvoie un booléen lorsque le pion sur la case de coordonnée row,col est capturable par l'équipe de la couleur playerColor
      */
-    private boolean isCapturable(HoleBoard board, int row, int col, int playerColor) {
+    public boolean isCapturable(HoleBoard board, int row, int col, int playerColor) {
         // Vérifie alignement vertical
         if (row > 0 && row < 7 && checkPiece(board, row - 1, col, playerColor) && checkPiece(board, row + 1, col, playerColor)) {
             return true;
@@ -187,18 +186,18 @@ public class HoleBoard extends ContainerElement {
     private void deletePawnsTaking(HoleStageModel stageModel, Pawn pawnEnemy, HoleBoard board, int colorPawn) {
         board.removeElement(pawnEnemy);
         if (colorPawn == Pawn.PAWN_BLUE){
-            stageModel.addRedPawnsTaking(pawnEnemy);
+            stageModel.addBluePawnsTaking(pawnEnemy);
             stageModel.removeRedPawns(pawnEnemy);
 
         }
         else {
-            stageModel.addBluePawnsTaking(pawnEnemy);
+            stageModel.addRedPawnsTaking(pawnEnemy);
             stageModel.removeBluePawns(pawnEnemy);
         }
 
     }
 
-    private boolean checkPiece(HoleBoard board, int row, int col, int playerColor){
+    public boolean checkPiece(HoleBoard board, int row, int col, int playerColor){
         Pawn p = (Pawn) board.getElement(row, col);
         return p != null && p.getColor() == playerColor;
     }

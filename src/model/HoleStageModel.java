@@ -47,6 +47,24 @@ public class HoleStageModel extends GameStageModel {
     }
 
 
+    public boolean isBlueMissing(){
+        for (Pawn bluePawn : bluePawns) {
+            if (bluePawn != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isRedMissing(){
+        for (Pawn redPawn : redPawns) {
+            if (redPawn != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public HoleBoard getBoard() {
         return board;
     }
@@ -96,7 +114,7 @@ public class HoleStageModel extends GameStageModel {
     }
 
     /*
-    Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
+    Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe bleue
      */
     public void addBluePawnsTaking(Pawn p){
         for (int i = 0; i < redPawnsTaking.length; i++) {
@@ -126,7 +144,7 @@ public class HoleStageModel extends GameStageModel {
     }
 
     /*
-    Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe bleue
+    Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
      */
     public void addRedPawnsTaking(Pawn p){
         for (int i = 0; i < redPawnsTaking.length; i++) {
