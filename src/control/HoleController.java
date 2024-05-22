@@ -3,8 +3,6 @@ package control;
 import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
-import boardifier.model.GameElement;
-import boardifier.model.ContainerElement;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
@@ -19,7 +17,7 @@ import java.io.InputStreamReader;
 
 public class HoleController extends Controller {
 
-    BufferedReader consoleIn;
+    public BufferedReader consoleIn;
     boolean firstPlayer;
 
     public HoleController(Model model, View view) {
@@ -42,7 +40,7 @@ public class HoleController extends Controller {
         endGame();
     }
 
-    private void playTurn() {
+    public void playTurn() {
         // get the new player
         Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
@@ -78,7 +76,7 @@ public class HoleController extends Controller {
         stageModel.getPlayerName().setText(p.getName());
     }
 
-    private boolean analyseAndPlay(String line) {
+    public boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         HoleBoard board = gameStage.getBoard();
 
@@ -126,25 +124,17 @@ public class HoleController extends Controller {
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
         board.takingPawn(gameStage, board, model, finRow, finCol, color);
-
-
-        //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
-        if((p.getRole() == Pawn.INFANTRYMAN && p.getColor() == Pawn.PAWN_BLUE && finRow == 7) || (p.getRole() == Pawn.INFANTRYMAN && p.getColor() == Pawn.PAWN_RED && finRow == 0)){
-            p.setRole(Pawn.HORSEMAN);
-            //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
-        }
-
+        changeInfantrymanToHorseman(p, finRow);
 
         return true;
     }
 
-    private boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
+    public boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
 
         //Test mouvement possible en fonction de la couleur
         if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
             System.out.println("Un pion peut aller que tout droit");
             return false;
-
         }
         //Test pion devant le pion joueur
         if (board.getElement(finRow, finCol) != null) {
@@ -164,7 +154,7 @@ public class HoleController extends Controller {
         return true;
     }
 
-    private boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModelmodel) {
+    public boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModelmodel) {
         int[][] temp;
         boolean valueFound = false;
 
@@ -173,6 +163,7 @@ public class HoleController extends Controller {
         } else {
             temp = board.getValidCell(model, rowPawn, colPawn);
         }
+        System.out.println(temp[0][0]);
 
         for (int i = 0; i < temp.length; i++) {
             if (temp[i][0] == finRow && temp[i][1] == finCol) {
@@ -180,14 +171,20 @@ public class HoleController extends Controller {
                 break;
             }
         }
+        System.out.println(valueFound);
         if (!valueFound) {
             System.out.println("Mouvement impossible sur cette case");
             return false;
         }
 
-        for (int i = 0; i < temp.length; i++) {
-            System.out.println(temp[i][0] + ", " + temp[i][1]);
-        }
         return true;
+    }
+
+    public void changeInfantrymanToHorseman(Pawn p, int finRow){
+        //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
+        if((p.getRole() == Pawn.INFANTRYMAN && (p.getColor() == Pawn.PAWN_BLUE && finRow == 7) || (p.getColor() == Pawn.PAWN_RED && finRow == 0))){
+            p.setRole(Pawn.HORSEMAN);
+            //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
+        }
     }
 }
