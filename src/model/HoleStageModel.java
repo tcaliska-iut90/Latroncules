@@ -47,6 +47,24 @@ public class HoleStageModel extends GameStageModel {
     }
 
 
+    public boolean isBlueMissing(){
+        for (Pawn bluePawn : bluePawns) {
+            if (bluePawn != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isRedMissing(){
+        for (Pawn redPawn : redPawns) {
+            if (redPawn != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public HoleBoard getBoard() {
         return board;
     }
