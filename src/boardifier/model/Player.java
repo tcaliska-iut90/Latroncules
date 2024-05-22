@@ -73,4 +73,12 @@ public class Player {
     public int getComputerType() {
         return computerType;
     }
+
+    public int getColor() {
+        if (this.name.equals("PlayerBlue") || this.name.equals("computer1")) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }

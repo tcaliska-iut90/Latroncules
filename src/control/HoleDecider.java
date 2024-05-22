@@ -21,6 +21,7 @@ import java.util.Random;
 public class HoleDecider extends Decider {
 
     protected Player currentPlayer;
+    protected Player adversary;
 
     private static final Random loto = new Random(Calendar.getInstance().getTimeInMillis());
 
@@ -28,9 +29,10 @@ public class HoleDecider extends Decider {
         super(model, control);
     }
 
-    public HoleDecider(Model model, Controller control, Player currentPlayer) {
+    public HoleDecider(Model model, Controller control, Player currentPlayer, Player adversary) {
         super(model, control);
         this.currentPlayer = currentPlayer;
+        this.adversary = adversary;
     }
 
 
@@ -43,31 +45,43 @@ public class HoleDecider extends Decider {
         int rowDest; // the dest. row in board
         int colDest; // the dest. col in board
         List<Pawn> pawns = stage.getPawns(currentPlayer);
+        List<Pawn> pawns_adverse = stage.getPawns(adversary);
         ActionList actions = new ActionList();
 
 
         if (currentPlayer.getComputerType() == 1) {
-            //1ère IA (position stratégique et minimisation des risques) :
+            //1ère IA (position stratégique et minimisation des risques):
             //Initialisation :
             //Créer une liste de tous les mouvements valides pour le joueur actuel.
             ArrayList<ArrayList<PointPosition>> possibleMove = new ArrayList<ArrayList<PointPosition>>();
+
             for (Pawn p : pawns) {
                 if (p.getRole() == Pawn.INFANTRYMAN) {
                     possibleMove.add(new ArrayList<PointPosition>());
-                    if (analyseCorrectMove(p.getCol(), p.getRow(), p.getCol(), p.getRow() + 1)) {
-                        possibleMove.get(possibleMove.size() - 1).add(new PointPosition(p.getCol(), p.getRow() + 1));
+                    if (currentPlayer.getName().equals("PlayerBlue") || currentPlayer.getName().equals("computer1")) {
+                        //Test mouvement possible en fonction du joueur
+                        if (analyseCorrectMove(p.getCol(), p.getRow(), p.getCol(), p.getRow() + 1)) {
+                            possibleMove.get(possibleMove.size() - 1).add(new PointPosition(p.getRow() + 1, p.getCol()));
+                        }
+                    } else {
+                        //Test mouvement possible en fonction du joueur
+                        if (analyseCorrectMove(p.getCol(), p.getRow(), p.getCol(), p.getRow() - 1)) {
+                            possibleMove.get(possibleMove.size() - 1).add(new PointPosition(p.getRow() - 1, p.getCol()));
+                        }
                     }
-                } else {
+                } else if (p.getRole() == Pawn.HORSEMAN){
+                    possibleMove.add(new ArrayList<PointPosition>());
                     int[][] temp;
-                    if (stage.getBoardArrows1()[p.getRow()][p.getCol()] != null) {
+                    if (stage.getBoardArrows1()[p.getRow()][p.getCol()] != null || stage.getBoardArrows2()[p.getRow()][p.getCol()] != null){
                         temp = board.getValidCell(model, stage.getBoardArrows1()[p.getRow()][p.getCol()], stage.getBoardArrows2()[p.getRow()][p.getCol()], p.getRow(), p.getCol());
                     } else {
                         temp = board.getValidCell(model, p.getRow(), p.getCol());
                     }
                     for (int i = 0; i < temp.length; i++) {
-                        possibleMove.get(possibleMove.size() - 1).add(new PointPosition(temp[i][1], temp[i][0]));
+                        if (analyseCorrectMove(p.getCol(), p.getRow(), temp[i][1], temp[i][0])) {
+                            possibleMove.get(possibleMove.size() - 1).add(new PointPosition(temp[i][0], temp[i][1]));
+                        }
                     }
-
                 }
             }
 
@@ -87,14 +101,73 @@ public class HoleDecider extends Decider {
             //    ▪ Proximité des pions adverses : Les mouvements qui rapprochent un pion d'un pion adverse obtiennent un score plus élevé, favorisant les futures opportunités de capture.
             //    ▪ Éloignement des bords : Les mouvements qui placent un pion loin des bords du plateau peuvent être favorisés pour éviter les pièges.
             //    ▪ Sécurité : Les mouvements qui placent un pion dans une position moins susceptible d'être capturé au tour suivant obtiennent un score plus élevé.
+            for (int i = 0; i < possibleMove.size(); i++) {
+                for (int j = 0; j < possibleMove.get(i).size(); j++) {
+                    int score = 0;
+                    PointPosition p = possibleMove.get(i).get(j);
+                    //Contrôle des cases centrales
+                    for (PointPosition sp : strategicPositions) {
+                        if (p.equals(sp)) {
+                            score += 2;
+                        }
+                    }
+                    //Proximité des pions adverses
+                    for (Pawn pa : pawns_adverse) {
+                        if (p.getDistance(pa) < 2) {
+                            score += 1;
+                        }
+                    }
+                    //Éloignement des bords
+                    if (p.getCol() == 0 || p.getCol() == 8 || p.getRow() == 0 || p.getRow() == 8) {
+                        score -= 1;
+                    }
+                    //Sécurité
+                    if (p.getRow() == 0 || p.getRow() == 8) {
+                        score += 1;
+                    }
+                    possibleMove.get(i).get(j).setScore(score);
+                }
+            }
 
             //Sélection du mouvement :
             //◦ Choisir le mouvement avec le score le plus élevé parmi les mouvements évalués.
             //◦ Exécuter le mouvement sélectionné.
+            int max = 0;
+            int k = 0;
+            int l = 0;
+            ArrayList<Integer> pawnIndex = new ArrayList<Integer>();
+            ArrayList<PointPosition> bestMove = new ArrayList<PointPosition>();
+            for (int i = 0; i < possibleMove.size(); i++) {
+                for (int j = 0; j < possibleMove.get(i).size(); j++) {
+                    if (possibleMove.get(i).get(j).getScore() > max) {
+                        bestMove.clear();
+                        pawnIndex.clear();
+                        max = possibleMove.get(i).get(j).getScore();
+                        pawnIndex.add(i);
+                        k = i;
+                        l = j;
+                    } else if (possibleMove.get(i).get(j).getScore() == max) {
+                        pawnIndex.add(i);
+                        bestMove.add(possibleMove.get(i).get(j));
+                    }
+                }
+            }
+            for (int i = 0; i < bestMove.size(); i++) {
+                System.out.println("Score : " + bestMove.get(i).getScore() + " Col : " + bestMove.get(i).getCol() + " Row : " + bestMove.get(i).getRow());
+            }
+            for (int i = 0; i < pawnIndex.size(); i++) {
+                System.out.println(pawns.get(pawnIndex.get(i)).getCol() + " " + pawns.get(pawnIndex.get(i)).getRow());
+            }
+            if (bestMove.size() > 1){
+                l = loto.nextInt(bestMove.size());  // if there are several best moves, choose one randomly
+            }
 
 
-            //ActionList actions = ActionFactory.generatePutInContainer( model, pawn, "holeboard", rowDest, colDest);
-            //actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
+            rowDest = bestMove.get(l).getRow();
+            colDest = bestMove.get(l).getCol();
+            pawn = pawns.get(pawnIndex.get(l));
+            actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
+            actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         } else if (currentPlayer.getComputerType()==2){
 
         }
@@ -123,7 +196,6 @@ public class HoleDecider extends Decider {
             System.out.println("Aucun pion n'est présent sur cette case");
             return false;
         }
-
 
         //Vérifier le type du pion
         if (p.getRole() == Pawn.INFANTRYMAN) {

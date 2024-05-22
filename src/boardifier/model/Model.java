@@ -206,6 +206,9 @@ public class Model {
     public Player getCurrentPlayer() {
         return players.get(idPlayer);
     }
+    public Player getAdversary() {
+        return players.get((idPlayer+1)%players.size());
+    }
     public String getCurrentPlayerName() {
         return players.get(idPlayer).getName();
     }

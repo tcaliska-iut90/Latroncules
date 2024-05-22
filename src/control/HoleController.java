@@ -43,9 +43,10 @@ public class HoleController extends Controller {
     public String playTurn() {
         // get the new player
         Player p = model.getCurrentPlayer();
+        Player adversary = model.getAdversary();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
-            HoleDecider decider = new HoleDecider(model, this, p);
+            HoleDecider decider = new HoleDecider(model, this, p, adversary);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
             return "Computer";
