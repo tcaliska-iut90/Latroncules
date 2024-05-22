@@ -144,7 +144,6 @@ public class HoleBoard extends ContainerElement {
             for (int j = col -1 ; j <= col +1; j++) {
                if ((i >= 0 && i <= 7) && (j >= 0 && j <= 7)) {
                    Pawn p = (Pawn) board.getElement(i, j);
-                   System.out.println(i + ", " + j);
                    if (checkPiece(board, i, j, colorEnemy) && isCapturable(board,i, j, colorPawn)){
                        deletePawnsTaking(stageModel, p, board, colorPawn);
                        //System.out.println("Le joueur" + model.getCurrentPlayer().getName() + " à pris le pion se trouvant au coordoné " + (String.valueOf(col) + 'A') + (String.valueOf(row) + '1'));
