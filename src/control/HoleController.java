@@ -78,9 +78,16 @@ public class HoleController extends Controller {
         Player adversary = model.getAdversary();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
+            HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
+            HoleBoard board = gameStage.getBoard();
             HoleDecider decider = new HoleDecider(model, this, p, adversary, this);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
+            int finRow = decider.getRowDest();
+            int finCol = decider.getColDest();
+            Pawn pawn = decider.getPawn();
+            board.takingPawn(gameStage, board, model, finRow, finCol, pawn.getColor());
+            changeInfantrymanToHorseman(pawn, finRow);
             return "Computer";
         } else {
             boolean ok = false;
