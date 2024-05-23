@@ -124,14 +124,14 @@ public class HoleController extends Controller {
         // Obtenir les coordonnées du pion
         int colPawn = (int) (line.charAt(0) - 'A');
         int rowPawn = (int) (line.charAt(1) - '1');
-        if ((colPawn < 0) || (colPawn > 8) || (rowPawn < 0) || (rowPawn > 8)) return false;
+        if ((colPawn < 0) || (colPawn >= 8) || (rowPawn < 0) || (rowPawn >= 8)) return false;
 
         // Obtenir les coordonnées d'arrivé du pion
         int finCol = (int) (line.charAt(2) - 'A');
         int finRow = (int) (line.charAt(3) - '1');
 
         // check coords validity
-        if ((finRow < 0) || (finRow > 8) || (finCol < 0) || (finCol > 8)) return false;
+        if ((finRow < 0) || (finRow >= 8) || (finCol < 0) || (finCol >= 8)) return false;
 
         // check if the pawn is the good color
         int color;
