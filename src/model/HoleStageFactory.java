@@ -25,8 +25,10 @@ import boardifier.view.ConsoleColor;
 public class HoleStageFactory extends StageElementsFactory {
     private HoleStageModel stageModel;
 
-    //false pour le jeu normal
-    public static boolean testVict = false;
+    //1 pour le test du pion qui change de valeur en bout de plateau
+    //2 pour le test où il ne reste plus de pions rouges
+    //0 pour le jeu normal
+    public static int testVict = 2;
 
 
     public HoleStageFactory(GameStageModel gameStageModel) {
@@ -58,7 +60,7 @@ public class HoleStageFactory extends StageElementsFactory {
         setupArrows(arrows);
 
 
-        if (testVict) {
+        if (testVict == 1) {
             Pawn[] bluePawns = new Pawn[2];
             bluePawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
             bluePawns[1] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
@@ -79,8 +81,25 @@ public class HoleStageFactory extends StageElementsFactory {
             board.addElement(redPawns[1], 1, 3);
 
 
-        } else {
+        } else if(testVict == 0) {
             setupPawns(board);
+        } else if(testVict == 2) {
+            Pawn[] bluePawns = new Pawn[2];
+            bluePawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
+            bluePawns[1] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
+            // assign the blue pawns to the game stage model
+            stageModel.setBluePawns(bluePawns);
+
+            Pawn[] redPawns = new Pawn[1];
+
+            redPawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
+            stageModel.setRedPawns(redPawns);
+
+
+            board.addElement(bluePawns[0], 4, 4);
+            board.addElement(bluePawns[1], 5, 6);
+
+            board.addElement(redPawns[0], 5, 5);
         }
     }
 

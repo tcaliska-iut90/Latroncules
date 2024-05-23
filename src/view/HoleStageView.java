@@ -28,18 +28,27 @@ public class HoleStageView extends GameStageView {
         addLook(new BlackPawnPotLook(model.getHoleBluePawnPot()));
         addLook(new BlackPawnPotLook(model.getHoleRedPawnPot()));
 
-        // create looks for all pawns
+        // create looks for all pawns depending on the scenario
 
-        if(HoleStageFactory.testVict){
+
+
+
+        if(HoleStageFactory.testVict == 1){
             for(int i=0;i<2;i++) {
                 addLook(new PawnLook(model.getBluePawns()[i]));
                 addLook(new PawnLook(model.getRedPawns()[i]));
             }
-        }else{
+
+        }else if(HoleStageFactory.testVict == 0){
             for(int i=0;i<16;i++) {
                 addLook(new PawnLook(model.getBluePawns()[i]));
                 addLook(new PawnLook(model.getRedPawns()[i]));
             }
+        } else if (HoleStageFactory.testVict == 2) {
+            for(int i=0;i<2;i++) {
+                addLook(new PawnLook(model.getBluePawns()[i]));
+            }
+            addLook(new PawnLook(model.getRedPawns()[0]));
         }
 
 
