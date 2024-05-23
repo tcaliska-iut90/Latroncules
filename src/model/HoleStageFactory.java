@@ -28,7 +28,7 @@ public class HoleStageFactory extends StageElementsFactory {
     //1 pour le test du pion qui change de valeur en bout de plateau
     //2 pour le test où il ne reste plus de pions rouges
     //0 pour le jeu normal
-    public static int testVict = 0;
+    public static int testVict = 2;
 
 
     public HoleStageFactory(GameStageModel gameStageModel) {

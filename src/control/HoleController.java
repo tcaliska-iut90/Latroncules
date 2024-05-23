@@ -32,44 +32,28 @@ public class HoleController extends Controller {
     public void stageLoop() {
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
-        int i = 1;
         while (!model.isEndStage()) {
+            playTurn();
+            update();
+            endOfTurn();
 
-            System.out.println("Tour numéro : " + i);
-            i++;
-
-            if(checkWinner() == 1){
-                model.setIdWinner(1);
-                stopStage();
-                System.out.println("state = STATE_ENDSTAGE, donc model.isEndStage()=true");
-            } else if (checkWinner() == 0) {
-                model.setIdWinner(0);
-                stopStage();
-                System.out.println("state = STATE_ENDSTAGE, donc model.isEndStage()=true ");
-            }
-            else {
-                playTurn();
-                update();
-                endOfTurn();
-            }
         }
-
-        System.out.println("Game over");
         endGame();
 
     }
 
 
-    public int checkWinner(){
+    public void checkWinner(){
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
 
         if (gameStage.isBlueMissing()){
-            return 1;
+            System.out.println("No more blue");
+            model.setIdWinner(1);
         }
         else if (gameStage.isRedMissing()) {
-            return 0;
+            System.out.println("No more red");
+            model.setIdWinner(0);
         }
-        return -1;
     }
 
     public String playTurn() {
@@ -97,6 +81,7 @@ public class HoleController extends Controller {
                 } catch (IOException e) {
                 }
             }
+            checkWinner();
             return "Human";
         }
     }
