@@ -147,6 +147,7 @@ public class HoleDecider extends Decider {
                         pawnIndex.clear();
                         max = possibleMove.get(i).get(j).getScore();
                         pawnIndex.add(i);
+                        bestMove.add(possibleMove.get(i).get(j));
                         k = i;
                         l = j;
                     } else if (possibleMove.get(i).get(j).getScore() == max) {
@@ -155,20 +156,23 @@ public class HoleDecider extends Decider {
                     }
                 }
             }
+            /*
             for (int i = 0; i < bestMove.size(); i++) {
                 System.out.println("Score : " + bestMove.get(i).getScore() + " Col : " + bestMove.get(i).getCol() + " Row : " + bestMove.get(i).getRow());
             }
             for (int i = 0; i < pawnIndex.size(); i++) {
                 System.out.println(pawns.get(pawnIndex.get(i)).getCol() + " " + pawns.get(pawnIndex.get(i)).getRow());
             }
-            if (bestMove.size() > 1){
+            */
+            if (bestMove.size() >= 1){
                 l = loto.nextInt(bestMove.size());  // if there are several best moves, choose one randomly
             }
-
 
             rowDest = bestMove.get(l).getRow();
             colDest = bestMove.get(l).getCol();
             pawn = pawns.get(pawnIndex.get(l));
+            System.out.println("Colonne d'arrivée = "+colDest+", Ligne d'arrivée = "+rowDest+". Pion de départ : Col = "+pawn.getCol()+", Row = "+pawn.getRow());
+
             actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         } else if (currentPlayer.getComputerType()==2){
