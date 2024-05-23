@@ -28,7 +28,8 @@ public class HoleStageFactory extends StageElementsFactory {
     //1 pour le test du pion qui change de valeur en bout de plateau
     //2 pour le test où il ne reste plus de pions rouges
     //0 pour le jeu normal
-    public static int testVict = 2;
+    //3 pour le jeu avec les pions bloqués
+    public static int testVict = 3;
 
 
     public HoleStageFactory(GameStageModel gameStageModel) {
@@ -99,6 +100,21 @@ public class HoleStageFactory extends StageElementsFactory {
             board.addElement(bluePawns[0], 4, 4);
             board.addElement(bluePawns[1], 5, 6);
 
+            board.addElement(redPawns[0], 5, 5);
+
+        } else if (testVict == 3) {
+            Pawn[] bluePawns = new Pawn[1];
+            bluePawns[0] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
+            // assign the blue pawns to the game stage model
+            stageModel.setBluePawns(bluePawns);
+
+            Pawn[] redPawns = new Pawn[1];
+
+            redPawns[0] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, stageModel);
+            stageModel.setRedPawns(redPawns);
+
+
+            board.addElement(bluePawns[0], 3, 5);
             board.addElement(redPawns[0], 5, 5);
         }
     }

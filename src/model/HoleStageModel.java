@@ -189,6 +189,9 @@ public class HoleStageModel extends GameStageModel {
     }
 
     private void setupCallbacks() {
+       // HoleStageModel stage = (HoleStageModel) model.getGameStage();
+        //HoleBoard board = stage.getBoard();
+
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
             if(isBlueMissing()){
                 computePartyResult(0);
@@ -196,6 +199,10 @@ public class HoleStageModel extends GameStageModel {
             if(isRedMissing()){
                 computePartyResult(1);
             }
+//            if(board.getValidCell(model,rowDest,colDest).length == 0){
+//                //computePartyResult();
+//                System.out.println("Plus de mouvements possibles, ça devrait être la fin");
+//            }
         });
 
 
@@ -203,8 +210,6 @@ public class HoleStageModel extends GameStageModel {
     }
 
     private void computePartyResult(int idWinner) {
-
-
         // set the winner
         model.setIdWinner(idWinner);
         // stop de the game

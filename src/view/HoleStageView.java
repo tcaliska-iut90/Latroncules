@@ -49,6 +49,9 @@ public class HoleStageView extends GameStageView {
                 addLook(new PawnLook(model.getBluePawns()[i]));
             }
             addLook(new PawnLook(model.getRedPawns()[0]));
+        } else if (HoleStageFactory.testVict == 3) {
+            addLook(new PawnLook(model.getRedPawns()[0]));
+            addLook(new PawnLook(model.getBluePawns()[0]));
         }
 
 
