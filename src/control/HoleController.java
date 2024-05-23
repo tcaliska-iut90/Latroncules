@@ -32,32 +32,29 @@ public class HoleController extends Controller {
     public void stageLoop() {
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
+        int i = 1;
         while (!model.isEndStage()) {
-            playTurn();
-            endOfTurn();
-            update();
 
+            System.out.println("Tour numéro : " + i);
+            i++;
 
             if(checkWinner() == 1){
                 model.setIdWinner(1);
-                System.out.println("Winner is " + model.getIdWinner());
-                model.stopGame();
-                model.stopStage();
-                endGame();
                 stopStage();
-
+                System.out.println("state = STATE_ENDSTAGE, donc model.isEndStage()=true");
             } else if (checkWinner() == 0) {
                 model.setIdWinner(0);
-                System.out.println("Winner is " + model.getIdWinner());
-                model.stopGame();
-                model.stopStage();
-                endGame();
                 stopStage();
-
+                System.out.println("state = STATE_ENDSTAGE, donc model.isEndStage()=true ");
             }
-
-
+            else {
+                playTurn();
+                update();
+                endOfTurn();
+            }
         }
+
+        System.out.println("Game over");
         endGame();
 
     }
