@@ -35,9 +35,24 @@ public class HoleController extends Controller {
         while (!model.isEndStage()) {
             playTurn();
             endOfTurn();
+            checkWinner();
             update();
+
         }
         endGame();
+    }
+
+    public void checkWinner(){
+        HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
+
+        if (gameStage.isBlueMissing()){
+            model.setIdWinner(0);
+            model.stopGame();
+        }
+        else if (gameStage.isRedMissing()) {
+            model.setIdWinner(1);
+            model.stopGame();
+        }
     }
 
     public String playTurn() {
