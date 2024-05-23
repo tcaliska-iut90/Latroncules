@@ -23,16 +23,19 @@ public class HoleDecider extends Decider {
     protected Player currentPlayer;
     protected Player adversary;
 
+    protected HoleController holeController;
+
     private static final Random loto = new Random(Calendar.getInstance().getTimeInMillis());
 
     public HoleDecider(Model model, Controller control) {
         super(model, control);
     }
 
-    public HoleDecider(Model model, Controller control, Player currentPlayer, Player adversary) {
+    public HoleDecider(Model model, Controller control, Player currentPlayer, Player adversary, HoleController holeController) {
         super(model, control);
         this.currentPlayer = currentPlayer;
         this.adversary = adversary;
+        this.holeController = holeController;
     }
 
 
@@ -199,63 +202,11 @@ public class HoleDecider extends Decider {
 
         //Vérifier le type du pion
         if (p.getRole() == Pawn.INFANTRYMAN) {
-            if (!verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
+            if (!holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
         } else {
-            if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
+            if (!holeController.verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
-        return true;
-    }
-
-    private boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
-        //Test mouvement possible en fonction de la couleur
-        if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
-            System.out.println("Un pion peut aller que tout droit");
-            return false;
-
-        }
-        //Test pion devant le pion joueur
-        if (board.getElement(finRow, finCol) != null) {
-            System.out.println("Un pion se trouve devant ce pion");
-            return false;
-        }
-        //Test mouvement impossible
-        if (finCol > 0 && finCol < 7) {
-            Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
-            Pawn p2 = (Pawn) board.getElement(finRow, finCol + 1);
-            if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
-                System.out.println("Impossible, coup interdit");
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    protected boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModelmodel) {
-        int[][] temp;
-        boolean valueFound = false;
-
-        if (holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn] != null) {
-            temp = board.getValidCell(model, holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn], holeStageModelmodel.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
-        } else {
-            temp = board.getValidCell(model, rowPawn, colPawn);
-        }
-
-        for (int i = 0; i < temp.length; i++) {
-            if (temp[i][0] == finRow && temp[i][1] == finCol) {
-                valueFound = true;
-                break;
-            }
-        }
-        if (!valueFound) {
-            System.out.println("Mouvement impossible sur cette case");
-            return false;
-        }
-
-        for (int i = 0; i < temp.length; i++) {
-            System.out.println(temp[i][0] + ", " + temp[i][1]);
-        }
         return true;
     }
 }

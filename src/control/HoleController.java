@@ -46,7 +46,7 @@ public class HoleController extends Controller {
         Player adversary = model.getAdversary();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
-            HoleDecider decider = new HoleDecider(model, this, p, adversary);
+            HoleDecider decider = new HoleDecider(model, this, p, adversary, this);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
             return "Computer";
@@ -190,4 +190,6 @@ public class HoleController extends Controller {
             //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
         }
     }
+
+
 }
