@@ -46,9 +46,10 @@ public class HoleStageModel extends GameStageModel {
         super(name, model);
     }
 
-
+    //férification de s'il reste des pions sur le plateau
     public boolean isBlueMissing(){
         for (Pawn bluePawn : bluePawns) {
+            //System.out.println("Blue pawn: " + bluePawn);
             if (bluePawn != null) {
                 return false;
             }
@@ -58,6 +59,7 @@ public class HoleStageModel extends GameStageModel {
 
     public boolean isRedMissing(){
         for (Pawn redPawn : redPawns) {
+            //System.out.println("Red pawn : " + redPawn);
             if (redPawn != null) {
                 return false;
             }
