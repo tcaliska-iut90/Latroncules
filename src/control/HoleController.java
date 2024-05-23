@@ -246,20 +246,17 @@ public class HoleController extends Controller {
         //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
         if((p.getRole() == Pawn.INFANTRYMAN && (p.getColor() == Pawn.PAWN_BLUE && finRow == 7) || (p.getColor() == Pawn.PAWN_RED && finRow == 0))){
             p.setRole(Pawn.HORSEMAN);
-            //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
         }
     }
 
     private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
-        if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7)){
-            if(!checkCoupInterditDiagonal(finCol, finRow, board, color)) return false;
-        }
+        if (finRow > 0 && finRow < 7 && !checkCoupInterditVertical(finCol, finRow, board, color)) return false;
 
-        if (finCol > 0 && finCol < 7){
-            if(!checkCoupInterditHorizontal(finCol, finRow, board, color)) return false;}
-        if (finRow > 0 && finRow < 7){
-            if(!checkCoupInterditVertical(finCol, finRow, board, color)) return false;}
-        return true;
+        if (finCol > 0 && finCol < 7 && !checkCoupInterditHorizontal(finCol, finRow, board, color))return false;
+
+        if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7) && !checkCoupInterditDiagonal(finCol, finRow, board, color))return false;
+
+        return finRow <= 0 || finRow >= 7 || finCol <= 0|| finCol >= 7 || checkCoupInterditVertical(finCol, finRow, board, color);
     }
 
     private Boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){

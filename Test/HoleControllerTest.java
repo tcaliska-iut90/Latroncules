@@ -193,36 +193,43 @@ class HoleControllerTest {
     @Test
     void testCheckCoupInterditHorizontal() {
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
-        // Place opponent pawns horizontally
-        mockBoard.addElement(mockPawn,3, 2);
-        mockBoard.addElement(mockPawn,3, 4);
+        when(mockBoard.getElement(anyInt(), anyInt())).thenReturn(mockPawn);
 
-        // Assume isCapturable method logic is already defined in HoleBoard
-        assertFalse(testCoupInterdit(3, 3, mockBoard, Pawn.PAWN_BLUE));
+        assertFalse(checkCoupInterditHorizontal(3, 3, mockBoard, Pawn.PAWN_BLUE));
+
+        when(mockBoard.isCapturable(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
+        assertTrue(checkCoupInterditHorizontal(3, 3, mockBoard, Pawn.PAWN_BLUE));
     }
 
     @Test
     void testCheckCoupInterditVertical() {
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
-        // Place opponent pawns vertically
-        mockBoard.addElement(mockPawn,2, 3);
-        mockBoard.addElement(mockPawn,4, 3);
+        when(mockBoard.getElement(anyInt(), anyInt())).thenReturn(mockPawn);
 
-        // Assume isCapturable method logic is already defined in HoleBoard
         assertFalse(checkCoupInterditVertical(3, 3, mockBoard, Pawn.PAWN_BLUE));
+
+        when(mockBoard.isCapturable(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
+        assertTrue(checkCoupInterditVertical(3, 3, mockBoard, Pawn.PAWN_BLUE));
     }
 
     @Test
     void testCheckCoupInterditDiagonal() {
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
-
-        mockBoard.addElement(mockPawn,2, 2);
-        mockBoard.addElement(mockPawn,4, 4);
-        mockBoard.addElement(mockPawn,2, 4);
-        mockBoard.addElement(mockPawn,4, 2);
-
+        when(mockBoard.getElement(anyInt(), anyInt())).thenReturn(mockPawn);
         assertFalse(checkCoupInterditDiagonal(3, 3, mockBoard, Pawn.PAWN_BLUE));
+
+        when(mockBoard.isCapturable(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
+        assertTrue(checkCoupInterditDiagonal(3, 3, mockBoard, Pawn.PAWN_BLUE));
     }
+
+    @Test
+    void testCoupInterdit(){
+        when(mockBoard.getElement(anyInt(), anyInt())).thenReturn(mockPawn);
+        when(checkCoupInterditDiagonal(anyInt(), anyInt(), any(), anyInt())).thenReturn(false);
+        when(mockBoard.isCapturable(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
+        assertFalse(testCoupInterdit(3, 3, mockBoard, Pawn.PAWN_BLUE));
+    }
+
 
     private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
         if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7)){
