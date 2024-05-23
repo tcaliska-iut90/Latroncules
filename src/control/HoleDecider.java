@@ -22,6 +22,9 @@ public class HoleDecider extends Decider {
 
     protected Player currentPlayer;
     protected Player adversary;
+    protected int colDest;
+    protected int rowDest;
+    protected Pawn pawn;
 
     protected HoleController holeController;
 
@@ -44,9 +47,13 @@ public class HoleDecider extends Decider {
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel) model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
-        Pawn pawn; // the pawn that is moved
-        int rowDest; // the dest. row in board
-        int colDest; // the dest. col in board
+        int color;
+        if (model.getIdPlayer() == 0) {
+            color = Pawn.PAWN_BLUE;
+        } else {
+            color = Pawn.PAWN_RED;
+        }
+
         List<Pawn> pawns = stage.getPawns(currentPlayer);
         List<Pawn> pawns_adverse = stage.getPawns(adversary);
         ActionList actions = new ActionList();
@@ -91,8 +98,8 @@ public class HoleDecider extends Decider {
             //Initialiser une liste de positions stratégiques sur le plateau (par exemple, les cases centrales).
             PointPosition[] strategicPositions = new PointPosition[]{
                     new PointPosition(2, 2), new PointPosition(3, 2), new PointPosition(4, 2), new PointPosition(5, 2),
-                    new PointPosition(2, 3), new PointPosition(5, 3), new PointPosition(3, 3), new PointPosition(4, 3),
-                    new PointPosition(2, 4), new PointPosition(5, 4), new PointPosition(3, 4), new PointPosition(4, 4),
+                    new PointPosition(2, 3), new PointPosition(5, 3),
+                    new PointPosition(2, 4), new PointPosition(5, 4),
                     new PointPosition(2, 5), new PointPosition(3, 5), new PointPosition(4, 5), new PointPosition(5, 5)
             };
 
@@ -115,27 +122,31 @@ public class HoleDecider extends Decider {
                     //Contrôle des cases centrales
                     for (PointPosition sp : strategicPositions) {
                         if (p.equals(sp)) {
-                            score += 1;
+                            score += 10;
                         }
+                    }
+                    if (isOnStrategicPositionPlus(p)) {
+                        score -= 5;
                     }
                     for (PointPosition sp : strategicPositionsPlus) {
                         if (p.equals(sp)) {
-                            score += 1;
+                            score += 10;
                         }
                     }
                     //Proximité des pions adverses
                     for (Pawn pa : pawns_adverse) {
                         if (p.getDistance(pa) < 2) {
-                            score += 3;
+                            score += 30;
                         }
                     }
                     //Éloignement des bords
                     if (p.getCol() == 0 || p.getCol() == 8 || p.getRow() == 0 || p.getRow() == 8) {
-                        score -= 1;
+                        score -= 10;
                     }
+
                     //Sécurité
                     if (p.getRow() == 0 || p.getRow() == 8) {
-                        score += 1;
+                        score += 10;
                     }
                     possibleMove.get(i).get(j).setScore(score);
                 }
@@ -144,7 +155,7 @@ public class HoleDecider extends Decider {
             //Sélection du mouvement :
             //◦ Choisir le mouvement avec le score le plus élevé parmi les mouvements évalués.
             //◦ Exécuter le mouvement sélectionné.
-            int max = 0;
+            int max = -10000;
             int k = 0;
             int l = 0;
             ArrayList<Integer> pawnIndex = new ArrayList<Integer>();
@@ -182,8 +193,6 @@ public class HoleDecider extends Decider {
             pawn = pawns.get(pawnIndex.get(l));
             System.out.println("Colonne d'arrivée = "+colDest+", Ligne d'arrivée = "+rowDest+". Pion de départ : Col = "+pawn.getCol()+", Row = "+pawn.getRow());
             actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
-            board.takingPawn((HoleStageModel) model.getGameStage(), board, model, rowDest, colDest, pawn.getColor());
-            holeController.changeInfantrymanToHorseman(pawn, rowDest);
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         } else if (currentPlayer.getComputerType()==2){
 
@@ -222,5 +231,29 @@ public class HoleDecider extends Decider {
         }
 
         return true;
+    }
+
+    public int getColDest() {
+        return colDest;
+    }
+
+    public int getRowDest() {
+        return rowDest;
+    }
+
+    public Pawn getPawn() {
+        return pawn;
+    }
+
+    public boolean isOnStrategicPositionPlus(PointPosition p) {
+        PointPosition[] strategicPositionsPlus = new PointPosition[] {
+                new PointPosition(3, 3), new PointPosition(4, 3), new PointPosition(3, 4), new PointPosition(4, 4)
+        };
+        for (PointPosition sp : strategicPositionsPlus) {
+            if (p.equals(sp)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
