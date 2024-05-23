@@ -88,11 +88,14 @@ public class HoleDecider extends Decider {
             //Initialiser une liste de positions stratégiques sur le plateau (par exemple, les cases centrales).
             PointPosition[] strategicPositions = new PointPosition[]{
                     new PointPosition(2, 2), new PointPosition(3, 2), new PointPosition(4, 2), new PointPosition(5, 2),
-                    new PointPosition(2, 3), new PointPosition(3, 3), new PointPosition(4, 3), new PointPosition(5, 3),
-                    new PointPosition(2, 4), new PointPosition(3, 4), new PointPosition(4, 4), new PointPosition(5, 4),
+                    new PointPosition(2, 3), new PointPosition(5, 3),
+                    new PointPosition(2, 4), new PointPosition(5, 4),
                     new PointPosition(2, 5), new PointPosition(3, 5), new PointPosition(4, 5), new PointPosition(5, 5)
             };
 
+            PointPosition[] strategicPositionsPlus = new PointPosition[]{
+                    new PointPosition(3, 3), new PointPosition(4, 3), new PointPosition(3, 4), new PointPosition(4, 4)
+            };
 
             // Évaluation des mouvements :
             //  ◦ Pour chaque mouvement valide, évaluer la position finale du pion.
@@ -109,6 +112,11 @@ public class HoleDecider extends Decider {
                     for (PointPosition sp : strategicPositions) {
                         if (p.equals(sp)) {
                             score += 2;
+                        }
+                    }
+                    for (PointPosition sp : strategicPositionsPlus) {
+                        if (p.equals(sp)) {
+                            score += 3;
                         }
                     }
                     //Proximité des pions adverses
@@ -132,8 +140,7 @@ public class HoleDecider extends Decider {
             //Sélection du mouvement :
             //◦ Choisir le mouvement avec le score le plus élevé parmi les mouvements évalués.
             //◦ Exécuter le mouvement sélectionné.
-            int max = 0;
-            int k = 0;
+            int max = -1;
             int l = 0;
             ArrayList<Integer> pawnIndex = new ArrayList<Integer>();
             ArrayList<PointPosition> bestMove = new ArrayList<PointPosition>();
@@ -144,7 +151,6 @@ public class HoleDecider extends Decider {
                         pawnIndex.clear();
                         max = possibleMove.get(i).get(j).getScore();
                         pawnIndex.add(i);
-                        k = i;
                         l = j;
                     } else if (possibleMove.get(i).get(j).getScore() == max) {
                         pawnIndex.add(i);
@@ -158,7 +164,7 @@ public class HoleDecider extends Decider {
             for (int i = 0; i < pawnIndex.size(); i++) {
                 System.out.println(pawns.get(pawnIndex.get(i)).getCol() + " " + pawns.get(pawnIndex.get(i)).getRow());
             }
-            if (bestMove.size() > 1){
+            if (bestMove.size() >= 1){
                 l = loto.nextInt(bestMove.size());  // if there are several best moves, choose one randomly
             }
 
@@ -254,7 +260,7 @@ public class HoleDecider extends Decider {
         }
 
         for (int i = 0; i < temp.length; i++) {
-            System.out.println(temp[i][0] + ", " + temp[i][1]);
+            //System.out.println(temp[i][0] + ", " + temp[i][1]);
         }
         return true;
     }
