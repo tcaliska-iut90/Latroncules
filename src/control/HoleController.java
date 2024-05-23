@@ -94,6 +94,11 @@ public class HoleController extends Controller {
         stageModel.getPlayerName().setText(p.getName());
     }
 
+    /**
+     * Analyse si le coup est possible et le joue ensuite
+     * @param line Case du pion voulant être jouer et case ou le déplacer(Ex: A1A2)
+     * @return False si coup non jouable
+     */
     public boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         HoleBoard board = gameStage.getBoard();
@@ -147,6 +152,16 @@ public class HoleController extends Controller {
         return true;
     }
 
+    /**
+     * Vérifie le coup pour un infantryman
+     * @param board Grille de jeu
+     * @param color couleur du pion
+     * @param colPawn Colonne du pion joueur
+     * @param rowPawn Ligne du pion joueur
+     * @param finRow Colonne final du pion joueur
+     * @param finCol Ligne final du pion joueur
+     * @return true si coup possible
+     */
     public boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
 
         //Test mouvement possible en fonction de la couleur
@@ -172,16 +187,25 @@ public class HoleController extends Controller {
         return true;
     }
 
-    public boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModelmodel) {
+    /**
+     * Vérifie le coup pour un cavalier
+     * @param board Grille de jeu
+     * @param colPawn Colonne du pion joueur
+     * @param rowPawn Ligne du pion joueur
+     * @param finRow Colonne final du pion joueur
+     * @param finCol Ligne final du pion joueur
+     * @param holeStageModel
+     * @return true si coup possible
+     */
+    public boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModel) {
         int[][] temp;
         boolean valueFound = false;
 
-        if (holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn] != null) {
-            temp = board.getValidCell(model, holeStageModelmodel.getBoardArrows1()[rowPawn][colPawn], holeStageModelmodel.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
+        if (holeStageModel.getBoardArrows1()[rowPawn][colPawn] != null) {
+            temp = board.getValidCell(model, holeStageModel.getBoardArrows1()[rowPawn][colPawn], holeStageModel.getBoardArrows2()[rowPawn][colPawn], rowPawn, colPawn);
         } else {
             temp = board.getValidCell(model, rowPawn, colPawn);
         }
-        System.out.println(temp[0][0]);
 
         for (int i = 0; i < temp.length; i++) {
             if (temp[i][0] == finRow && temp[i][1] == finCol) {
@@ -189,7 +213,6 @@ public class HoleController extends Controller {
                 break;
             }
         }
-        System.out.println(valueFound);
         if (!valueFound) {
             System.out.println("Mouvement impossible sur cette case");
             return false;
@@ -198,6 +221,11 @@ public class HoleController extends Controller {
         return true;
     }
 
+    /**
+     * Modifie de role du pion si un infantryman est
+     * @param p
+     * @param finRow
+     */
     public void changeInfantrymanToHorseman(Pawn p, int finRow){
         //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
         if((p.getRole() == Pawn.INFANTRYMAN && (p.getColor() == Pawn.PAWN_BLUE && finRow == 7) || (p.getColor() == Pawn.PAWN_RED && finRow == 0))){

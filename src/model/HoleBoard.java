@@ -22,14 +22,21 @@ public class HoleBoard extends ContainerElement {
     }
 
 
-    /*
-    Donne les coup possibles lorsque qu'un cavalier est sur une case fléchés
+    /**
+     *Donne les coup possibles lorsque qu'un cavalier est sur une case fléchés
+     * @param model Model du jeu
+     * @param a1 Première flèche
+     * @param a2 Deuxième flèche
+     * @param row Ligne de la case du pion
+     * @param col Colonne de la case du pion
+     * @return
      */
     public int[][] getValidCell(Model model, Arrow a1, Arrow a2, int row, int col){
         ValidCell = new int[4][2];
         int indexi = 0;
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
+        //Regarde le type de flèches en paramètres
         if (a1.getDirection() == 0 || a2.getDirection() == 0){
             getCellVerticalArrow(row, col, indexi);
             indexi += 2;
@@ -46,6 +53,7 @@ public class HoleBoard extends ContainerElement {
             getCellMinorDiagonalArrow(row, col, indexi);
         }
 
+        // Si un pion est sur les cases jouable on déplace la case jouable dans la même ligne
         for (int i = 0; i < ValidCell.length; i++) {
             Pawn p = (Pawn)this.getElement(ValidCell[i][0], ValidCell[i][1]);
             if (p != null && p.getColor() == colorEnemy){
@@ -57,17 +65,24 @@ public class HoleBoard extends ContainerElement {
     }
 
 
-    /*
-    Donne les coup possibles lorsque qu'un cavalier est sur une case non fléchés
+    /**
+     *Donne les coup possibles lorsque qu'un cavalier est sur une case non fléchés
+     * @param model
+     * @param row
+     * @param col
+     * @return
      */
     public int[][] getValidCell(Model model, int row, int col){
         ValidCell = new int[8][2];
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
+        //Récupère tous les coups possibles autour du pion
         getCellVerticalArrow(row, col, 0);
         getCellHorizontalArrow(row, col, 2);
         getCellMajorDiagonalArrow(row, col, 4);
         getCellMinorDiagonalArrow(row, col, 6);
+
+        // Si un pion est sur les cases jouable on déplace la case jouable dans la même ligne
 
         for (int i = 0; i < ValidCell.length; i++) {
             Pawn p = (Pawn)this.getElement(ValidCell[i][0], ValidCell[i][1]);
@@ -79,6 +94,12 @@ public class HoleBoard extends ContainerElement {
         return ValidCell;
     }
 
+    /**
+     * Récupère les cases jouables avec une flèches verticale
+     * @param row
+     * @param col
+     * @param indexi
+     */
     private void getCellVerticalArrow(int row, int col, int indexi){
 
         if (row == 0) ValidCell[indexi][0] = row;
@@ -90,6 +111,12 @@ public class HoleBoard extends ContainerElement {
         ValidCell[indexi + 1][1] = col;
     }
 
+    /**
+     * Récupère les cases jouables avec une flèches Horizontal
+     * @param row
+     * @param col
+     * @param indexi
+     */
     private void getCellHorizontalArrow(int row, int col, int indexi){
 
         ValidCell[indexi][0] = row;
@@ -101,6 +128,12 @@ public class HoleBoard extends ContainerElement {
         else ValidCell[indexi + 1][1] = col + 1;
     }
 
+    /**
+     * Récupère les cases jouables avec une flèches diagonal majeur(haut-gauche/bas-droit)
+     * @param row
+     * @param col
+     * @param indexi
+     */
     private void getCellMajorDiagonalArrow(int row, int col, int indexi){
         if (row == 0 || col ==0){
             ValidCell[indexi][0] = row ;
@@ -119,6 +152,12 @@ public class HoleBoard extends ContainerElement {
         }
     }
 
+    /**
+     * Récupère les cases jouables avec une flèches diagonale mineur(haut-droit/bas-gauche)
+     * @param row
+     * @param col
+     * @param indexi
+     */
     private void getCellMinorDiagonalArrow(int row, int col, int indexi){
         if (row == 0 || col == 7){
             ValidCell[indexi][0] = row;
@@ -137,6 +176,15 @@ public class HoleBoard extends ContainerElement {
         }
     }
 
+    /**
+     * Verification si un pion autour du pion joueur est capturable
+     * @param stageModel
+     * @param board
+     * @param model
+     * @param row
+     * @param col
+     * @param colorPawn
+     */
     public void takingPawn(HoleStageModel stageModel, HoleBoard board, Model model, int row, int col, int colorPawn){
         int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
@@ -146,15 +194,21 @@ public class HoleBoard extends ContainerElement {
                    Pawn p = (Pawn) board.getElement(i, j);
                    if (checkPiece(board, i, j, colorEnemy) && isCapturable(board,i, j, colorPawn)){
                        deletePawnsTaking(stageModel, p, board, colorPawn);
-                       //System.out.println("Le joueur" + model.getCurrentPlayer().getName() + " à pris le pion se trouvant au coordoné " + (String.valueOf(col) + 'A') + (String.valueOf(row) + '1'));
                    }
                }
             }
         }
     }
 
-    /*
-    Cette méthode renvoie un booléen lorsque le pion sur la case de coordonnée row,col est capturable par l'équipe de la couleur playerColor
+    /**
+     *Cette méthode renvoie un booléen
+     * Lorsque le pion sur la case de coordonnée row,col est capturable par l'équipe de la couleur playerColor elle renvoie true
+     * False dans le cas contraire
+     * @param board
+     * @param row
+     * @param col
+     * @param playerColor
+     * @return
      */
     public boolean isCapturable(HoleBoard board, int row, int col, int playerColor) {
         // Vérifie alignement vertical
