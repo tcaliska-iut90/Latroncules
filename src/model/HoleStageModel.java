@@ -194,7 +194,6 @@ public class HoleStageModel extends GameStageModel {
 
         //System.out.println((!holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
-            //System.out.println("Mouvements disponibles : " + Arrays.deepToString(board.getValidCell(model, rowDest, colDest)));
             if(isBlueMissing()){
                 computePartyResult(0);
             }
