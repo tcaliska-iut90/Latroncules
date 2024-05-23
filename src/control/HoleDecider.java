@@ -204,7 +204,7 @@ public class HoleDecider extends Decider {
         if (p.getRole() == Pawn.INFANTRYMAN) {
             if (!holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
         } else {
-            if (!holeController.verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
+            if (!holeController.verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
         }
 
         return true;

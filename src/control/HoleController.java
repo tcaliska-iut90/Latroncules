@@ -132,12 +132,11 @@ public class HoleController extends Controller {
             return false;
         }
 
-
         //Vérifier le type du pion
         if (p.getRole() == Pawn.INFANTRYMAN) {
             if (!verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
         } else {
-            if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
+            if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
         }
 
         //System.out.println("Le role avant est " + p.getRole() + " et sa colone est " + rowPawn);
@@ -197,7 +196,7 @@ public class HoleController extends Controller {
      * @param holeStageModel
      * @return true si coup possible
      */
-    public boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModel) {
+    public boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModel, int color) {
         int[][] temp;
         boolean valueFound = false;
 
@@ -217,8 +216,8 @@ public class HoleController extends Controller {
             System.out.println("Mouvement impossible sur cette case");
             return false;
         }
+        return testCoupInterdit(finCol, finRow, board, color);
 
-        return true;
     }
 
     /**
@@ -232,6 +231,64 @@ public class HoleController extends Controller {
             p.setRole(Pawn.HORSEMAN);
             //System.out.println("Le role après est " + p.getRole() + " et sa colone est " + finRow);
         }
+    }
+
+    private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
+        if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7)){
+            if(!checkCoupInterditDiagonal(finCol, finRow, board, color)) return false;
+        }
+
+        if (finCol > 0 && finCol < 7){
+            if(!checkCoupInterditHorizontal(finCol, finRow, board, color)) return false;}
+        if (finRow > 0 && finRow < 7){
+            if(!checkCoupInterditVertical(finCol, finRow, board, color)) return false;}
+        return true;
+    }
+
+    private Boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
+
+        Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
+        Pawn p2 =(Pawn) board.getElement(finRow, finCol + 1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow, finCol - 1, color) || !board.isCapturable(board, finRow, finCol + 1, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoupInterditVertical(int finCol, int finRow, HoleBoard board, int color){
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol );
+        Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow + 1, finCol, color) || !board.isCapturable(board, finRow - 1, finCol, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoupInterditDiagonal(int finCol, int finRow, HoleBoard board, int color){
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol-1 );
+        Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol+1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow + 1, finCol +1, color) || !board.isCapturable(board, finRow - 1, finCol - 1, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+
+        p1 = (Pawn) board.getElement(finRow - 1, finCol+1 );
+        p2 =(Pawn) board.getElement(finRow + 1, finCol-1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow - 1, finCol +1, color) || !board.isCapturable(board, finRow + 1, finCol - 1, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
     }
 
 

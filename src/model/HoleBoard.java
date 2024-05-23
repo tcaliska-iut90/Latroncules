@@ -228,10 +228,11 @@ public class HoleBoard extends ContainerElement {
             return true;
         }
         // Vérifie les coins pour former un L
-        if ((row > 0 && checkPiece(board, row - 1, col, playerColor) && ((col > 0 && checkPiece(board, row, col - 1, playerColor)) || (col < 7 && checkPiece(board, row, col + 1, playerColor)))) ||
-                (x < 7 && checkPiece(board, row + 1, col, playerColor) && ((col > 0 && checkPiece(board, row, col - 1, playerColor)) || (col < 7 && checkPiece(board, row, col + 1, playerColor))))) {
-            return true;
-        }
+        if ((row == 0 || row ==7) && (col == 0 || col == 7))
+            if ((row > 0 && checkPiece(board, row - 1, col, playerColor) && ((col > 0 && checkPiece(board, row, col - 1, playerColor)) || (col < 7 && checkPiece(board, row, col + 1, playerColor)))) ||
+                    (x < 7 && checkPiece(board, row + 1, col, playerColor) && ((col > 0 && checkPiece(board, row, col - 1, playerColor)) || (col < 7 && checkPiece(board, row, col + 1, playerColor))))) {
+                return true;
+            }
         return false;
     }
 

@@ -115,13 +115,13 @@ class HoleControllerTest {
         // Test mouvement impossible sur une case non fléchés
         when(mockStageModel.getBoardArrows1()).thenReturn(a);
         when(mockBoard.getValidCell(any(Model.class), anyInt(), anyInt())).thenReturn(validCells);
-        boolean result = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 2, mockStageModel);
+        boolean result = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 2, mockStageModel, Pawn.PAWN_BLUE);
         assertFalse(result);
 
         // Test mouvement possible sur une case non fléchés
         when(mockBoard.getValidCell(any(Model.class), anyInt(), anyInt())).thenReturn(validCells);
         when(mockStageModel.getBoardArrows1()).thenReturn(a);
-        boolean result2 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel);
+        boolean result2 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
         assertTrue(result2);
 
         // Test cases fléchés
@@ -131,7 +131,7 @@ class HoleControllerTest {
         when(mockStageModel.getBoardArrows1()).thenReturn(arrows1);
         when(mockStageModel.getBoardArrows2()).thenReturn(arrows1);
         when(mockBoard.getValidCell(any(Model.class), eq(mockArrow), eq(mockArrow), anyInt(), anyInt())).thenReturn(validCells);
-        boolean result3 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel);
+        boolean result3 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
         assertTrue(result3);
     }
 
@@ -188,6 +188,97 @@ class HoleControllerTest {
         boolean result = holeController.analyseAndPlay("A1A2");
         assertFalse(result);
 
+    }
+
+    @Test
+    void testCheckCoupInterditHorizontal() {
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
+        // Place opponent pawns horizontally
+        mockBoard.addElement(mockPawn,3, 2);
+        mockBoard.addElement(mockPawn,3, 4);
+
+        // Assume isCapturable method logic is already defined in HoleBoard
+        assertFalse(testCoupInterdit(3, 3, mockBoard, Pawn.PAWN_BLUE));
+    }
+
+    @Test
+    void testCheckCoupInterditVertical() {
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
+        // Place opponent pawns vertically
+        mockBoard.addElement(mockPawn,2, 3);
+        mockBoard.addElement(mockPawn,4, 3);
+
+        // Assume isCapturable method logic is already defined in HoleBoard
+        assertFalse(checkCoupInterditVertical(3, 3, mockBoard, Pawn.PAWN_BLUE));
+    }
+
+    @Test
+    void testCheckCoupInterditDiagonal() {
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        mockBoard.addElement(mockPawn,2, 2);
+        mockBoard.addElement(mockPawn,4, 4);
+        mockBoard.addElement(mockPawn,2, 4);
+        mockBoard.addElement(mockPawn,4, 2);
+
+        assertFalse(checkCoupInterditDiagonal(3, 3, mockBoard, Pawn.PAWN_BLUE));
+    }
+
+    private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
+        if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7)){
+            if(!checkCoupInterditDiagonal(finCol, finRow, board, color)) return false;
+        }
+
+        if (finCol > 0 && finCol < 7){
+            if(!checkCoupInterditHorizontal(finCol, finRow, board, color)) return false;}
+        if (finRow > 0 && finRow < 7){
+            if(!checkCoupInterditVertical(finCol, finRow, board, color)) return false;}
+        return true;
+    }
+    private Boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
+
+        Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
+        Pawn p2 =(Pawn) board.getElement(finRow, finCol + 1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow, finCol - 1, color) || !board.isCapturable(board, finRow, finCol + 1, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoupInterditVertical(int finCol, int finRow, HoleBoard board, int color){
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol );
+        Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow + 1, finCol, color) || !board.isCapturable(board, finRow - 1, finCol, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoupInterditDiagonal(int finCol, int finRow, HoleBoard board, int color){
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol-1 );
+        Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol+1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow + 1, finCol +1, color) || !board.isCapturable(board, finRow - 1, finCol - 1, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+
+        p1 = (Pawn) board.getElement(finRow - 1, finCol+1 );
+        p2 =(Pawn) board.getElement(finRow + 1, finCol-1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow - 1, finCol +1, color) || !board.isCapturable(board, finRow + 1, finCol - 1, color)) {
+                System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
     }
 
 }
