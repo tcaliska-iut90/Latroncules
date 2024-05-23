@@ -148,9 +148,49 @@ class HoleBoardTest {
 
         holeBoard.addElement(mockPawn, 3, 4);
         holeBoard.addElement(mockPawn, 5, 4);
-
         boolean result = holeBoard.isCapturable(holeBoard, 4, 4, Pawn.PAWN_BLUE);
         assertTrue(result);
+
+        holeBoard.addElement(mockPawn, 4, 3);
+        holeBoard.addElement(mockPawn, 4, 5);
+        boolean result2 = holeBoard.isCapturable(holeBoard, 4, 4, Pawn.PAWN_BLUE);
+        assertTrue(result2);
+
+        holeBoard.addElement(mockPawn, 3, 3);
+        holeBoard.addElement(mockPawn, 5, 5);
+        boolean result3 = holeBoard.isCapturable(holeBoard, 4, 4, Pawn.PAWN_BLUE);
+        assertTrue(result3);
+
+        holeBoard.addElement(mockPawn, 3, 5);
+        holeBoard.addElement(mockPawn, 5, 3);
+        boolean result4 = holeBoard.isCapturable(holeBoard, 4, 4, Pawn.PAWN_BLUE);
+        assertTrue(result4);
+    }
+
+    @Test
+    void testIsCapturableCoin(){
+        Pawn mockPawn = mock(Pawn.class);
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_BLUE);
+
+        holeBoard.addElement(mockPawn, 1, 0);
+        holeBoard.addElement(mockPawn, 0, 1);
+        boolean result = holeBoard.isCapturable(holeBoard, 0, 0, Pawn.PAWN_BLUE);
+        assertTrue(result);
+
+        holeBoard.addElement(mockPawn, 7, 1);
+        holeBoard.addElement(mockPawn, 6, 0);
+        boolean result2 = holeBoard.isCapturable(holeBoard, 7, 0, Pawn.PAWN_BLUE);
+        assertTrue(result2);
+
+        holeBoard.addElement(mockPawn, 0, 6);
+        holeBoard.addElement(mockPawn, 1, 7);
+        boolean result3 = holeBoard.isCapturable(holeBoard, 0, 7, Pawn.PAWN_BLUE);
+        assertTrue(result3);
+
+        holeBoard.addElement(mockPawn, 7, 6);
+        holeBoard.addElement(mockPawn, 6, 7);
+        boolean result4 = holeBoard.isCapturable(holeBoard, 7, 7, Pawn.PAWN_BLUE);
+        assertTrue(result4);
     }
 
     @Test

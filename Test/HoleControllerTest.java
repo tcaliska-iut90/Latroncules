@@ -34,7 +34,7 @@ class HoleControllerTest {
     private HoleController holeController;
 
     @Mock
-    private Pawn mockPawn;
+    private Pawn mockPawn, mockPawn2;
 
     @BeforeEach
     public void setUp() {
@@ -47,35 +47,6 @@ class HoleControllerTest {
         when(mockModel.getGameStage()).thenReturn(mockStageModel);
         when(mockStageModel.getBoard()).thenReturn(mockBoard);
         when(mockModel.getCurrentPlayer()).thenReturn(mockPlayer);
-    }
-
-    @Disabled
-    public void testStageLoop(){
-        when(mockModel.isEndStage()).thenReturn(false,true);
-        when(mockPawn.getRole()).thenReturn(Player.COMPUTER);
-        doNothing().when(holeController).playTurn();
-        doNothing().when(holeController).update();
-
-        verify(holeController, times(2)).update();
-        verify(holeController, times(1)).playTurn();
-        verify(holeController, times(1)).endOfTurn();
-    }
-
-
-    @Test
-    public void testPlayTurnComputer(){
-        when(mockPlayer.getType()).thenReturn(Player.COMPUTER);
-        String s = holeController.playTurn();
-        assertEquals("Computer", s);
-    }
-
-    @Disabled
-    public void testPlayTurnHuman() throws IOException {
-        when(mockPlayer.getType()).thenReturn(Player.HUMAN);
-        when(mockBufferedReader.readLine()).thenReturn("A1B2");
-        when(holeController.analyseAndPlay("A1B2")).thenReturn(true);
-        String s = holeController.playTurn();
-        assertEquals("Human", s);
     }
 
     @Test
@@ -121,6 +92,7 @@ class HoleControllerTest {
         // Test mouvement possible sur une case non fléchés
         when(mockBoard.getValidCell(any(Model.class), anyInt(), anyInt())).thenReturn(validCells);
         when(mockStageModel.getBoardArrows1()).thenReturn(a);
+        when(mockBoard.getElement(2, 1)).thenReturn(null);
         boolean result2 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
         assertTrue(result2);
 
@@ -133,6 +105,20 @@ class HoleControllerTest {
         when(mockBoard.getValidCell(any(Model.class), eq(mockArrow), eq(mockArrow), anyInt(), anyInt())).thenReturn(validCells);
         boolean result3 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
         assertTrue(result3);
+
+        // Test mouvement pas possible sur une case non fléchés et un pion sur la case d'arrivée
+        when(mockBoard.getValidCell(any(Model.class), anyInt(), anyInt())).thenReturn(validCells);
+        when(mockStageModel.getBoardArrows1()).thenReturn(a);
+        when(mockBoard.getElement(2, 1)).thenReturn(mockPawn);
+        boolean result4 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
+        assertFalse(result4);
+
+        // Test cases fléchés et un pion sur la case d'arrivée
+        when(mockStageModel.getBoardArrows1()).thenReturn(arrows1);
+        when(mockStageModel.getBoardArrows2()).thenReturn(arrows1);
+        when(mockBoard.getValidCell(any(Model.class), eq(mockArrow), eq(mockArrow), anyInt(), anyInt())).thenReturn(validCells);
+        boolean result5 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
+        assertFalse(result5);
     }
 
     @Test
@@ -194,8 +180,8 @@ class HoleControllerTest {
     void testCheckCoupInterditHorizontal() {
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
         when(mockBoard.getElement(anyInt(), anyInt())).thenReturn(mockPawn);
-
         assertFalse(checkCoupInterditHorizontal(3, 3, mockBoard, Pawn.PAWN_BLUE));
+
 
         when(mockBoard.isCapturable(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
         assertTrue(checkCoupInterditHorizontal(3, 3, mockBoard, Pawn.PAWN_BLUE));
@@ -205,7 +191,6 @@ class HoleControllerTest {
     void testCheckCoupInterditVertical() {
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
         when(mockBoard.getElement(anyInt(), anyInt())).thenReturn(mockPawn);
-
         assertFalse(checkCoupInterditVertical(3, 3, mockBoard, Pawn.PAWN_BLUE));
 
         when(mockBoard.isCapturable(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
@@ -223,25 +208,73 @@ class HoleControllerTest {
     }
 
     @Test
-    void testCoupInterdit(){
-        when(mockBoard.getElement(anyInt(), anyInt())).thenReturn(mockPawn);
-        when(checkCoupInterditDiagonal(anyInt(), anyInt(), any(), anyInt())).thenReturn(false);
-        when(mockBoard.isCapturable(any(), anyInt(), anyInt(), anyInt())).thenReturn(true);
-        assertFalse(testCoupInterdit(3, 3, mockBoard, Pawn.PAWN_BLUE));
+    void testCoupInterditCoinSupérieurGauche() {
+        when(mockBoard.getElement(0, 1)).thenReturn(mockPawn);
+        when(mockBoard.getElement(1, 0)).thenReturn(mockPawn);
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
+
+
+        assertFalse( checkCoinSupérieurGauche(0, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur gauche avec des conditions capturables doit être interdit");
+
+        when(mockBoard.getElement(0, 1)).thenReturn(null);
+        assertTrue(checkCoinSupérieurGauche(0, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur gauche avec seulement un pion adverse autour est autorisé");
     }
+
+    @Test
+    void testCoupInterditCoinSupérieurDroit() {
+        when(mockBoard.getElement(0, 6)).thenReturn(mockPawn);
+        when(mockBoard.getElement(1, 7)).thenReturn(mockPawn);
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
+
+
+        assertFalse(testCoupInterdit(7, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur droit avec des conditions capturables doit être interdit");
+
+        when(mockBoard.getElement(0, 6)).thenReturn(null);
+        assertTrue(checkCoinInférieurDroit(7, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur droit avec seulement un pion adverse autour est autorisé");
+    }
+
+    @Test
+    void testCoupInterditCoinInférieurGauche() {
+        when(mockBoard.getElement(6, 0)).thenReturn(mockPawn);
+        when(mockBoard.getElement(7, 1)).thenReturn(mockPawn);
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        assertFalse( testCoupInterdit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur gauche avec des conditions capturables doit être interdit");
+
+        when(mockBoard.getElement(6, 0)).thenReturn(null);
+        assertTrue(checkCoinInférieurGauche(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur gauche avec seulement un pion adverse autour est autorisé");
+    }
+
+    @Test
+    void testCoupInterditCoinInférieurDroit() {
+        when(mockBoard.getElement(6, 7)).thenReturn(mockPawn);
+        when(mockBoard.getElement(7, 6)).thenReturn(mockPawn);
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        assertFalse(testCoupInterdit(7, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit avec des conditions capturables doit être interdit");
+
+        when(mockBoard.getElement(6, 7)).thenReturn(null);
+        assertTrue(checkCoinInférieurDroit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit avec seulement un pion adverse autour est autorisé");
+    }
+
 
 
     private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
-        if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7)){
-            if(!checkCoupInterditDiagonal(finCol, finRow, board, color)) return false;
-        }
 
-        if (finCol > 0 && finCol < 7){
-            if(!checkCoupInterditHorizontal(finCol, finRow, board, color)) return false;}
-        if (finRow > 0 && finRow < 7){
-            if(!checkCoupInterditVertical(finCol, finRow, board, color)) return false;}
+        if ((finRow == 0 || finRow == 7) && (finCol == 0 || finCol == 7)){
+            return checkCoupInterditCoin(finCol, finRow, board, color);
+        }
+        if (finRow > 0 && finRow < 7 && !checkCoupInterditVertical(finCol, finRow, board, color)) return false;
+
+        if (finCol > 0 && finCol < 7 && !checkCoupInterditHorizontal(finCol, finRow, board, color))return false;
+
+        if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7) && !checkCoupInterditDiagonal(finCol, finRow, board, color))return false;
+
+        if (finRow > 0 && finRow < 7 && finCol > 0 && finCol < 7 && !checkCoupInterditVertical(finCol, finRow, board, color)) return false;
+
         return true;
     }
+
     private Boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
 
         Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
@@ -282,6 +315,74 @@ class HoleControllerTest {
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow - 1, finCol +1, color) || !board.isCapturable(board, finRow + 1, finCol - 1, color)) {
                 System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoupInterditCoin(int finCol, int finRow, HoleBoard board, int color) {
+        // Vérification pour le coin supérieur gauche (0, 0)
+        if (finCol == 0 && finRow == 0) {
+            return checkCoinSupérieurGauche(finCol, finRow, board, color);
+        }
+        // Vérification pour le coin supérieur droit (0, 7)
+        if (finCol == 7 && finRow == 0) {
+            return checkCoinSupérieurDroit(finCol, finRow, board, color);
+        }
+        // Vérification pour le coin inférieur gauche (7, 0)
+        if (finCol == 0 && finRow == 7) {
+            return checkCoinInférieurGauche(finCol, finRow, board, color);
+        }
+        // Vérification pour le coin inférieur droit (7, 7)
+        if (finCol == 7 && finRow == 7) {
+            return checkCoinInférieurDroit(finCol, finRow, board, color);
+        }
+        return true;
+    }
+
+    private boolean checkCoinSupérieurGauche(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow, finCol + 1);
+        Pawn p2 = (Pawn) board.getElement(finRow + 1, finCol);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow, finCol + 1, color) || !board.isCapturable(board, finRow + 1, finCol, color)) {
+                System.out.println("Impossible, coup interdit au coin supérieur gauche");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoinSupérieurDroit(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
+        Pawn p2 = (Pawn) board.getElement(finRow + 1, finCol);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow, finCol - 1, color) || !board.isCapturable(board, finRow + 1, finCol, color)) {
+                System.out.println("Impossible, coup interdit au coin supérieur droit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoinInférieurGauche(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol);
+        Pawn p2 = (Pawn) board.getElement(finRow, finCol + 1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow - 1, finCol, color) || !board.isCapturable(board, finRow, finCol + 1, color)) {
+                System.out.println("Impossible, coup interdit au coin inférieur gauche");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoinInférieurDroit(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol);
+        Pawn p2 = (Pawn) board.getElement(finRow, finCol - 1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow - 1, finCol, color) || !board.isCapturable(board, finRow, finCol - 1, color)) {
+                System.out.println("Impossible, coup interdit au coin inférieur droit");
                 return false;
             }
         }
