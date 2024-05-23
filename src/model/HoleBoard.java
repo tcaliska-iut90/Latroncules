@@ -185,14 +185,14 @@ public class HoleBoard extends ContainerElement {
 
     private void deletePawnsTaking(HoleStageModel stageModel, Pawn pawnEnemy, HoleBoard board, int colorPawn) {
         board.removeElement(pawnEnemy);
-        if (colorPawn == Pawn.PAWN_BLUE){
-            stageModel.addBluePawnsTaking(pawnEnemy);
+            if (colorPawn == Pawn.PAWN_BLUE){
             stageModel.removeRedPawns(pawnEnemy);
+            stageModel.addBluePawnsTaking(pawnEnemy);
 
         }
         else {
-            stageModel.addRedPawnsTaking(pawnEnemy);
             stageModel.removeBluePawns(pawnEnemy);
+            stageModel.addRedPawnsTaking(pawnEnemy);
         }
 
     }

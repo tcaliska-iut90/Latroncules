@@ -40,36 +40,25 @@ public class HoleStageFactory extends StageElementsFactory {
 
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(0,0);
+        text.setLocation(0, 0);
         stageModel.setPlayerName(text);
 
         // create the board, in 0,1 in the virtual space
         HoleBoard board = new HoleBoard(0, 1, stageModel);
         // assign the board to the game stage model
         stageModel.setBoard(board);
-
-
-
-
-        /* create the pawns
-            NB: their coordinates are by default 0,0 but since they are put
-            within the pots, their real coordinates will be computed by the view
-         */
-
-
-
-
-
+        stageModel.setHoleRedPawnPot(new HolePawnPot(55, 2, stageModel));
+        stageModel.setHoleBluePawnPot(new HolePawnPot(55, 15, stageModel));
 
         Arrow[] arrows = new Arrow[4];
         for (int i = 0; i < arrows.length; i++) {
             arrows[i] = i == 0 ? new Arrow(Arrow.VERTICAL, stageModel) : i == 1 ? new Arrow(Arrow.HORIZONTAL, stageModel) : i == 2 ? new Arrow(Arrow.MAJOR_DIAGONAL, stageModel) : new Arrow(Arrow.MINOR_DIAGONAL, stageModel);
         }
         stageModel.setArrows(arrows);
+        setupArrows(arrows);
 
 
-
-        if(testVict){
+        if (testVict) {
             Pawn[] bluePawns = new Pawn[2];
             bluePawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
             bluePawns[1] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
@@ -82,7 +71,6 @@ public class HoleStageFactory extends StageElementsFactory {
             stageModel.setRedPawns(redPawns);
 
 
-
             board.addElement(bluePawns[0], 6, 6);
             board.addElement(bluePawns[1], 6, 5);
 
@@ -91,40 +79,12 @@ public class HoleStageFactory extends StageElementsFactory {
             board.addElement(redPawns[1], 1, 3);
 
 
-        }else {
-            Pawn[] bluePawns = new Pawn[16];
-            for(int i=0;i<16;i++) {
-                if (i%2 == 0)
-                    bluePawns[i] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
-                else
-                    bluePawns[i] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
-            }
-            // assign the blue pawns to the game stage model
-            stageModel.setBluePawns(bluePawns);
-
-            Pawn[] redPawns = new Pawn[16];
-            for(int i=0;i<16;i++) {
-                if (i%2 == 0)
-                    redPawns[i] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
-                else
-                    redPawns[i] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, stageModel);
-
-            }
-            stageModel.setRedPawns(redPawns);
-
-            for (int i = 0; i < bluePawns.length; i++) {
-                if (i<8){
-                    board.addElement(redPawns[i], 6, i);
-                    board.addElement(bluePawns[i], 0, i);
-                }
-                else {
-                    board.addElement(redPawns[i], 7, 15-i);
-                    board.addElement(bluePawns[i], 1, 15-i);
-                }
-            }
+        } else {
+            setupPawns(board);
         }
+    }
 
-
+    private void setupArrows(Arrow[] arrows){
 
         Arrow[][] boardArrow1 = new Arrow[8][8];
         Arrow[][] boardArrow2 = new Arrow[8][8];
@@ -169,30 +129,42 @@ public class HoleStageFactory extends StageElementsFactory {
         }
         stageModel.setBoardArrows1(boardArrow1);
         stageModel.setBoardArrows2(boardArrow2);
+    }
 
-        for (int i = 0; i < board.getNbRows(); i++) {
-            for (int j = 0; j < board.getNbCols(); j++) {
-                System.out.println(board.getElement(i, j)+ " " + i + " " + j);
+    private void setupPawns(HoleBoard board){
+        Pawn[] bluePawns = new Pawn[16];
+        for(int i=0;i<16;i++) {
+            if (i%2 == 0)
+                bluePawns[i] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
+            else
+                bluePawns[i] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
+        }
+        // assign the blue pawns to the game stage model
+        stageModel.setBluePawns(bluePawns);
+
+        Pawn[] redPawns = new Pawn[16];
+        for(int i=0;i<16;i++) {
+            if (i%2 == 0)
+                redPawns[i] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
+            else
+                redPawns[i] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, stageModel);
+
+        }
+        stageModel.setRedPawns(redPawns);
+
+        for (int i = 0; i < bluePawns.length; i++) {
+            if (i<8){
+                board.addElement(redPawns[i], 6, i);
+                board.addElement(bluePawns[i], 0, i);
+            }
+            else {
+                board.addElement(redPawns[i], 7, 15-i);
+                board.addElement(bluePawns[i], 1, 15-i);
             }
         }
-        stageModel.setBluePawnsTaking(new Pawn[16]);
-        stageModel.setRedPawnsTaking(new Pawn[16]);
-
-
-        /* Test Affichage
-        for (int i = 0; i < boardArrow1.length; i++) {
-            System.out.print("| ");
-            for (int j = 0; j < boardArrow1[i].length; j++) {
-                if (boardArrow1[i][j] != null)
-                    System.out.print(boardArrow1[i][j].getDirection() + " " + boardArrow2[i][j].getDirection() + " |");
-                else
-                    System.out.print("|     |");
-            }
-            System.out.println();
-        }*/
-
-
     }
+
+
 
 
 

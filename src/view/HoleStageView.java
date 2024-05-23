@@ -2,6 +2,7 @@ package view;
 
 import boardifier.control.Logger;
 import boardifier.model.GameStageModel;
+import boardifier.model.Model;
 import boardifier.view.ClassicBoardLook;
 import boardifier.view.ContainerLook;
 import boardifier.view.GameStageView;
@@ -24,6 +25,8 @@ public class HoleStageView extends GameStageView {
         addLook(new TextLook(model.getPlayerName()));
         // create a ClassicBoardLook (with borders and coordinates) for the main board.
         addLook(new ClassicBoardLook(2, 6, model.getBoard(), 1, 1, true));
+        addLook(new BlackPawnPotLook(model.getHoleBluePawnPot()));
+        addLook(new BlackPawnPotLook(model.getHoleRedPawnPot()));
 
         // create looks for all pawns
 
@@ -43,6 +46,10 @@ public class HoleStageView extends GameStageView {
         for (int i = 0; i < ((HoleStageModel) gameStageModel).getArrows().length; i++) {
             addLook(new ArrowLook(model.getArrows()[i]));
         }
+
+
+
+
 
 
         /*

@@ -36,8 +36,8 @@ public class HoleStageModel extends GameStageModel {
     private Arrow[][] boardArrows2;
     private Pawn[] bluePawns;
     private Pawn[] redPawns;
-    private Pawn[] redPawnsTaking;
-    private Pawn[] bluePawnsTaking;
+    private HolePawnPot HoleRedPawnPot;
+    private HolePawnPot HoleBluePawnPot;
     private Arrow[] arrows;
     private TextElement playerName;
 
@@ -105,21 +105,13 @@ public class HoleStageModel extends GameStageModel {
         }
     }
 
-    public Pawn[] getBluePawnsTaking() {
-        return bluePawnsTaking;
-    }
-
-    public void setBluePawnsTaking(Pawn[] bluePawnsTaking) {
-        this.bluePawnsTaking = bluePawnsTaking;
-    }
-
     /*
     Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe bleue
      */
     public void addBluePawnsTaking(Pawn p){
-        for (int i = 0; i < redPawnsTaking.length; i++) {
-            if (redPawnsTaking[i] == null){
-                redPawnsTaking[i] = p;
+        for (int i = 0; i < HoleRedPawnPot.getNbCols(); i++) {
+            if (HoleRedPawnPot.getElement(0, i) == null){
+                HoleRedPawnPot.addElement(p, 0, i);
                 break;
             }
         }
@@ -128,28 +120,39 @@ public class HoleStageModel extends GameStageModel {
     Permet de retirer le pion passé en paramètre du tableau des pions bleue
      */
     public void removeBluePawns(Pawn p){
-        for (int i = 0; i < bluePawnsTaking.length; i++) {
-            if (bluePawnsTaking[i] == p) {
-                bluePawnsTaking[i].removeFromStage();
-                bluePawnsTaking[i] = null;
+        for (int i = 0; i < bluePawns.length; i++) {
+            if (bluePawns[i] == p) {
+                bluePawns[i] = null;
+                p.removeFromStage();
             }
         }
     }
-    public Pawn[] getRedPawnsTaking() {
-        return redPawnsTaking;
+
+    public void setHoleBluePawnPot(HolePawnPot holeBluePawnPot) {
+        HoleBluePawnPot = holeBluePawnPot;
+        addContainer(HoleBluePawnPot);
     }
 
-    public void setRedPawnsTaking(Pawn[] redPawnsTaking) {
-        this.redPawnsTaking = redPawnsTaking;
+    public HolePawnPot getHoleBluePawnPot() {
+        return HoleBluePawnPot;
+    }
+
+    public void setHoleRedPawnPot(HolePawnPot holeRedPawnPot) {
+        HoleRedPawnPot = holeRedPawnPot;
+        addContainer(HoleRedPawnPot);
+    }
+
+    public HolePawnPot getHoleRedPawnPot() {
+        return HoleRedPawnPot;
     }
 
     /*
-    Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
-     */
+                Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
+                 */
     public void addRedPawnsTaking(Pawn p){
-        for (int i = 0; i < redPawnsTaking.length; i++) {
-            if (redPawnsTaking[i] == null){
-                redPawnsTaking[i] = p;
+        for (int i = 0; i < HoleBluePawnPot.getNbCols(); i++) {
+            if (HoleBluePawnPot.getElement(0, i)== null){
+                HoleBluePawnPot.addElement(p, 0, i);
                 break;
             }
         }
@@ -158,10 +161,10 @@ public class HoleStageModel extends GameStageModel {
     Permet de retirer le pion passé en paramètre du tableau des pions rouges
      */
     public void removeRedPawns(Pawn p){
-        for (int i = 0; i < redPawnsTaking.length; i++) {
-            if (redPawnsTaking[i] == p) {
-                redPawnsTaking[i].removeFromStage();
-                redPawnsTaking[i] = null;
+        for (int i = 0; i < redPawns.length; i++) {
+            if (redPawns[i] == p) {
+                redPawns[i] = null;
+                p.removeFromStage();
             }
         }
     }
