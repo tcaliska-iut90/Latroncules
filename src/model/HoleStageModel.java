@@ -192,17 +192,19 @@ public class HoleStageModel extends GameStageModel {
        // HoleStageModel stage = (HoleStageModel) model.getGameStage();
         //HoleBoard board = stage.getBoard();
 
+        //System.out.println((!holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
+            //System.out.println("Mouvements disponibles : " + Arrays.deepToString(board.getValidCell(model, rowDest, colDest)));
             if(isBlueMissing()){
                 computePartyResult(0);
             }
             if(isRedMissing()){
                 computePartyResult(1);
             }
-//            if(board.getValidCell(model,rowDest,colDest).length == 0){
-//                //computePartyResult();
-//                System.out.println("Plus de mouvements possibles, ça devrait être la fin");
-//            }
+            if(board.getValidCell(model,rowDest,colDest).length == 0){
+                //computePartyResult();
+                System.out.println("Plus de mouvements possibles, ça devrait être la fin");
+            }
         });
 
 
