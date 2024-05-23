@@ -223,8 +223,9 @@ public class HoleController extends Controller {
             temp = board.getValidCell(model, rowPawn, colPawn);
         }
 
+        Pawn p = (Pawn) board.getElement(finRow, finCol);
         for (int i = 0; i < temp.length; i++) {
-            if (temp[i][0] == finRow && temp[i][1] == finCol) {
+            if (temp[i][0] == finRow && temp[i][1] == finCol && p == null) {
                 valueFound = true;
                 break;
             }
