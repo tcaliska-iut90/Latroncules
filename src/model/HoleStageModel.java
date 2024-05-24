@@ -200,10 +200,13 @@ public class HoleStageModel extends GameStageModel {
             if(isRedMissing()){
                 computePartyResult(1);
             }
+            /*
             if(board.getValidCell(model,rowDest,colDest).length == 0){
                 //computePartyResult();
                 System.out.println("Plus de mouvements possibles, ça devrait être la fin");
             }
+
+             */
         });
 
 

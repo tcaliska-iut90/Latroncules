@@ -316,7 +316,6 @@ public class ContainerElement extends StaticElement {
      * @return the first element stored or null if there are no elements
      */
     public GameElement getFirstElement(int row, int col) {
-        System.out.println(row+" ,"+col);
         if (grid[row][col].size() > 0) {
             return grid[row][col].get(0);
         }
