@@ -136,7 +136,7 @@ public class HoleDecider extends Decider {
                     //Proximité des pions adverses
                     for (Pawn pa : pawns_adverse) {
                         if (p.getDistance(pa) < 2) {
-                            score += 17;
+                            score += 15;
                         }
                     }
                     //Éloignement des bords
@@ -149,7 +149,7 @@ public class HoleDecider extends Decider {
                         }
                         score += 5;
                     }
-                    if (possibleMove.size()<9 && pawns.get(i).getRole()==1) {
+                    if (possibleMove.size()<10 && pawns.get(i).getRole()==1) {
                         score += 10;
                     }
                     //Sécurité
