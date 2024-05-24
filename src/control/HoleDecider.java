@@ -197,6 +197,8 @@ public class HoleDecider extends Decider {
             */
             if (bestMove.size() >= 1) {
                 l = loto.nextInt(bestMove.size());  // if there are several best moves, choose one randomly
+            } else {
+                System.out.println("\nFin de partie, égalité\n");
             }
 
             rowDest = bestMove.get(l).getRow();
