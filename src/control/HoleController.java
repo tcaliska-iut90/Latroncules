@@ -135,18 +135,24 @@ public class HoleController extends Controller {
         // Obtenir les coordonnées du pion
         int colPawn = (int) (line.charAt(0) - 'A');
         int rowPawn = (int) (line.charAt(1) - '1');
-        if ((colPawn < 0) || (colPawn > 8) || (rowPawn < 0) || (rowPawn > 8)) return false;
+        if ((colPawn < 0) || (colPawn > 8) || (rowPawn < 0) || (rowPawn > 8)) {
+            System.out.println("Donner des coordonées valide");
+            return false;
+        }
 
         // Obtenir les coordonnées d'arrivé du pion
         int finCol = (int) (line.charAt(2) - 'A');
         int finRow = (int) (line.charAt(3) - '1');
 
         // check coords validity
-        if ((finRow < 0) || (finRow > 8) || (finCol < 0) || (finCol > 8)) return false;
+        if ((finRow < 0) || (finRow > 8) || (finCol < 0) || (finCol > 8)) {
+            System.out.println("Donner des coordonées d'arrivée valide");
+            return false;
+        }
 
         // check if the pawn is the good color
         int color;
-        if (model.getIdPlayer() == 0) {
+        if (model.getCurrentPlayer().getColor() == 0) {
             color = Pawn.PAWN_BLUE;
         } else {
             color = Pawn.PAWN_RED;
@@ -154,7 +160,10 @@ public class HoleController extends Controller {
 
         Pawn p = (Pawn) board.getElement(rowPawn, colPawn);
         try {
-            if (p.getColor() != color) return false;
+            if (p.getColor() != color) {
+                System.out.println("Pas la bonne couleur");
+                return false;
+            }
         } catch (NullPointerException e) {
             System.out.println("Aucun pion n'est présent sur cette case");
             return false;
