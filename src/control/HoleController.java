@@ -114,6 +114,7 @@ public class HoleController extends Controller {
             Pawn pawn = decider.getPawn();
             board.takingPawn(gameStage, board, model, finRow, finCol, pawn.getColor());
             changeInfantrymanToHorseman(pawn, finRow);
+            moveIsOk(gameStage, finRow, finCol, board);
             return "Computer";
         } else {
             boolean ok = false;
@@ -153,7 +154,6 @@ public class HoleController extends Controller {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         HoleBoard board = gameStage.getBoard();
 
-        possibiliteDeMouvement();
 
         // Obtenir les coordonnées du pion
         int colPawn = (int) (line.charAt(0) - 'A');
@@ -197,6 +197,7 @@ public class HoleController extends Controller {
         play.start();
         board.takingPawn(gameStage, board, model, finRow, finCol, color);
         changeInfantrymanToHorseman(p, finRow);
+        moveIsOk(gameStage, finRow, finCol, board);
 
         return true;
     }
@@ -404,6 +405,49 @@ public class HoleController extends Controller {
             }
         }
         return true;
+    }
+
+    public void moveIsOk(HoleStageModel stage, int rowDest, int colDest, HoleBoard board){
+        boolean result = false;
+
+        for (int i = 0; i < stage.getBluePawns().length; i++) {
+            if (stage.getBluePawns()[i] != null) {
+                if (stage.getBluePawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getBluePawns()[i], rowDest, colDest, board)) result = true;
+                else if (stage.getBluePawns()[i].getRole() == Pawn.HORSEMAN && !moveIsOkHorseman(stage.getBluePawns()[i], rowDest, colDest, board, stage)) result = true;
+            } else if (stage.getRedPawns()[i] != null) {
+                if (stage.getRedPawns()[i].getRole() == Pawn.INFANTRYMAN && !moveIsOkInfantryman(stage.getRedPawns()[i], rowDest, colDest, board))result = true;
+                else if (stage.getRedPawns()[i].getRole() == Pawn.HORSEMAN && !moveIsOkHorseman(stage.getRedPawns()[i], rowDest, colDest, board, stage)) result = true;
+            }
+        }
+        if (!result)callPartyResult(stage, result);
+    }
+
+    public void callPartyResult(HoleStageModel stage, Boolean result){
+        if (model.getIdPlayer() == 0) stage.computePartyResult(0);
+        else stage.computePartyResult(1);
+    }
+
+    public boolean moveIsOkInfantryman(Pawn pawn, int row, int col, HoleBoard board){
+
+        if (pawn.getColor() == Pawn.PAWN_BLUE) return verifPawnMove(board, pawn.getColor(), col, row, row+1, col);
+        else return verifPawnMove(board, pawn.getColor(), col, row, row-1, col);
+    }
+
+    public boolean moveIsOkHorseman(Pawn pawn, int row, int col, HoleBoard board, HoleStageModel holeStageModel){
+        int[][] temp;
+        boolean result = true;
+
+        if (holeStageModel.getBoardArrows1()[row][col] != null) {
+            temp = board.getValidCell(model, holeStageModel.getBoardArrows1()[row][col], holeStageModel.getBoardArrows2()[row][col], row, col);
+        } else {
+            temp = board.getValidCell(model, row, col);
+        }
+        int i = 0;
+        while (result && i < temp.length){
+            result = verifMoveCavalier(board,col, row, temp[i][0], temp[i][1], holeStageModel, pawn.getColor());
+            i+=1;
+        }
+        return result;
     }
 
 

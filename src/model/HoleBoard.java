@@ -3,6 +3,7 @@ package model;
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
 import boardifier.model.Model;
+import control.HoleController;
 
 import java.awt.*;
 
@@ -86,13 +87,15 @@ public class HoleBoard extends ContainerElement {
 
         for (int i = 0; i < ValidCell.length; i++) {
             Pawn p = (Pawn)this.getElement(ValidCell[i][0], ValidCell[i][1]);
-            if (p != null && p.getColor() == colorEnemy){
+            System.out.println("(" + ValidCell[i][0] + ", " + ValidCell[i][1] + ")");
+            if (p != null && p.getColor() == colorEnemy && (ValidCell[i][0] > 0 && ValidCell[i][0] < 7) && (ValidCell[i][1] >  0 && ValidCell[i][1] < 7)){
                 ValidCell[i][0] = ValidCell[i][0] + (ValidCell[i][0] - row);
                 ValidCell[i][1] = ValidCell[i][1] + (ValidCell[i][1] - col);
             }
         }
         return ValidCell;
     }
+
 
     /**
      * Récupère les cases jouables avec une flèches verticale
