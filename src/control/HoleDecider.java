@@ -134,8 +134,9 @@ public class HoleDecider extends Decider {
                         }
                     }
                     //Éloignement des bords
+
                     if (pawns.get(i).getRole()==0 && (p.getCol() == 0 || p.getCol() == 7 || p.getRow() == 0 || p.getRow() == 7)) {
-                        score -= 5;
+                        score -= 7;
                     }
                     if (pawns.get(i).getRow() == 0 || pawns.get(i).getRow() == 7) {
                         if (pawns.get(i).getRole()==1) {
@@ -143,8 +144,14 @@ public class HoleDecider extends Decider {
                         }
                         score += 5;
                     }
-                    if (possibleMove.size()<10 && pawns.get(i).getRole()==1) {
-                        score += 10;
+                    if (pawns.get(i).getCol() == 0 || pawns.get(i).getCol() == 7) {
+                        if (pawns.get(i).getRole()==1) {
+                            score += 5;
+                        }
+                        score += 5;
+                    }
+                    if (possibleMove.size()<11 && pawns.get(i).getRole()==1) {
+                        score += 11;
                     }
                     //Sécurité
                     if ((p.getRow()==0 && p.getCol()==0) || (p.getRow()==0 && p.getCol()==7) || (p.getRow()==7 && p.getCol()==0) || (p.getRow()==7 && p.getCol()==7)){
@@ -197,7 +204,31 @@ public class HoleDecider extends Decider {
             actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         } else if (currentPlayer.getComputerType()==2){
-
+            /*
+            2nde IA : Stratégie défensive (stratégie défensive qui consiste a avancer en ligne):
+                a. Choisir un pion au hasard
+                b. Vérifier ordi equals joueur bleu:
+                    i. SI OUI:
+                        1. Vérifier si il est sur la ligne 3
+                            a. SI OUI:
+                                i. Choisir un autre pion
+                            b. SI NON:
+                                i. Vérifier si il peut avancer
+                                    1. SI NON:
+                                        a. Choisir un autre pion
+                                    2. SI OUI:
+                                        a. Avancer
+                    ii. SI NON:
+                        1. Vérifier si il est sur la ligne 6
+                            a. SI OUI:
+                                i. Choisir un autre pion
+                            b. SI NON:
+                                i. Vérifier si il peut avancer
+                                    1. SI NON:
+                                        a. Choisir un autre pion
+                                    2. SI OUI:
+                                        a. Avancer
+                     */
         }
         return actions;
     }
