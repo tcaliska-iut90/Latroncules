@@ -192,7 +192,7 @@ public class Model {
         players.add(Player.createHumanPlayer(name));
     }
     public void addComputerPlayer(String name) {
-        System.out.println("Entrer le numéro du type d'IA (1: stratégie de position/attaque ; 2: Stratégie défensive) que vous voulez ajouter en tant que "+name+" : ");
+        System.out.println("Entrer le numéro du type d'IA (1: offensive ; 2: défensive) que vous voulez ajouter en tant que "+name+" : ");
         typeComp = sc.nextInt();
         players.add(Player.createComputerPlayer(name, typeComp));
     }
