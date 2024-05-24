@@ -1,14 +1,18 @@
 import boardifier.control.Logger;
-import boardifier.model.GameException;
-import boardifier.view.ConsoleColor;
-import boardifier.view.View;
 import boardifier.control.StageFactory;
+import boardifier.model.GameException;
 import boardifier.model.Model;
+import boardifier.view.View;
 import control.HoleController;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class HoleConsole {
 
-    public static void main(String[] args) {
+    private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
 
         Logger.setLevel(Logger.LOGGER_TRACE);
         Logger.setVerbosity(Logger.VERBOSE_HIGH);
@@ -24,8 +28,19 @@ public class HoleConsole {
         }
         Model model = new Model();
         if (mode == 0) {
-            model.addHumanPlayer("PlayerBlue");
-            model.addHumanPlayer("PlayerRed");
+            System.out.println("Qui commence ?");
+            System.out.println("(1)PlayerRed");
+            System.out.println("(2)PlayerBlue");
+            String line = bufferedReader.readLine();
+            if (Integer.parseInt(line) == 1){
+                model.addHumanPlayer("PlayerRed");
+                model.addHumanPlayer("PlayerBlue");
+            }else {
+                model.addHumanPlayer("PlayerBlue");
+                model.addHumanPlayer("PlayerRed");
+            }
+
+
         }
         else if (mode == 1) {
             model.addHumanPlayer("PlayerBlue");
