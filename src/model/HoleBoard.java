@@ -35,7 +35,7 @@ public class HoleBoard extends ContainerElement {
     public int[][] getValidCell(Model model, Arrow a1, Arrow a2, int row, int col){
         ValidCell = new int[4][2];
         int indexi = 0;
-        int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
+        int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
         //Regarde le type de flèches en paramètres
         if (a1.getDirection() == 0 || a2.getDirection() == 0){
@@ -75,7 +75,7 @@ public class HoleBoard extends ContainerElement {
      */
     public int[][] getValidCell(Model model, int row, int col){
         ValidCell = new int[8][2];
-        int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
+        int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
         //Récupère tous les coups possibles autour du pion
         getCellVerticalArrow(row, col, 0);
@@ -188,7 +188,7 @@ public class HoleBoard extends ContainerElement {
      * @param colorPawn
      */
     public void takingPawn(HoleStageModel stageModel, HoleBoard board, Model model, int row, int col, int colorPawn){
-        int colorEnemy = model.getIdPlayer() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
+        int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
         for (int i = row -1; i <= row +1; i++) {
             for (int j = col -1 ; j <= col +1; j++) {

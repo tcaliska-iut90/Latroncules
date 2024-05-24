@@ -169,7 +169,7 @@ class HoleControllerTest {
 
     @Test
     public void testColorAnalyseAndPlay(){
-        when(mockModel.getIdPlayer()).thenReturn(0);
+        when(mockModel.getCurrentPlayer().getColor()).thenReturn(0);
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
         boolean result = holeController.analyseAndPlay("A1A2");
         assertFalse(result);

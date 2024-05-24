@@ -299,7 +299,7 @@ public class HoleDecider extends Decider {
 
         // check if the pawn is the good color
         int color;
-        if (model.getIdPlayer() == 0) {
+        if (model.getCurrentPlayer().getColor() == 0) {
             color = Pawn.PAWN_BLUE;
         } else {
             color = Pawn.PAWN_RED;

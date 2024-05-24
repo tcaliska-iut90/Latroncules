@@ -1,4 +1,5 @@
 import boardifier.model.Model;
+import boardifier.model.Player;
 import model.Arrow;
 import model.HoleBoard;
 import model.HoleStageModel;
@@ -17,12 +18,14 @@ class HoleBoardTest {
     private Arrow mockArrow1;
     private Arrow mockArrow2;
     private HoleStageModel mockStageModel;
+    private Player mockPlayer;
 
     @BeforeEach
     void setUp() {
         mockModel = mock(Model.class);
         mockArrow1 = mock(Arrow.class);
         mockArrow2 = mock(Arrow.class);
+        mockPlayer = mock(Player.class);
         mockStageModel = mock(HoleStageModel.class);
 
         holeBoard = new HoleBoard(0, 0, mockStageModel);  // assuming some GameStageModel is used
@@ -32,6 +35,8 @@ class HoleBoardTest {
     void testGetValidCellWithArrows() {
         when(mockArrow1.getDirection()).thenReturn(0);
         when(mockArrow2.getDirection()).thenReturn(1);
+        when(mockModel.getCurrentPlayer()).thenReturn(mockPlayer);
+        when(mockModel.getCurrentPlayer().getColor()).thenReturn(1);
         int[][] result = holeBoard.getValidCell(mockModel, mockArrow1, mockArrow2, 4, 4);
         int[][] expected = {{3, 4}, {5, 4}, {4, 3}, {4, 5}};
         assertArrayEquals(expected, result);
@@ -46,6 +51,7 @@ class HoleBoardTest {
     @Test
     void testGetValidCellWithoutArrows() {
         // Test pion sans ennemies autour
+        when(mockModel.getCurrentPlayer()).thenReturn(mockPlayer);
         int[][] result = holeBoard.getValidCell(mockModel, 4, 4);
         int[][] expected = {{3, 4}, {5, 4}, {4, 3}, {4, 5}, {3, 3}, {5, 5}, {3, 5}, {5, 3}};
         assertArrayEquals(expected, result);
@@ -54,7 +60,8 @@ class HoleBoardTest {
         //Un saut de pion est effectué de façon à ce que le pion joueur en 4,4 puissent aller en 4,6 si un pion ennemie est en 4,5
         Pawn pawnEnnemy = mock(Pawn.class);
         when(pawnEnnemy.getColor()).thenReturn(Pawn.PAWN_BLUE);
-        when(mockModel.getIdPlayer()).thenReturn(1);
+        when(mockModel.getCurrentPlayer()).thenReturn(mockPlayer);
+        when(mockModel.getCurrentPlayer().getColor()).thenReturn(1);
         holeBoard.addElement(pawnEnnemy, 3,3);
         holeBoard.addElement(pawnEnnemy, 5,5);
         holeBoard.addElement(pawnEnnemy, 3,4);
@@ -75,7 +82,8 @@ class HoleBoardTest {
         int col = 4;
         Pawn PawnEnemy = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, mockStageModel);
         Pawn pawn = new Pawn(0, Pawn.PAWN_RED, mockStageModel);
-        when(mockModel.getIdPlayer()).thenReturn(1);
+        when(mockModel.getCurrentPlayer()).thenReturn(mockPlayer);
+        when(mockModel.getCurrentPlayer().getColor()).thenReturn(1);
 
         // Simulate enemy pawns around the position
         holeBoard.addElement(pawn, row - 1, col);
@@ -116,7 +124,8 @@ class HoleBoardTest {
 
         Pawn PawnEnemy = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, mockStageModel);
         Pawn pawn = new Pawn(0, Pawn.PAWN_RED, mockStageModel);
-        when(mockModel.getIdPlayer()).thenReturn(1);
+        when(mockModel.getCurrentPlayer()).thenReturn(mockPlayer);
+        when(mockModel.getCurrentPlayer().getColor()).thenReturn(1);
 
 
         //Test coin Supérieur Gauche

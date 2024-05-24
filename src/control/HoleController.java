@@ -397,7 +397,7 @@ public class HoleController extends Controller {
     public boolean moveIsOk(HoleStageModel stage, HoleBoard board){
         boolean result = false;
 
-        if (model.getIdPlayer() == 0){
+        if (model.getCurrentPlayer().getColor() == 0){
             result = moveIsOkRed(stage, board);
         }
         else {
