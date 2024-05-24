@@ -60,6 +60,33 @@ public class HoleController extends Controller {
     }
 
 
+    public boolean possibiliteDeMouvement(){
+        HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
+        HoleBoard board = gameStage.getBoard();
+
+
+        Pawn[] bluePawns = gameStage.getBluePawns();
+
+
+
+        for (Pawn bluePawn : bluePawns) {
+            int possibilites[][] = board.getValidCell(model, bluePawn.getCol(), bluePawn.getRow());
+
+
+            if (bluePawn.getRole() == Pawn.INFANTRYMAN) {
+                for(int i=0;i< 8;i++){
+                    System.out.println("Possibilites : " + possibilites);
+                }
+//                if (!verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
+//            } else {
+//                if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
+            }
+        }
+        gameStage.computePartyResult(0);
+        return false;
+    }
+
+
     public int checkWinner(){
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
 
@@ -127,6 +154,7 @@ public class HoleController extends Controller {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         HoleBoard board = gameStage.getBoard();
 
+        possibiliteDeMouvement();
 
         // Obtenir les coordonnées du pion
         int colPawn = (int) (line.charAt(0) - 'A');
@@ -173,6 +201,9 @@ public class HoleController extends Controller {
 
         return true;
     }
+
+
+
 
     /**
      * Vérifie le coup pour un infantryman
