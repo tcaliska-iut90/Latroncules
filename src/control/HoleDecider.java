@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.StreamSupport;
 
 public class HoleDecider extends Decider {
 
@@ -47,9 +48,6 @@ public class HoleDecider extends Decider {
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel) model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
-        Pawn pawn; // the pawn that is moved
-        int rowDest; // the dest. row in board
-        int colDest; // the dest. col in board
         List<Pawn> pawns = stage.getPawns(currentPlayer);
         List<Pawn> pawns_adverse = stage.getPawns(adversary);
         ActionList actions = new ActionList();
