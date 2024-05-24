@@ -1,6 +1,7 @@
 package model;
 
 import boardifier.model.*;
+import control.HoleController;
 
 import java.util.Arrays;
 
@@ -216,6 +217,7 @@ public class HoleStageModel extends GameStageModel {
             if(isRedMissing()){
                 computePartyResult(1);
             }
+
             /*
             if(board.getValidCell(model,rowDest,colDest).length == 0){
                 //computePartyResult();
@@ -229,7 +231,7 @@ public class HoleStageModel extends GameStageModel {
 
     }
 
-    private void computePartyResult(int idWinner) {
+    public void computePartyResult(int idWinner) {
         // set the winner
         model.setIdWinner(idWinner);
         // stop the game
