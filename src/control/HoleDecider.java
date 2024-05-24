@@ -141,7 +141,7 @@ public class HoleDecider extends Decider {
                     }
                     //Éloignement des bords
                     if (pawns.get(i).getRole()==0 && (p.getCol() == 0 || p.getCol() == 7 || p.getRow() == 0 || p.getRow() == 7)) {
-                        score -= 5;
+                        score -= 8;
                     }
                     if (pawns.get(i).getRow() == 0 || pawns.get(i).getRow() == 7) {
                         if (pawns.get(i).getRole()==1) {
