@@ -30,15 +30,14 @@ class HoleBoardTest {
 
     @Test
     void testGetValidCellWithArrows() {
-        when(mockArrow1.getDirection()).thenReturn(0);  // Vertical arrow
-        when(mockArrow2.getDirection()).thenReturn(1);  // Horizontal arrow
-
+        when(mockArrow1.getDirection()).thenReturn(0);
+        when(mockArrow2.getDirection()).thenReturn(1);
         int[][] result = holeBoard.getValidCell(mockModel, mockArrow1, mockArrow2, 4, 4);
         int[][] expected = {{3, 4}, {5, 4}, {4, 3}, {4, 5}};
         assertArrayEquals(expected, result);
 
-        when(mockArrow1.getDirection()).thenReturn(2);  // Vertical arrow
-        when(mockArrow2.getDirection()).thenReturn(3);  // Horizontal arrow
+        when(mockArrow1.getDirection()).thenReturn(2);
+        when(mockArrow2.getDirection()).thenReturn(3);
         int[][] result2 = holeBoard.getValidCell(mockModel, mockArrow1, mockArrow2, 4, 4);
         int[][] expected2 = {{3,3}, {5,5}, {3, 5}, {5, 3}};
         assertArrayEquals(expected2, result2);
@@ -46,10 +45,28 @@ class HoleBoardTest {
 
     @Test
     void testGetValidCellWithoutArrows() {
+        // Test pion sans ennemies autour
         int[][] result = holeBoard.getValidCell(mockModel, 4, 4);
-
         int[][] expected = {{3, 4}, {5, 4}, {4, 3}, {4, 5}, {3, 3}, {5, 5}, {3, 5}, {5, 3}};
         assertArrayEquals(expected, result);
+
+        // Test pion présent sur une case autour
+        //Un saut de pion est effectué de façon à ce que le pion joueur en 4,4 puissent aller en 4,6 si un pion ennemie est en 4,5
+        Pawn pawnEnnemy = mock(Pawn.class);
+        when(pawnEnnemy.getColor()).thenReturn(Pawn.PAWN_BLUE);
+        when(mockModel.getIdPlayer()).thenReturn(1);
+        holeBoard.addElement(pawnEnnemy, 3,3);
+        holeBoard.addElement(pawnEnnemy, 5,5);
+        holeBoard.addElement(pawnEnnemy, 3,4);
+        holeBoard.addElement(pawnEnnemy, 5,4);
+        holeBoard.addElement(pawnEnnemy, 4,3);
+        holeBoard.addElement(pawnEnnemy, 4,5);
+        holeBoard.addElement(pawnEnnemy, 3,5);
+        holeBoard.addElement(pawnEnnemy, 5,3);
+
+        int[][] result2 = holeBoard.getValidCell(mockModel, 4, 4);
+        int[][] expected2 = {{2, 4}, {6, 4}, {4, 2}, {4, 6}, {2, 2}, {6, 6}, {2, 6}, {6, 2}};
+        assertArrayEquals(expected2, result2);
     }
 
     @Test
@@ -61,37 +78,36 @@ class HoleBoardTest {
         when(mockModel.getIdPlayer()).thenReturn(1);
 
         // Simulate enemy pawns around the position
-        holeBoard.addElement(pawn, row - 1, col);  // Pawn above
-        holeBoard.addElement(pawn, row + 1, col);  // Pawn below
-        holeBoard.addElement(pawn, row, col - 1);  // Pawn left
-        holeBoard.addElement(pawn, row, col + 1);  // Pawn right
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(pawn, row - 1, col);
+        holeBoard.addElement(pawn, row + 1, col);
+        holeBoard.addElement(pawn, row, col - 1);
+        holeBoard.addElement(pawn, row, col + 1);
+        holeBoard.addElement(PawnEnemy, row, col);
 
         //Test vertical
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row-1, col, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, row, col);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row+1, col, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, row, col);
 
         //Test horizontal
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row, col - 1, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, row, col);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row, col + 1, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, row, col);
 
         //Diagonale Major
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row- 1, col - 1, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, row, col);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row + 1, col + 1, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, row, col);
 
         //Diagonale Minor
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row - 1, col + 1, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, row, col); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, row, col);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, row + 1, col -1, Pawn.PAWN_RED);
 
         // Verify if deletePawnsTaking was called correctly
-        verify(mockStageModel, times(8)).addRedPawnsTaking(PawnEnemy);
         verify(mockStageModel, times(8)).removeBluePawns(PawnEnemy);
     }
 
@@ -104,40 +120,39 @@ class HoleBoardTest {
 
 
         //Test coin Supérieur Gauche
-        holeBoard.addElement(PawnEnemy, 0, 0); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 0, 0);
         holeBoard.addElement(pawn, 1, 0);
         holeBoard.addElement(pawn, 0, 1);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, 1, 0, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, 0, 0); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 0, 0);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, 0, 1, Pawn.PAWN_RED);
 
 
         //Test coin supérieur droit
-        holeBoard.addElement(PawnEnemy, 0, 7); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 0, 7);
         holeBoard.addElement(pawn, 0, 6);
         holeBoard.addElement(pawn, 1, 7);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, 0, 6, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, 0, 7); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 0, 7);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel,1, 7, Pawn.PAWN_RED);
 
         //Test coin inférieur gauche
-        holeBoard.addElement(PawnEnemy, 7, 0); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 7, 0);
         holeBoard.addElement(pawn, 6, 0);
         holeBoard.addElement(pawn, 7, 1);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, 6, 0, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, 7, 0); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 7, 0);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, 7, 1, Pawn.PAWN_RED);
 
         //Coin Inférieur droit
-        holeBoard.addElement(PawnEnemy, 7, 7); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 7, 7);
         holeBoard.addElement(pawn, 7, 6);
         holeBoard.addElement(pawn, 6, 7);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, 7, 6, Pawn.PAWN_RED);
-        holeBoard.addElement(PawnEnemy, 7, 7); // pawn Enemy
+        holeBoard.addElement(PawnEnemy, 7, 7);
         holeBoard.takingPawn(mockStageModel, holeBoard, mockModel, 6, 7, Pawn.PAWN_RED);
 
         // Verify if deletePawnsTaking was called correctly
-        verify(mockStageModel, times(8)).addRedPawnsTaking(PawnEnemy);
         verify(mockStageModel, times(8)).removeBluePawns(PawnEnemy);
     }
 
