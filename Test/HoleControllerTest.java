@@ -257,12 +257,6 @@ class HoleControllerTest {
         assertTrue(checkCoinInférieurDroit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit avec seulement un pion adverse autour est autorisé");
     }
 
-    @Disabled
-    void testCoupInterdit(){
-        when(checkCoupInterditCoin(anyInt(), anyInt(), any(), anyInt())).thenReturn(false);
-        assertFalse(testCoupInterdit(0, 0, mockBoard, Pawn.PAWN_BLUE));
-    }
-
 
 
     private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){

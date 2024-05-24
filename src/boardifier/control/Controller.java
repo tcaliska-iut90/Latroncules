@@ -217,7 +217,6 @@ public abstract class Controller {
         Logger.trace(frameNumber+" - put element look ["+look+"] in "+row+","+col);
         // get the look of the container element
         ContainerLook containerLook = (ContainerLook) getElementLook(container);
-        Logger.trace("Nb lignes :" + container.getName());
         // add the look of the element to the inner looks of the container look =>
         // the innerLayout of the container look now manages the element look location.
         containerLook.addInnerLook(look, row, col);

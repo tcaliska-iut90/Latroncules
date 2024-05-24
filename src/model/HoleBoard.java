@@ -57,7 +57,7 @@ public class HoleBoard extends ContainerElement {
         // Si un pion est sur les cases jouable on déplace la case jouable dans la même ligne
         for (int i = 0; i < ValidCell.length; i++) {
             Pawn p = (Pawn)this.getElement(ValidCell[i][0], ValidCell[i][1]);
-            if (p != null && p.getColor() == colorEnemy){
+            if (p != null && p.getColor() == colorEnemy && (ValidCell[i][0] > 0 && ValidCell[i][0] < 7) && (ValidCell[i][1] >  0 && ValidCell[i][1] < 7)){
                 ValidCell[i][0] = ValidCell[i][0] + (ValidCell[i][0] - row);
                 ValidCell[i][1] = ValidCell[i][1] + (ValidCell[i][1] - col);
             }
@@ -87,7 +87,6 @@ public class HoleBoard extends ContainerElement {
 
         for (int i = 0; i < ValidCell.length; i++) {
             Pawn p = (Pawn)this.getElement(ValidCell[i][0], ValidCell[i][1]);
-            System.out.println("(" + ValidCell[i][0] + ", " + ValidCell[i][1] + ")");
             if (p != null && p.getColor() == colorEnemy && (ValidCell[i][0] > 0 && ValidCell[i][0] < 7) && (ValidCell[i][1] >  0 && ValidCell[i][1] < 7)){
                 ValidCell[i][0] = ValidCell[i][0] + (ValidCell[i][0] - row);
                 ValidCell[i][1] = ValidCell[i][1] + (ValidCell[i][1] - col);

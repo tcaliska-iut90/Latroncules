@@ -126,7 +126,7 @@ public class HoleStageModel extends GameStageModel {
      */
     public void removeBluePawns(Pawn p){
         for (int i = 0; i < bluePawns.length; i++) {
-            if (bluePawns[i] == p) {
+            if (bluePawns[i] != null && bluePawns[i].getCol() == p.getCol() && bluePawns[i].getRow() == p.getRow()) {
                 bluePawns[i] = null;
                 p.removeFromStage();
             }
@@ -167,7 +167,7 @@ public class HoleStageModel extends GameStageModel {
      */
     public void removeRedPawns(Pawn p){
         for (int i = 0; i < redPawns.length; i++) {
-            if (redPawns[i] == p) {
+            if (redPawns[i] != null && redPawns[i].getCol() == p.getCol() && redPawns[i].getRow() == p.getRow()) {
                 redPawns[i] = null;
                 p.removeFromStage();
             }
@@ -192,12 +192,6 @@ public class HoleStageModel extends GameStageModel {
 
 
     private void setupCallbacks() {
-       // HoleStageModel stage = (HoleStageModel) model.getGameStage();
-        //HoleBoard board = stage.getBoard();
-
-
-
-
 
         //System.out.println((holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
@@ -205,8 +199,7 @@ public class HoleStageModel extends GameStageModel {
 
             System.out.println("Row " + rowDest + " col " + colDest);
 
-            System.out.println("cellules valides : " + Arrays.deepToString(board.getValidCell(model, rowDest, colDest)));
-            //Pawn p = new Pawn();
+            //System.out.println("cellules valides : " + Arrays.deepToString(board.getValidCell(model, rowDest, colDest)));
 
 
 
@@ -216,13 +209,6 @@ public class HoleStageModel extends GameStageModel {
             if(isRedMissing()){
                 computePartyResult(1);
             }
-            /*
-            if(board.getValidCell(model,rowDest,colDest).length == 0){
-                //computePartyResult();
-                System.out.println("Plus de mouvements possibles, ça devrait être la fin");
-            }
-
-             */
         });
 
 

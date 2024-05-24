@@ -3,6 +3,7 @@ package control;
 import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
+import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
@@ -60,31 +61,6 @@ public class HoleController extends Controller {
     }
 
 
-    public boolean possibiliteDeMouvement(){
-        HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
-        HoleBoard board = gameStage.getBoard();
-
-
-        Pawn[] bluePawns = gameStage.getBluePawns();
-
-
-
-        for (Pawn bluePawn : bluePawns) {
-            int possibilites[][] = board.getValidCell(model, bluePawn.getCol(), bluePawn.getRow());
-
-
-            if (bluePawn.getRole() == Pawn.INFANTRYMAN) {
-                for(int i=0;i< 8;i++){
-                    System.out.println("Possibilites : " + possibilites);
-                }
-//                if (!verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
-//            } else {
-//                if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
-            }
-        }
-        gameStage.computePartyResult(0);
-        return false;
-    }
 
 
     public int checkWinner(){
@@ -198,7 +174,8 @@ public class HoleController extends Controller {
         play.start();
         board.takingPawn(gameStage, board, model, finRow, finCol, color);
         changeInfantrymanToHorseman(p, finRow);
-        moveIsOk(gameStage, finRow, finCol, board);
+        boolean t = moveIsOk(gameStage, finRow, finCol, board);
+        System.out.println("Résultat méthode : " + t);
 
         return true;
     }
@@ -214,7 +191,7 @@ public class HoleController extends Controller {
      * @param rowPawn Ligne du pion joueur
      * @param finRow Colonne final du pion joueur
      * @param finCol Ligne final du pion joueur
-     * @return true si coup possible
+     * @return true si coup possible, false sinon
      */
     public boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
 
@@ -240,7 +217,7 @@ public class HoleController extends Controller {
      * @param finRow Colonne final du pion joueur
      * @param finCol Ligne final du pion joueur
      * @param holeStageModel
-     * @return true si coup possible
+     * @return true si coup possible, false sinon
      */
     public boolean verifMoveCavalier(HoleBoard board, int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModel, int color) {
         int[][] temp;
@@ -408,45 +385,62 @@ public class HoleController extends Controller {
         return true;
     }
 
-    public void moveIsOk(HoleStageModel stage, int rowDest, int colDest, HoleBoard board){
+    public boolean moveIsOk(HoleStageModel stage, int rowDest, int colDest, HoleBoard board){
         boolean result = false;
+        System.out.println(true);
 
         for (int i = 0; i < stage.getBluePawns().length; i++) {
             if (stage.getBluePawns()[i] != null) {
-                if (stage.getBluePawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getBluePawns()[i], rowDest, colDest, board)) result = true;
-                else if (stage.getBluePawns()[i].getRole() == Pawn.HORSEMAN && !moveIsOkHorseman(stage.getBluePawns()[i], rowDest, colDest, board, stage)) result = true;
+                if (stage.getBluePawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getBluePawns()[i], stage.getBluePawns()[i].getRow(), stage.getBluePawns()[i].getCol(), board)) {
+                    result = true;
+                }
+                else if (stage.getBluePawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getBluePawns()[i], stage.getBluePawns()[i].getRow(), stage.getBluePawns()[i].getCol(), board, stage)) {
+                    result = true;
+                }
             } else if (stage.getRedPawns()[i] != null) {
-                if (stage.getRedPawns()[i].getRole() == Pawn.INFANTRYMAN && !moveIsOkInfantryman(stage.getRedPawns()[i], rowDest, colDest, board))result = true;
-                else if (stage.getRedPawns()[i].getRole() == Pawn.HORSEMAN && !moveIsOkHorseman(stage.getRedPawns()[i], rowDest, colDest, board, stage)) result = true;
+                if (stage.getRedPawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board)){
+                    result = true;
+                }
+                else if (stage.getRedPawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board, stage)) {
+                    result = true;
+                }
             }
         }
-        if (!result)callPartyResult(stage, result);
+        if (!result) callPartyResult(stage);
+        System.out.println(result);
+        return result;
     }
 
-    public void callPartyResult(HoleStageModel stage, Boolean result){
+    public void callPartyResult(HoleStageModel stage){
         if (model.getIdPlayer() == 0) stage.computePartyResult(0);
         else stage.computePartyResult(1);
     }
 
     public boolean moveIsOkInfantryman(Pawn pawn, int row, int col, HoleBoard board){
 
+        System.out.println("moveIsOkInfantryman: row = " + row + ", col =" + col + ", role =" + pawn.getRole() + "ContainerElement = " + pawn.getContainer().getName());
         if (pawn.getColor() == Pawn.PAWN_BLUE) return verifPawnMove(board, pawn.getColor(), col, row, row+1, col);
         else return verifPawnMove(board, pawn.getColor(), col, row, row-1, col);
     }
 
     public boolean moveIsOkHorseman(Pawn pawn, int row, int col, HoleBoard board, HoleStageModel holeStageModel){
+        System.out.println("moveIsOkHorseman: row = " + row + ", col =" + col + ", role =" + pawn.getRole() + "ContainerElement = " + pawn.getContainer().getName());
+
         int[][] temp;
-        boolean result = true;
+        boolean result = false;
 
         if (holeStageModel.getBoardArrows1()[row][col] != null) {
             temp = board.getValidCell(model, holeStageModel.getBoardArrows1()[row][col], holeStageModel.getBoardArrows2()[row][col], row, col);
         } else {
             temp = board.getValidCell(model, row, col);
         }
+
         int i = 0;
-        while (result && i < temp.length){
-            result = verifMoveCavalier(board,col, row, temp[i][0], temp[i][1], holeStageModel, pawn.getColor());
-            i+=1;
+        for (int j = 0; j < temp.length; j++){
+            if (verifMoveCavalier(board,col, row, temp[i][0], temp[i][1], holeStageModel, pawn.getColor())) {
+                result = true;
+            }
+            i++;
         }
         return result;
     }
