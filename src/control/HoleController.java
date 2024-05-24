@@ -60,7 +60,7 @@ public class HoleController extends Controller {
     }
 
 
-    public void nombrePossibilites(){
+    public boolean possibiliteDeMouvement(){
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         HoleBoard board = gameStage.getBoard();
 
@@ -82,6 +82,7 @@ public class HoleController extends Controller {
 //                if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
             }
         }
+        return false;
     }
 
 
@@ -152,7 +153,7 @@ public class HoleController extends Controller {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         HoleBoard board = gameStage.getBoard();
 
-        nombrePossibilites();
+        possibiliteDeMouvement();
 
         // Obtenir les coordonnées du pion
         int colPawn = (int) (line.charAt(0) - 'A');
