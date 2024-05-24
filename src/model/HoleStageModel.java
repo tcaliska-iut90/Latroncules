@@ -229,7 +229,7 @@ public class HoleStageModel extends GameStageModel {
 
     }
 
-    private void computePartyResult(int idWinner) {
+    public void computePartyResult(int idWinner) {
         // set the winner
         model.setIdWinner(idWinner);
         // stop the game
