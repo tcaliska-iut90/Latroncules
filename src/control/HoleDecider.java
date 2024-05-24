@@ -47,13 +47,9 @@ public class HoleDecider extends Decider {
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel) model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
-        int color;
-        if (model.getIdPlayer() == 0) {
-            color = Pawn.PAWN_BLUE;
-        } else {
-            color = Pawn.PAWN_RED;
-        }
-
+        Pawn pawn; // the pawn that is moved
+        int rowDest; // the dest. row in board
+        int colDest; // the dest. col in board
         List<Pawn> pawns = stage.getPawns(currentPlayer);
         List<Pawn> pawns_adverse = stage.getPawns(adversary);
         ActionList actions = new ActionList();
@@ -125,7 +121,7 @@ public class HoleDecider extends Decider {
                             score += 10;
                         }
                     }
-                    if (isOnStrategicPositionPlus(p)) {
+                    if (isOnStrategicPositionPlus(pawns.get(i).getCol(), pawns.get(i).getRow())) {
                         score -= 5;
                     }
                     for (PointPosition sp : strategicPositionsPlus) {
@@ -136,17 +132,25 @@ public class HoleDecider extends Decider {
                     //Proximité des pions adverses
                     for (Pawn pa : pawns_adverse) {
                         if (p.getDistance(pa) < 2) {
-                            score += 30;
+                            score += 15;
                         }
                     }
                     //Éloignement des bords
-                    if (p.getCol() == 0 || p.getCol() == 8 || p.getRow() == 0 || p.getRow() == 8) {
-                        score -= 10;
+                    if (pawns.get(i).getRole()==0 && (p.getCol() == 0 || p.getCol() == 7 || p.getRow() == 0 || p.getRow() == 7)) {
+                        score -= 5;
                     }
-
-                    //Sécurité
-                    if (p.getRow() == 0 || p.getRow() == 8) {
+                    if (pawns.get(i).getRow() == 0 || pawns.get(i).getRow() == 7) {
+                        if (pawns.get(i).getRole()==1) {
+                            score += 5;
+                        }
+                        score += 5;
+                    }
+                    if (possibleMove.size()<10 && pawns.get(i).getRole()==1) {
                         score += 10;
+                    }
+                    //Sécurité
+                    if ((p.getRow()==0 && p.getCol()==0) || (p.getRow()==0 && p.getCol()==7) || (p.getRow()==7 && p.getCol()==0) || (p.getRow()==7 && p.getCol()==7)){
+                        score += 5;
                     }
                     possibleMove.get(i).get(j).setScore(score);
                 }
@@ -245,7 +249,8 @@ public class HoleDecider extends Decider {
         return pawn;
     }
 
-    public boolean isOnStrategicPositionPlus(PointPosition p) {
+    public boolean isOnStrategicPositionPlus(int col, int row) {
+        PointPosition p = new PointPosition(row, col);
         PointPosition[] strategicPositionsPlus = new PointPosition[] {
                 new PointPosition(3, 3), new PointPosition(4, 3), new PointPosition(3, 4), new PointPosition(4, 4)
         };

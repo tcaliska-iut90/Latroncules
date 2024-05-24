@@ -10,6 +10,6 @@ import boardifier.model.GameStageModel;
 public class HolePawnPot extends ContainerElement {
     public HolePawnPot(int x, int y, GameStageModel gameStageModel) {
         // call the super-constructor to create a 4x1 grid, named "pawnpot", and in x,y in space
-        super("pawnpot", x, y, 1, 16, gameStageModel);
+        super("pawnpot", x, y, 1, 32, gameStageModel);
     }
 }

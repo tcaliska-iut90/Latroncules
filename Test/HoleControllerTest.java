@@ -214,7 +214,7 @@ class HoleControllerTest {
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
 
 
-        assertFalse( checkCoinSupérieurGauche(0, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur gauche avec des conditions capturables doit être interdit");
+        assertFalse( checkCoinSupérieurGauche(0, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur gauche en étant capturable doit être interdit");
 
         when(mockBoard.getElement(0, 1)).thenReturn(null);
         assertTrue(checkCoinSupérieurGauche(0, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur gauche avec seulement un pion adverse autour est autorisé");
@@ -227,7 +227,7 @@ class HoleControllerTest {
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
 
 
-        assertFalse(testCoupInterdit(7, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur droit avec des conditions capturables doit être interdit");
+        assertFalse(testCoupInterdit(7, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur droit en étant capturable doit être interdit");
 
         when(mockBoard.getElement(0, 6)).thenReturn(null);
         assertTrue(checkCoinInférieurDroit(7, 0, mockBoard, Pawn.PAWN_BLUE), "Coin supérieur droit avec seulement un pion adverse autour est autorisé");
@@ -239,7 +239,7 @@ class HoleControllerTest {
         when(mockBoard.getElement(7, 1)).thenReturn(mockPawn);
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
 
-        assertFalse( testCoupInterdit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur gauche avec des conditions capturables doit être interdit");
+        assertFalse( testCoupInterdit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur gauche en étant capturable doit être interdit");
 
         when(mockBoard.getElement(6, 0)).thenReturn(null);
         assertTrue(checkCoinInférieurGauche(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur gauche avec seulement un pion adverse autour est autorisé");
@@ -251,10 +251,16 @@ class HoleControllerTest {
         when(mockBoard.getElement(7, 6)).thenReturn(mockPawn);
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
 
-        assertFalse(testCoupInterdit(7, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit avec des conditions capturables doit être interdit");
+        assertFalse(testCoupInterdit(7, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit en étant capturable doit être interdit");
 
         when(mockBoard.getElement(6, 7)).thenReturn(null);
         assertTrue(checkCoinInférieurDroit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit avec seulement un pion adverse autour est autorisé");
+    }
+
+    @Disabled
+    void testCoupInterdit(){
+        when(checkCoupInterditCoin(anyInt(), anyInt(), any(), anyInt())).thenReturn(false);
+        assertFalse(testCoupInterdit(0, 0, mockBoard, Pawn.PAWN_BLUE));
     }
 
 
