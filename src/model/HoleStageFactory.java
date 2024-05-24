@@ -29,7 +29,7 @@ public class HoleStageFactory extends StageElementsFactory {
     //2 pour le test où il ne reste plus de pions rouges
     //0 pour le jeu normal
     //3 pour le jeu avec les pions bloqués
-    public static int testVict = 0;
+    public static int testVict = 3;
 
 
     public HoleStageFactory(GameStageModel gameStageModel) {
@@ -85,7 +85,7 @@ public class HoleStageFactory extends StageElementsFactory {
         } else if(testVict == 0) {
             setupPawns(board);
         } else if(testVict == 2) {
-            Pawn[] bluePawns = new Pawn[3];
+            Pawn[] bluePawns = new Pawn[2];
             bluePawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
             bluePawns[1] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
             // assign the blue pawns to the game stage model

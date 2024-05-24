@@ -2,6 +2,8 @@ package model;
 
 import boardifier.model.*;
 
+import java.util.Arrays;
+
 /**
  * HoleStageModel defines the model for the single stage in "The Hole". Indeed,
  * there are no levels in this game: a party starts and when it's done, the game is also done.
@@ -188,12 +190,26 @@ public class HoleStageModel extends GameStageModel {
         }
     }
 
+
     private void setupCallbacks() {
        // HoleStageModel stage = (HoleStageModel) model.getGameStage();
         //HoleBoard board = stage.getBoard();
 
-        //System.out.println((!holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
+
+
+
+
+        //System.out.println((holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
+
+
+            System.out.println("Row " + rowDest + " col " + colDest);
+
+            System.out.println("cellules valides : " + Arrays.deepToString(board.getValidCell(model, rowDest, colDest)));
+            //Pawn p = new Pawn();
+
+
+
             if(isBlueMissing()){
                 computePartyResult(0);
             }
@@ -216,7 +232,7 @@ public class HoleStageModel extends GameStageModel {
     private void computePartyResult(int idWinner) {
         // set the winner
         model.setIdWinner(idWinner);
-        // stop de the game
+        // stop the game
         model.stopStage();
 
     }
