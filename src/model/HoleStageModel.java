@@ -43,6 +43,8 @@ public class HoleStageModel extends GameStageModel {
     private Arrow[] arrows;
     private TextElement playerName;
 
+    public static int Equality = 3;
+
 
     public HoleStageModel(String name, Model model) {
         super(name, model);
@@ -216,10 +218,13 @@ public class HoleStageModel extends GameStageModel {
     }
 
     public void computePartyResult(int idWinner) {
-        // set the winner
-        model.setIdWinner(idWinner);
-        // stop the game
-        model.stopStage();
+        if (idWinner == HoleStageModel.Equality)model.stopStage();
+        else {
+            // set the winner
+            model.setIdWinner(idWinner);
+            // stop the game
+            model.stopStage();
+        }
 
     }
 

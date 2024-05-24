@@ -176,7 +176,7 @@ public abstract class Controller {
         if (model.getIdWinner() != -1) {
             System.out.println(model.getPlayers().get(model.getIdWinner()).getName() + " wins");
         } else {
-            System.out.println("Draw game");
+            System.out.println("Égalité");
         }
 
     }

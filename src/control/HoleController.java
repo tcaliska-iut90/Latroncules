@@ -91,7 +91,7 @@ public class HoleController extends Controller {
             Pawn pawn = decider.getPawn();
             board.takingPawn(gameStage, board, model, finRow, finCol, pawn.getColor());
             changeInfantrymanToHorseman(pawn, finRow);
-            moveIsOk(gameStage, finRow, finCol, board);
+            moveIsOk(gameStage, board);
             return "Computer";
         } else {
             boolean ok = false;
@@ -174,7 +174,7 @@ public class HoleController extends Controller {
         play.start();
         board.takingPawn(gameStage, board, model, finRow, finCol, color);
         changeInfantrymanToHorseman(p, finRow);
-        boolean t = moveIsOk(gameStage, finRow, finCol, board);
+        boolean t = moveIsOk(gameStage, board);
         System.out.println("Résultat méthode : " + t);
 
         return true;
@@ -385,35 +385,52 @@ public class HoleController extends Controller {
         return true;
     }
 
-    public boolean moveIsOk(HoleStageModel stage, int rowDest, int colDest, HoleBoard board){
+    public boolean moveIsOk(HoleStageModel stage, HoleBoard board){
         boolean result = false;
         System.out.println(true);
 
-        for (int i = 0; i < stage.getBluePawns().length; i++) {
-            if (stage.getBluePawns()[i] != null) {
-                if (stage.getBluePawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getBluePawns()[i], stage.getBluePawns()[i].getRow(), stage.getBluePawns()[i].getCol(), board)) {
-                    result = true;
-                }
-                else if (stage.getBluePawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getBluePawns()[i], stage.getBluePawns()[i].getRow(), stage.getBluePawns()[i].getCol(), board, stage)) {
-                    result = true;
-                }
-            } else if (stage.getRedPawns()[i] != null) {
-                if (stage.getRedPawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board)){
-                    result = true;
-                }
-                else if (stage.getRedPawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board, stage)) {
-                    result = true;
-                }
-            }
+        if (model.getIdPlayer() == 0){
+            result = moveIsOkRed(stage, board);
         }
-        if (!result) callPartyResult(stage);
+        else {
+            result = moveIsOkBlue(stage, board);
+        }
+
+        if (!result) callPartyResult(stage, HoleStageModel.Equality);
         System.out.println(result);
         return result;
     }
 
-    public void callPartyResult(HoleStageModel stage){
-        if (model.getIdPlayer() == 0) stage.computePartyResult(0);
-        else stage.computePartyResult(1);
+    public boolean moveIsOkBlue(HoleStageModel stage, HoleBoard board) {
+        boolean result = false;
+        for (int i = 0; i < stage.getBluePawns().length; i++) {
+            if (stage.getBluePawns()[i] != null) {
+                if (stage.getBluePawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getBluePawns()[i], stage.getBluePawns()[i].getRow(), stage.getBluePawns()[i].getCol(), board)) {
+                    result = true;
+                } else if (stage.getBluePawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getBluePawns()[i], stage.getBluePawns()[i].getRow(), stage.getBluePawns()[i].getCol(), board, stage)) {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    public boolean moveIsOkRed(HoleStageModel stage, HoleBoard board) {
+        boolean result = false;
+        for (int i = 0; i < stage.getRedPawns().length; i++) {
+            if (stage.getRedPawns()[i] != null) {
+                if (stage.getRedPawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board)) {
+                    result = true;
+                } else if (stage.getRedPawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board, stage)) {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    public void callPartyResult(HoleStageModel stage, int idWinner){
+        stage.computePartyResult(idWinner);
     }
 
     public boolean moveIsOkInfantryman(Pawn pawn, int row, int col, HoleBoard board){

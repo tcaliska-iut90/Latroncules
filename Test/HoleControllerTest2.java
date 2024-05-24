@@ -2,6 +2,7 @@ import boardifier.model.ContainerElement;
 import boardifier.model.Model;
 import boardifier.view.View;
 import control.HoleController;
+import model.Arrow;
 import model.HoleBoard;
 import model.HoleStageModel;
 import model.Pawn;
@@ -17,6 +18,7 @@ class HoleControllerTest2 {
     private HoleController holeController; // Updated to HoleController
     private Model mockModel;
     private View mockView;
+    private Pawn pawn;
 
     @BeforeEach
     void setUp() {
@@ -24,7 +26,23 @@ class HoleControllerTest2 {
         board = mock(HoleBoard.class);
         mockModel = mock(Model.class);
         mockView = mock(View.class);
+        pawn = mock(Pawn.class);
         holeController = mock(HoleController.class);
+    }
+
+    @Test
+    void testMoveIsOkHorseman(){
+        Arrow mockArrow = mock(Arrow.class);
+        int[][] validCells = {};
+        Arrow[][] a = new Arrow[8][8];
+        Arrow[][] arrows1 = {{mockArrow, mockArrow, mockArrow, mockArrow, mockArrow, mockArrow, mockArrow, mockArrow},
+                {mockArrow, mockArrow, mockArrow, mockArrow, mockArrow, mockArrow, mockArrow, mockArrow}};
+
+        when(stage.getBoardArrows1()).thenReturn(a);
+        when(board.getValidCell(any(), anyInt(), anyInt())).thenReturn(validCells);
+        when(holeController.verifMoveCavalier(any(), anyInt(), anyInt(), anyInt(), anyInt(), any(), anyInt())).thenReturn(true);
+
+        assertTrue(holeController.moveIsOkHorseman(pawn, 1, 1, board, stage));
     }
 
     @Test
@@ -40,7 +58,7 @@ class HoleControllerTest2 {
 
         when(holeController.verifPawnMove(any(), anyInt(), anyInt(), anyInt(), anyInt(), anyInt())).thenReturn(true);
 
-        assertTrue(holeController.moveIsOk(stage, 1, 1, board));
+        assertTrue(holeController.moveIsOk(stage, board));
 
         verify(stage, never()).computePartyResult(anyInt());
 
@@ -61,8 +79,7 @@ class HoleControllerTest2 {
         when(board.getValidCell(any(), anyInt(), anyInt())).thenReturn(validCells);
         when(holeController.verifMoveCavalier(any(), anyInt(), anyInt(), anyInt(), anyInt(), any(), anyInt())).thenReturn(true);
 
-        assertTrue(holeController.moveIsOk(stage, 1, 1, board));
-        verify(holeController, times(1)).moveIsOk(any(), anyInt(), anyInt(), any());
+        assertTrue(holeController.moveIsOk(stage, board));
 
         verify(stage, never()).computePartyResult(anyInt());
     }
@@ -80,7 +97,7 @@ class HoleControllerTest2 {
 
         when(holeController.verifPawnMove(any(), anyInt(), anyInt(), anyInt(), anyInt(), anyInt())).thenReturn(false);
 
-        assertFalse(holeController.moveIsOk(stage, 1, 1, board));
+        assertFalse(holeController.moveIsOk(stage, board));
 
         verify(stage, times(1)).computePartyResult(anyInt());
     }
@@ -98,7 +115,7 @@ class HoleControllerTest2 {
 
         when(holeController.verifPawnMove(any(), anyInt(), anyInt(), anyInt(), anyInt(), anyInt())).thenReturn(true);
 
-        assertTrue(holeController.moveIsOk(stage, 1, 1, board));
+        assertTrue(holeController.moveIsOk(stage, board));
 
         verify(stage, never()).computePartyResult(anyInt());
     }
@@ -118,7 +135,7 @@ class HoleControllerTest2 {
         when(board.getValidCell(any(), anyInt(), anyInt())).thenReturn(validCells);
         when(holeController.verifMoveCavalier(any(), anyInt(), anyInt(), anyInt(), anyInt(), any(), anyInt())).thenReturn(true);
 
-        assertTrue(holeController.moveIsOk(stage, 1, 1, board));
+        assertTrue(holeController.moveIsOk(stage, board));
 
         verify(stage, never()).computePartyResult(anyInt());
     }
