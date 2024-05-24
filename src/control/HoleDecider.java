@@ -47,13 +47,9 @@ public class HoleDecider extends Decider {
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel) model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
-        int color;
-        if (model.getIdPlayer() == 0) {
-            color = Pawn.PAWN_BLUE;
-        } else {
-            color = Pawn.PAWN_RED;
-        }
-
+        Pawn pawn; // the pawn that is moved
+        int rowDest; // the dest. row in board
+        int colDest; // the dest. col in board
         List<Pawn> pawns = stage.getPawns(currentPlayer);
         List<Pawn> pawns_adverse = stage.getPawns(adversary);
         ActionList actions = new ActionList();
@@ -141,7 +137,7 @@ public class HoleDecider extends Decider {
                     }
                     //Éloignement des bords
                     if (pawns.get(i).getRole()==0 && (p.getCol() == 0 || p.getCol() == 7 || p.getRow() == 0 || p.getRow() == 7)) {
-                        score -= 8;
+                        score -= 5;
                     }
                     if (pawns.get(i).getRow() == 0 || pawns.get(i).getRow() == 7) {
                         if (pawns.get(i).getRole()==1) {

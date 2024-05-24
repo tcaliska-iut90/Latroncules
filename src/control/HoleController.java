@@ -163,7 +163,6 @@ public class HoleController extends Controller {
             if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
         }
 
-        //System.out.println("Le role avant est " + p.getRole() + " et sa colone est " + rowPawn);
 
         ActionList actions = ActionFactory.generatePutInContainer(model, p, "holeboard", finRow, finCol);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
@@ -207,7 +206,7 @@ public class HoleController extends Controller {
             }
         }
 
-        return true;
+        return testCoupInterdit(finCol, finRow, board, color);
     }
 
     /**
@@ -258,13 +257,18 @@ public class HoleController extends Controller {
     }
 
     private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
+        if ((finRow == 0 || finRow == 7) && (finCol == 0 || finCol == 7)){
+            return checkCoupInterditCoin(finCol, finRow, board, color);
+        }
         if (finRow > 0 && finRow < 7 && !checkCoupInterditVertical(finCol, finRow, board, color)) return false;
 
         if (finCol > 0 && finCol < 7 && !checkCoupInterditHorizontal(finCol, finRow, board, color))return false;
 
         if ((finCol > 0 && finCol < 7) && (finRow > 0 && finRow < 7) && !checkCoupInterditDiagonal(finCol, finRow, board, color))return false;
 
-        return finRow <= 0 || finRow >= 7 || finCol <= 0|| finCol >= 7 || checkCoupInterditVertical(finCol, finRow, board, color);
+        if (finRow > 0 && finRow < 7 && finCol > 0 && finCol < 7 && !checkCoupInterditVertical(finCol, finRow, board, color)) return false;
+
+        return true;
     }
 
     private Boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
@@ -307,6 +311,74 @@ public class HoleController extends Controller {
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow - 1, finCol +1, color) || !board.isCapturable(board, finRow + 1, finCol - 1, color)) {
                 System.out.println("Impossible, coup interdit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoupInterditCoin(int finCol, int finRow, HoleBoard board, int color) {
+        // Vérification pour le coin supérieur gauche (0, 0)
+        if (finCol == 0 && finRow == 0) {
+            return checkCoinSupérieurGauche(finCol, finRow, board, color);
+        }
+        // Vérification pour le coin supérieur droit (0, 7)
+        if (finCol == 7 && finRow == 0) {
+            return checkCoinSupérieurDroit(finCol, finRow, board, color);
+        }
+        // Vérification pour le coin inférieur gauche (7, 0)
+        if (finCol == 0 && finRow == 7) {
+            return checkCoinInférieurGauche(finCol, finRow, board, color);
+        }
+        // Vérification pour le coin inférieur droit (7, 7)
+        if (finCol == 7 && finRow == 7) {
+            return checkCoinInférieurDroit(finCol, finRow, board, color);
+        }
+        return true;
+    }
+
+    private boolean checkCoinSupérieurGauche(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow, finCol + 1);
+        Pawn p2 = (Pawn) board.getElement(finRow + 1, finCol);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow, finCol + 1, color) || !board.isCapturable(board, finRow + 1, finCol, color)) {
+                System.out.println("Impossible, coup interdit au coin supérieur gauche");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoinSupérieurDroit(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
+        Pawn p2 = (Pawn) board.getElement(finRow + 1, finCol);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow, finCol - 1, color) || !board.isCapturable(board, finRow + 1, finCol, color)) {
+                System.out.println("Impossible, coup interdit au coin supérieur droit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoinInférieurGauche(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol);
+        Pawn p2 = (Pawn) board.getElement(finRow, finCol + 1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow - 1, finCol, color) || !board.isCapturable(board, finRow, finCol + 1, color)) {
+                System.out.println("Impossible, coup interdit au coin inférieur gauche");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkCoinInférieurDroit(int finCol, int finRow, HoleBoard board, int color) {
+        Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol);
+        Pawn p2 = (Pawn) board.getElement(finRow, finCol - 1);
+        if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
+            if (!board.isCapturable(board, finRow - 1, finCol, color) || !board.isCapturable(board, finRow, finCol - 1, color)) {
+                System.out.println("Impossible, coup interdit au coin inférieur droit");
                 return false;
             }
         }
