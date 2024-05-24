@@ -204,9 +204,48 @@ public class HoleDecider extends Decider {
             actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         } else if (currentPlayer.getComputerType()==2){
+            ArrayList<ArrayList<PointPosition>> possibleMove = new ArrayList<ArrayList<PointPosition>>();
+
+            for (Pawn p : pawns) {
+                if (p.getRole() == Pawn.INFANTRYMAN) {
+                    possibleMove.add(new ArrayList<PointPosition>());
+                    if (currentPlayer.getName().equals("PlayerBlue") || currentPlayer.getName().equals("computer1")) {
+                        //Test mouvement possible en fonction du joueur
+                        if (analyseCorrectMove(p.getCol(), p.getRow(), p.getCol(), p.getRow() + 1)) {
+                            possibleMove.get(possibleMove.size() - 1).add(new PointPosition(p.getRow() + 1, p.getCol()));
+                        }
+                    } else {
+                        //Test mouvement possible en fonction du joueur
+                        if (analyseCorrectMove(p.getCol(), p.getRow(), p.getCol(), p.getRow() - 1)) {
+                            possibleMove.get(possibleMove.size() - 1).add(new PointPosition(p.getRow() - 1, p.getCol()));
+                        }
+                    }
+                } else if (p.getRole() == Pawn.HORSEMAN){
+                    possibleMove.add(new ArrayList<PointPosition>());
+                    int[][] temp;
+                    if (stage.getBoardArrows1()[p.getRow()][p.getCol()] != null || stage.getBoardArrows2()[p.getRow()][p.getCol()] != null){
+                        temp = board.getValidCell(model, stage.getBoardArrows1()[p.getRow()][p.getCol()], stage.getBoardArrows2()[p.getRow()][p.getCol()], p.getRow(), p.getCol());
+                    } else {
+                        temp = board.getValidCell(model, p.getRow(), p.getCol());
+                    }
+                    for (int i = 0; i < temp.length; i++) {
+                        if (analyseCorrectMove(p.getCol(), p.getRow(), temp[i][1], temp[i][0])) {
+                            possibleMove.get(possibleMove.size() - 1).add(new PointPosition(temp[i][0], temp[i][1]));
+                        }
+                    }
+                }
+            }
             /*
             2nde IA : Stratégie défensive (stratégie défensive qui consiste a avancer en ligne):
                 a. Choisir un pion au hasard
+                */
+            int i = loto.nextInt(possibleMove.size());
+            int j = loto.nextInt(possibleMove.get(i).size());
+            rowDest = possibleMove.get(i).get(j).getRow();
+            colDest = possibleMove.get(i).get(j).getCol();
+            pawn = pawns.get(i);
+            int max = 2;
+            /*
                 b. Vérifier ordi equals joueur bleu:
                     i. SI OUI:
                         1. Vérifier si il est sur la ligne 3
@@ -218,6 +257,26 @@ public class HoleDecider extends Decider {
                                         a. Choisir un autre pion
                                     2. SI OUI:
                                         a. Avancer
+            */
+            if (max == -1) {
+                if (currentPlayer.getName().equals("computer1")) {
+                    if (pawn.getRow() <= max) {
+                        i = loto.nextInt(possibleMove.size());
+                        j = loto.nextInt(possibleMove.get(i).size());
+                        rowDest = possibleMove.get(i).get(j).getRow();
+                        colDest = possibleMove.get(i).get(j).getCol();
+                        pawn = pawns.get(i);
+                    } else {
+                        if (!analyseCorrectMove(pawn.getCol(), pawn.getRow(), pawn.getCol(), pawn.getRow() + 1)) {
+                            i = loto.nextInt(possibleMove.size());
+                            j = loto.nextInt(possibleMove.get(i).size());
+                            rowDest = possibleMove.get(i).get(j).getRow();
+                            colDest = possibleMove.get(i).get(j).getCol();
+                            pawn = pawns.get(i);
+                        }
+                    }
+                } else {
+                /*
                     ii. SI NON:
                         1. Vérifier si il est sur la ligne 6
                             a. SI OUI:
@@ -229,6 +288,36 @@ public class HoleDecider extends Decider {
                                     2. SI OUI:
                                         a. Avancer
                      */
+                    if (pawn.getRow() == 6 ) {
+                        i = loto.nextInt(possibleMove.size());
+                        j = loto.nextInt(possibleMove.get(i).size());
+                        rowDest = possibleMove.get(i).get(j).getRow();
+                        colDest = possibleMove.get(i).get(j).getCol();
+                        pawn = pawns.get(i);
+                    } else {
+                        if (!analyseCorrectMove(pawn.getCol(), pawn.getRow(), pawn.getCol(), pawn.getRow() - 1)) {
+                            i = loto.nextInt(possibleMove.size());
+                            j = loto.nextInt(possibleMove.get(i).size());
+                            rowDest = possibleMove.get(i).get(j).getRow();
+                            colDest = possibleMove.get(i).get(j).getCol();
+                            pawn = pawns.get(i);
+                        }
+                    }
+                }
+            /*
+                    ii. SI NON:
+                        1. Vérifier si il est sur la ligne 6
+                            a. SI OUI:
+                                i. Choisir un autre pion
+                            b. SI NON:
+                                i. Vérifier si il peut avancer
+                                    1. SI NON:
+                                        a. Choisir un autre pion
+                                    2. SI OUI:
+                                        a. Avancer
+            */
+
+            }
         }
         return actions;
     }

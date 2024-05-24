@@ -82,6 +82,7 @@ public class HoleController extends Controller {
 //                if (!verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
             }
         }
+        gameStage.computePartyResult(0);
         return false;
     }
 

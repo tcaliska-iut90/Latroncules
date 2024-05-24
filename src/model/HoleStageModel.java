@@ -1,8 +1,6 @@
 package model;
 
 import boardifier.model.*;
-import boardifier.view.View;
-import control.HoleController;
 
 import java.util.Arrays;
 
@@ -44,9 +42,6 @@ public class HoleStageModel extends GameStageModel {
     private HolePawnPot HoleBluePawnPot;
     private Arrow[] arrows;
     private TextElement playerName;
-    private View view;
-    private HoleController holeController;
-
 
 
     public HoleStageModel(String name, Model model) {
@@ -54,7 +49,7 @@ public class HoleStageModel extends GameStageModel {
         setupCallbacks();
     }
 
-    //Vérification de s'il reste des pions bleue sur le plateau
+    //férification de s'il reste des pions sur le plateau
     public boolean isBlueMissing(){
         for (Pawn bluePawn : bluePawns) {
             //System.out.println("Blue pawn: " + bluePawn);
@@ -179,7 +174,6 @@ public class HoleStageModel extends GameStageModel {
         }
     }
 
-
     public TextElement getPlayerName() {
         return playerName;
     }
@@ -198,24 +192,44 @@ public class HoleStageModel extends GameStageModel {
 
 
     private void setupCallbacks() {
+       // HoleStageModel stage = (HoleStageModel) model.getGameStage();
+        //HoleBoard board = stage.getBoard();
 
+
+
+
+
+        //System.out.println((holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
+
 
             System.out.println("Row " + rowDest + " col " + colDest);
 
             System.out.println("cellules valides : " + Arrays.deepToString(board.getValidCell(model, rowDest, colDest)));
+            //Pawn p = new Pawn();
+
 
 
             if(isBlueMissing()){
-                computePartyResult(1);
-            }
-            if(isRedMissing()) {
                 computePartyResult(0);
             }
+            if(isRedMissing()){
+                computePartyResult(1);
+            }
+            /*
+            if(board.getValidCell(model,rowDest,colDest).length == 0){
+                //computePartyResult();
+                System.out.println("Plus de mouvements possibles, ça devrait être la fin");
+            }
+
+             */
         });
+
+
+
     }
 
-    public void computePartyResult(int idWinner) {
+    private void computePartyResult(int idWinner) {
         // set the winner
         model.setIdWinner(idWinner);
         // stop the game
@@ -227,5 +241,4 @@ public class HoleStageModel extends GameStageModel {
     public StageElementsFactory getDefaultElementFactory() {
         return new HoleStageFactory(this);
     }
-
 }
