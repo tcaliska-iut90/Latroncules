@@ -12,7 +12,7 @@ public class HoleConsole {
 
         Logger.setLevel(Logger.LOGGER_TRACE);
         Logger.setVerbosity(Logger.VERBOSE_HIGH);
-        int mode = 0;
+        int mode = 2;
         if (args.length == 1) {
             try {
                 mode = Integer.parseInt(args[0]);

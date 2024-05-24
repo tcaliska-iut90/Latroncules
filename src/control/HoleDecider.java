@@ -73,10 +73,10 @@ public class HoleDecider extends Decider {
                             possibleMove.get(possibleMove.size() - 1).add(new PointPosition(p.getRow() - 1, p.getCol()));
                         }
                     }
-                } else if (p.getRole() == Pawn.HORSEMAN){
+                } else if (p.getRole() == Pawn.HORSEMAN) {
                     possibleMove.add(new ArrayList<PointPosition>());
                     int[][] temp;
-                    if (stage.getBoardArrows1()[p.getRow()][p.getCol()] != null || stage.getBoardArrows2()[p.getRow()][p.getCol()] != null){
+                    if (stage.getBoardArrows1()[p.getRow()][p.getCol()] != null || stage.getBoardArrows2()[p.getRow()][p.getCol()] != null) {
                         temp = board.getValidCell(model, stage.getBoardArrows1()[p.getRow()][p.getCol()], stage.getBoardArrows2()[p.getRow()][p.getCol()], p.getRow(), p.getCol());
                     } else {
                         temp = board.getValidCell(model, p.getRow(), p.getCol());
@@ -97,7 +97,7 @@ public class HoleDecider extends Decider {
                     new PointPosition(2, 5), new PointPosition(3, 5), new PointPosition(4, 5), new PointPosition(5, 5)
             };
 
-            PointPosition[] strategicPositionsPlus = new PointPosition[] {
+            PointPosition[] strategicPositionsPlus = new PointPosition[]{
                     new PointPosition(3, 3), new PointPosition(4, 3), new PointPosition(3, 4), new PointPosition(4, 4)
             };
 
@@ -135,26 +135,26 @@ public class HoleDecider extends Decider {
                     }
                     //Éloignement des bords
 
-                    if (pawns.get(i).getRole()==0 && (p.getCol() == 0 || p.getCol() == 7 || p.getRow() == 0 || p.getRow() == 7)) {
+                    if (pawns.get(i).getRole() == 0 && (p.getCol() == 0 || p.getCol() == 7 || p.getRow() == 0 || p.getRow() == 7)) {
                         score -= 7;
                     }
                     if (pawns.get(i).getRow() == 0 || pawns.get(i).getRow() == 7) {
-                        if (pawns.get(i).getRole()==1) {
+                        if (pawns.get(i).getRole() == 1) {
                             score += 5;
                         }
                         score += 5;
                     }
                     if (pawns.get(i).getCol() == 0 || pawns.get(i).getCol() == 7) {
-                        if (pawns.get(i).getRole()==1) {
+                        if (pawns.get(i).getRole() == 1) {
                             score += 5;
                         }
                         score += 5;
                     }
-                    if (possibleMove.size()<11 && pawns.get(i).getRole()==1) {
+                    if (possibleMove.size() < 11 && pawns.get(i).getRole() == 1) {
                         score += 11;
                     }
                     //Sécurité
-                    if ((p.getRow()==0 && p.getCol()==0) || (p.getRow()==0 && p.getCol()==7) || (p.getRow()==7 && p.getCol()==0) || (p.getRow()==7 && p.getCol()==7)){
+                    if ((p.getRow() == 0 && p.getCol() == 0) || (p.getRow() == 0 && p.getCol() == 7) || (p.getRow() == 7 && p.getCol() == 0) || (p.getRow() == 7 && p.getCol() == 7)) {
                         score += 5;
                     }
                     possibleMove.get(i).get(j).setScore(score);
@@ -193,17 +193,17 @@ public class HoleDecider extends Decider {
                 System.out.println(pawns.get(pawnIndex.get(i)).getCol() + " " + pawns.get(pawnIndex.get(i)).getRow());
             }
             */
-            if (bestMove.size() >= 1){
+            if (bestMove.size() >= 1) {
                 l = loto.nextInt(bestMove.size());  // if there are several best moves, choose one randomly
             }
 
             rowDest = bestMove.get(l).getRow();
             colDest = bestMove.get(l).getCol();
             pawn = pawns.get(pawnIndex.get(l));
-            System.out.println("Colonne d'arrivée = "+colDest+", Ligne d'arrivée = "+rowDest+". Pion de départ : Col = "+pawn.getCol()+", Row = "+pawn.getRow());
+            System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
             actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
-        } else if (currentPlayer.getComputerType()==2){
+        } else if (currentPlayer.getComputerType() == 2) {
             ArrayList<ArrayList<PointPosition>> possibleMove = new ArrayList<ArrayList<PointPosition>>();
 
             for (Pawn p : pawns) {
@@ -220,10 +220,10 @@ public class HoleDecider extends Decider {
                             possibleMove.get(possibleMove.size() - 1).add(new PointPosition(p.getRow() - 1, p.getCol()));
                         }
                     }
-                } else if (p.getRole() == Pawn.HORSEMAN){
+                } else if (p.getRole() == Pawn.HORSEMAN) {
                     possibleMove.add(new ArrayList<PointPosition>());
                     int[][] temp;
-                    if (stage.getBoardArrows1()[p.getRow()][p.getCol()] != null || stage.getBoardArrows2()[p.getRow()][p.getCol()] != null){
+                    if (stage.getBoardArrows1()[p.getRow()][p.getCol()] != null || stage.getBoardArrows2()[p.getRow()][p.getCol()] != null) {
                         temp = board.getValidCell(model, stage.getBoardArrows1()[p.getRow()][p.getCol()], stage.getBoardArrows2()[p.getRow()][p.getCol()], p.getRow(), p.getCol());
                     } else {
                         temp = board.getValidCell(model, p.getRow(), p.getCol());
@@ -236,89 +236,62 @@ public class HoleDecider extends Decider {
                 }
             }
             /*
-            2nde IA : Stratégie défensive (stratégie défensive qui consiste a avancer en ligne):
-                a. Choisir un pion au hasard
-                */
-            int i = loto.nextInt(possibleMove.size());
-            int j = loto.nextInt(possibleMove.get(i).size());
-            rowDest = possibleMove.get(i).get(j).getRow();
-            colDest = possibleMove.get(i).get(j).getCol();
-            pawn = pawns.get(i);
-            int max = 2;
-            /*
-                b. Vérifier ordi equals joueur bleu:
-                    i. SI OUI:
-                        1. Vérifier si il est sur la ligne 3
-                            a. SI OUI:
-                                i. Choisir un autre pion
-                            b. SI NON:
-                                i. Vérifier si il peut avancer
-                                    1. SI NON:
-                                        a. Choisir un autre pion
-                                    2. SI OUI:
-                                        a. Avancer
+            2nde IA : Stratégie défensive (stratégie défensive qui consiste a avancer en ligne)
             */
-            if (max == -1) {
-                if (currentPlayer.getName().equals("computer1")) {
-                    if (pawn.getRow() <= max) {
-                        i = loto.nextInt(possibleMove.size());
-                        j = loto.nextInt(possibleMove.get(i).size());
-                        rowDest = possibleMove.get(i).get(j).getRow();
-                        colDest = possibleMove.get(i).get(j).getCol();
-                        pawn = pawns.get(i);
-                    } else {
-                        if (!analyseCorrectMove(pawn.getCol(), pawn.getRow(), pawn.getCol(), pawn.getRow() + 1)) {
-                            i = loto.nextInt(possibleMove.size());
-                            j = loto.nextInt(possibleMove.get(i).size());
-                            rowDest = possibleMove.get(i).get(j).getRow();
-                            colDest = possibleMove.get(i).get(j).getCol();
-                            pawn = pawns.get(i);
-                        }
-                    }
-                } else {
-                /*
-                    ii. SI NON:
-                        1. Vérifier si il est sur la ligne 6
-                            a. SI OUI:
-                                i. Choisir un autre pion
-                            b. SI NON:
-                                i. Vérifier si il peut avancer
-                                    1. SI NON:
-                                        a. Choisir un autre pion
-                                    2. SI OUI:
-                                        a. Avancer
-                     */
-                    if (pawn.getRow() == 6 ) {
-                        i = loto.nextInt(possibleMove.size());
-                        j = loto.nextInt(possibleMove.get(i).size());
-                        rowDest = possibleMove.get(i).get(j).getRow();
-                        colDest = possibleMove.get(i).get(j).getCol();
-                        pawn = pawns.get(i);
-                    } else {
-                        if (!analyseCorrectMove(pawn.getCol(), pawn.getRow(), pawn.getCol(), pawn.getRow() - 1)) {
-                            i = loto.nextInt(possibleMove.size());
-                            j = loto.nextInt(possibleMove.get(i).size());
-                            rowDest = possibleMove.get(i).get(j).getRow();
-                            colDest = possibleMove.get(i).get(j).getCol();
-                            pawn = pawns.get(i);
+            ArrayList<PointPosition> PossibleMoveOnTheFrontLine = new ArrayList<PointPosition>();
+            int min = 2;
+            int max = 5;
+            if (max != -1) {
+                for (int i = 0; i < possibleMove.size(); i++) {
+                    for (int j = 0; j < possibleMove.get(i).size(); j++) {
+                        if (currentPlayer.getName().equals("computer1")) {
+                            if (possibleMove.get(i).get(j).getRow() == min || possibleMove.get(i).get(j).getRow() == min - 1) {
+                                PossibleMoveOnTheFrontLine.add(possibleMove.get(i).get(j));
+                            }
+                        } else if (currentPlayer.getName().equals("computer2") || currentPlayer.getName().equals("computer")) {
+                            if (possibleMove.get(i).get(j).getRow() == max || possibleMove.get(i).get(j).getRow() == max + 1) {
+                                PossibleMoveOnTheFrontLine.add(possibleMove.get(i).get(j));
+                            }
                         }
                     }
                 }
-            /*
-                    ii. SI NON:
-                        1. Vérifier si il est sur la ligne 6
-                            a. SI OUI:
-                                i. Choisir un autre pion
-                            b. SI NON:
-                                i. Vérifier si il peut avancer
-                                    1. SI NON:
-                                        a. Choisir un autre pion
-                                    2. SI OUI:
-                                        a. Avancer
-            */
+                if (PossibleMoveOnTheFrontLine.size()==0){
+                    if (currentPlayer.getName().equals("computer1")) {
+                        min++;
+                    } else {
+                        max--;
+                    }
+                }
+                for (int i = 0; i < possibleMove.size(); i++) {
+                    for (int j = 0; j < possibleMove.get(i).size(); j++) {
+                        if (currentPlayer.getName().equals("computer1")) {
+                            if (possibleMove.get(i).get(j).getRow() == min || possibleMove.get(i).get(j).getRow() == min - 1) {
+                                PossibleMoveOnTheFrontLine.add(possibleMove.get(i).get(j));
+                            }
+                        } else if (currentPlayer.getName().equals("computer2") || currentPlayer.getName().equals("computer")) {
+                            if (possibleMove.get(i).get(j).getRow() == max || possibleMove.get(i).get(j).getRow() == max + 1) {
+                                PossibleMoveOnTheFrontLine.add(possibleMove.get(i).get(j));
+                            }
+                        }
+                    }
+                }
+                if (max == 2 || min == 5) {
+                    max = -1;
+                }
+            } else {
+                int l = loto.nextInt(possibleMove.size());
+                int k = loto.nextInt(possibleMove.get(l).size());
+                rowDest = possibleMove.get(l).get(k).getRow();
+                colDest = possibleMove.get(l).get(k).getCol();
+                pawn = pawns.get(l);
+                actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
+                actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
 
             }
+            actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
+            actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         }
+
         return actions;
     }
 
