@@ -22,9 +22,9 @@ public class HoleStageView extends GameStageView {
         HoleStageModel model = (HoleStageModel)gameStageModel;
 
         // create a TextLook for the text element
-        addLook(new TextLook(model.getPlayerName()));
+        addLook(new TextLook(24, "0x000000", model.getPlayerName()));
         // create a ClassicBoardLook (with borders and coordinates) for the main board.
-        addLook(new ClassicBoardLook(2, 6, model.getBoard(), 1, 1, true));
+        addLook(new HoleBoardLook(600, model.getBoard()));
         addLook(new BlackPawnPotLook(model.getHoleBluePawnPot()));
         addLook(new BlackPawnPotLook(model.getHoleRedPawnPot()));
 
@@ -35,23 +35,23 @@ public class HoleStageView extends GameStageView {
 
         if(HoleStageFactory.testVict == 1){
             for(int i=0;i<2;i++) {
-                addLook(new PawnLook(model.getBluePawns()[i]));
-                addLook(new PawnLook(model.getRedPawns()[i]));
+                addLook(new PawnLook(25, model.getBluePawns()[i]));
+                addLook(new PawnLook(25,model.getRedPawns()[i]));
             }
 
         }else if(HoleStageFactory.testVict == 0){
             for(int i=0;i<16;i++) {
-                addLook(new PawnLook(model.getBluePawns()[i]));
-                addLook(new PawnLook(model.getRedPawns()[i]));
+                addLook(new PawnLook(25,model.getBluePawns()[i]));
+                addLook(new PawnLook(25,model.getRedPawns()[i]));
             }
         } else if (HoleStageFactory.testVict == 2) {
             for(int i=0;i<2;i++) {
-                addLook(new PawnLook(model.getBluePawns()[i]));
+                addLook(new PawnLook(25,model.getBluePawns()[i]));
             }
-            addLook(new PawnLook(model.getRedPawns()[0]));
+            addLook(new PawnLook(25,model.getRedPawns()[0]));
         } else if (HoleStageFactory.testVict == 3) {
-            addLook(new PawnLook(model.getRedPawns()[0]));
-            addLook(new PawnLook(model.getBluePawns()[0]));
+            addLook(new PawnLook(25,model.getRedPawns()[0]));
+            addLook(new PawnLook(25,model.getBluePawns()[0]));
         }
 
 

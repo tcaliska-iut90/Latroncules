@@ -4,7 +4,6 @@ import boardifier.model.ContainerElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
-import boardifier.view.ConsoleColor;
 
 /**
  * HoleStageFactory must create the game elements that are defined in HoleStageModel
@@ -43,11 +42,13 @@ public class HoleStageFactory extends StageElementsFactory {
 
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(0, 0);
+        text.setLocation(0, 1);
         stageModel.setPlayerName(text);
 
         // create the board, in 0,1 in the virtual space
-        HoleBoard board = new HoleBoard(0, 1, stageModel);
+        HoleBoard board = new HoleBoard(0, 2, stageModel);
+
+
         // assign the board to the game stage model
         stageModel.setBoard(board);
         stageModel.setHoleRedPawnPot(new HolePawnPot(55, 2, stageModel));
@@ -123,42 +124,55 @@ public class HoleStageFactory extends StageElementsFactory {
 
         Arrow[][] boardArrow1 = new Arrow[8][8];
         Arrow[][] boardArrow2 = new Arrow[8][8];
+
+
         for (int i = 0; i < 16; i+=2) {
             if (i <8) {
                 boardArrow1[0][i] = arrows[2];
                 boardArrow2[0][i] = arrows[3];
                 boardArrow1[6][i] = arrows[2];
                 boardArrow2[6][i] = arrows[3];
+
                 if (i<4) {
                     boardArrow1[2][i] = arrows[3];
                     boardArrow2[2][i] = arrows[1];
                     boardArrow1[4][i] = arrows[3];
                     boardArrow2[4][i] = arrows[0];
+
                 }
                 else {
+
                     boardArrow1[2][i] = arrows[1];
                     boardArrow2[2][i] = arrows[2];
                     boardArrow1[4][i] = arrows[0];
                     boardArrow2[4][i] = arrows[2];
+
+
                 }
             }
             else {
+
                 boardArrow1[1][i-7] = arrows[2];
                 boardArrow2[1][i-7] = arrows[3];
                 boardArrow1[7][i-7] = arrows[2];
                 boardArrow2[7][i-7] = arrows[3];
 
+
                 if (i<12){
+
                     boardArrow1[3][i-7] = arrows[0];
                     boardArrow2[3][i-7] = arrows[2];
                     boardArrow1[5][i-7] = arrows[1];
                     boardArrow2[5][i-7] = arrows[2];
+
                 }
                 else {
+
                     boardArrow1[3][i-7] = arrows[0];
                     boardArrow2[3][i-7] = arrows[3];
                     boardArrow1[5][i-7] = arrows[1];
                     boardArrow2[5][i-7] = arrows[3];
+
                 }
             }
         }

@@ -2,11 +2,9 @@ package boardifier.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Model {
 
-    protected Scanner sc = new Scanner(System.in);
     protected int state; // the game state
     protected final static int STATE_INIT = 1; // e.g. the intro screen
     protected final static int STATE_PLAY = 2; // when player is playing within a stage
@@ -40,7 +38,6 @@ public class Model {
     // the coordinates of the last click (may be used in update() to do something implied by a mouse click)
     // NB : the last key stroke is store in players (useful in case there are several players)
     protected Coord2D lastClick;
-    protected int typeComp;
 
 
     public Model(long frameGap) {
@@ -134,6 +131,9 @@ public class Model {
     public long getLastFrame() {
         return lastFrame;
     }
+    public Player getAdversary() {
+        return players.get((idPlayer+1)%players.size());
+    }
     public void setLastFrame(long lastFrame) {
         this.lastFrame = lastFrame;
     }
@@ -192,9 +192,7 @@ public class Model {
         players.add(Player.createHumanPlayer(name));
     }
     public void addComputerPlayer(String name) {
-        System.out.println("Entrer le numéro du type d'IA (1: offensive ; 2: défensive) que vous voulez ajouter en tant que "+name+" : ");
-        typeComp = sc.nextInt();
-        players.add(Player.createComputerPlayer(name, typeComp));
+        players.add(Player.createComputerPlayer(name));
     }
 
     public int getIdPlayer() {
@@ -206,12 +204,14 @@ public class Model {
     public Player getCurrentPlayer() {
         return players.get(idPlayer);
     }
-    public Player getAdversary() {
-        return players.get((idPlayer+1)%players.size());
-    }
     public String getCurrentPlayerName() {
         return players.get(idPlayer).getName();
     }
+
+    /**
+     * By default, the next player is just the +1. This behaviour can be
+     * overridden in subclasses
+     */
     public void setNextPlayer() {
         idPlayer = (idPlayer+1)%players.size();
     }

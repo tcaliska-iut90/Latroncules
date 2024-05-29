@@ -3,9 +3,8 @@ package model;
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
 import boardifier.model.Model;
-import control.HoleController;
 
-import java.awt.*;
+import java.util.stream.StreamSupport;
 
 
 /**
@@ -189,7 +188,6 @@ public class HoleBoard extends ContainerElement {
      */
     public void takingPawn(HoleStageModel stageModel, HoleBoard board, Model model, int row, int col, int colorPawn){
         int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
-
         for (int i = row -1; i <= row +1; i++) {
             for (int j = col -1 ; j <= col +1; j++) {
                if ((i >= 0 && i <= 7) && (j >= 0 && j <= 7)) {
@@ -221,8 +219,13 @@ public class HoleBoard extends ContainerElement {
         if (col > 0 && col < 7 && checkPiece(board, row, col - 1, playerColor) && checkPiece(board, row, col + 1, playerColor)) {
             return true;
         }
+
+        System.out.println("checkPiece(board, row - 1, col - 1, playerColor) = " + checkPiece(board, row - 1, col - 1, playerColor));
+        System.out.println("checkPiece(board, row + 1, col + 1, playerColor) = " +  checkPiece(board, row + 1, col + 1, playerColor));
+        System.out.println("ColorPawn = "+ playerColor);
+        System.out.println("isCapturable: Row = " + row + " col = " + col);
         // Vérifie alignement oblique haut-gauche à bas-droite
-        if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row - 1, col - 1, playerColor) && checkPiece(board, row + 1, col + 1, playerColor)) {
+        if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row - 1, col - 1, playerColor) && checkPiece(board, row +1, col + 1, playerColor)) {
             return true;
         }
         // Vérifie alignement oblique haut-droit à bas-gauche
@@ -256,6 +259,8 @@ public class HoleBoard extends ContainerElement {
 
     public boolean checkPiece(HoleBoard board, int row, int col, int playerColor){
         Pawn p = (Pawn) board.getElement(row, col);
+        if (p!=null) System.out.println("CheckPiece: Row = "+ row + " col= " + col);
+
         return p != null && p.getColor() == playerColor;
     }
 }

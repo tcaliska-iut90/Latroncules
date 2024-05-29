@@ -7,8 +7,6 @@ public class Player {
     public final static int HUMAN = 1;
     public final static int COMPUTER = 2;
 
-    private int computerType;
-
     protected int type;
     protected String name;
     /**
@@ -20,13 +18,6 @@ public class Player {
          this.type = type;
          this.name = name;
          this.keyPressed = new ArrayList<>();
-    }
-
-    private Player(int type, String name, int computerType) {
-        this.type = type;
-        this.name = name;
-        this.computerType = computerType;
-        this.keyPressed = new ArrayList<>();
     }
 
     public void reset() {
@@ -66,12 +57,8 @@ public class Player {
     public static Player createHumanPlayer(String name) {
         return new Player(HUMAN, name);
     }
-    public static Player createComputerPlayer(String name, int computerType) {
-        return new Player(COMPUTER, name, computerType);
-    }
-
-    public int getComputerType() {
-        return computerType;
+    public static Player createComputerPlayer(String name) {
+        return new Player(COMPUTER, name);
     }
 
     public int getColor() {
@@ -81,4 +68,5 @@ public class Player {
             return 1;
         }
     }
+
 }

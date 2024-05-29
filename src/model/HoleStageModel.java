@@ -31,6 +31,8 @@ import java.util.Arrays;
  */
 public class HoleStageModel extends GameStageModel {
 
+    public final static int STATE_SELECTPAWN = 1; // the player must select a pawn
+    public final static int STATE_SELECTDEST = 2; // the player must select a destination
 
     // define stage game elements
     private HoleBoard board;
@@ -48,6 +50,7 @@ public class HoleStageModel extends GameStageModel {
 
     public HoleStageModel(String name, Model model) {
         super(name, model);
+        state = STATE_SELECTPAWN;
         setupCallbacks();
     }
 

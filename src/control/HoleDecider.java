@@ -6,7 +6,6 @@ import boardifier.control.Decider;
 import boardifier.model.GameElement;
 import boardifier.model.Model;
 import boardifier.model.Player;
-import boardifier.model.PointPosition;
 import boardifier.model.action.ActionList;
 import model.HoleBoard;
 import model.HoleStageModel;
@@ -29,7 +28,7 @@ public class HoleDecider extends Decider {
     protected int max;
     protected Pawn pawn;
 
-    protected HoleController holeController;
+    protected ControllerHole holeController;
 
     private static final Random loto = new Random(Calendar.getInstance().getTimeInMillis());
 
@@ -37,7 +36,7 @@ public class HoleDecider extends Decider {
         super(model, control);
     }
 
-    public HoleDecider(Model model, Controller control, Player currentPlayer, Player adversary, HoleController holeController) {
+    public HoleDecider(Model model, Controller control, Player currentPlayer, Player adversary, ControllerHole holeController) {
         super(model, control);
         this.currentPlayer = currentPlayer;
         this.adversary = adversary;
@@ -47,6 +46,7 @@ public class HoleDecider extends Decider {
 
     @Override
     public ActionList decide() {
+        /*
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel) model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
@@ -195,6 +195,8 @@ public class HoleDecider extends Decider {
                 System.out.println(pawns.get(pawnIndex.get(i)).getCol() + " " + pawns.get(pawnIndex.get(i)).getRow());
             }
             */
+
+        /*
             if (bestMove.size() >= 1) {
                 l = loto.nextInt(bestMove.size());  // if there are several best moves, choose one randomly
             }
@@ -240,6 +242,7 @@ public class HoleDecider extends Decider {
             /*
             2nde IA : Stratégie défensive (stratégie défensive qui consiste a avancer en ligne)
             */
+        /*
             ArrayList<Integer> pawnIndex = new ArrayList<Integer>();
             ArrayList<PointPosition> PossibleMoveOnTheFrontLine = new ArrayList<PointPosition>();
             min = 2;
@@ -346,5 +349,8 @@ public class HoleDecider extends Decider {
             }
         }
         return false;
+    }
+    */
+        return null;
     }
 }

@@ -2,20 +2,17 @@ package view;
 
 import boardifier.model.ContainerElement;
 import boardifier.view.TableLook;
+import javafx.scene.paint.Color;
 
 /**
- * Black pot inherits from TableLook, using the constructor for
- * flexible cell sizes and a visible border. It implies that if there is no element in a cell
- * it has a zero size and thus, is not displayed. This is why during the game,
- * the black pot will reduce in size because of pawn are removed from the pot to be placed
- * on the main board. At then end, it will totally disappear.
- *
- * Note that this class is not necessary and the HoleStageView could create directly an instance of TableLook.
- * So, this subclass is just in case of we would like to change the look of the black pot in the future.
+ * create a subclass of TableLook, to demonstrate how the table structure changes
+ * when the content changes.
  */
 public class BlackPawnPotLook extends TableLook {
 
-    public BlackPawnPotLook(ContainerElement containerElement) {
-        super(containerElement, -1, 1);
+    public BlackPawnPotLook(ContainerElement element) {
+        super(element, -1, 1, Color.BLACK);
+        setPadding(10);
     }
+
 }

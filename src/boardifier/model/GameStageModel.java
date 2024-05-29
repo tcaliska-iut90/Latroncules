@@ -1,7 +1,5 @@
 package boardifier.model;
 
-import model.Pawn;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,14 +189,20 @@ public abstract class GameStageModel {
         }
     }
 
-    /* ********************************
-       Helpers methods
-    ******************************** */
+    /* *******************************
+       Trampoline methods
+    ********************************* */
+
+    public Player getCurrentPlayer() {
+        return model.getCurrentPlayer();
+    }
 
     public String getCurrentPlayerName() {
         return model.getCurrentPlayerName();
     }
-
+    /* ********************************
+       Helpers methods
+    ******************************** */
     // get the container element (if it exists) where is assigned another element
     public ContainerElement elementContainer(GameElement element) {
         for(ContainerElement container : containers) {
@@ -212,24 +216,10 @@ public abstract class GameStageModel {
         for (int i = 0; i < elements.size(); i++) {
             GameElement element = elements.get(i);
             if (element.type == type) {
-                //System.out.println("found");
                 list.add(element);
             }
         }
         return list;
     }
 
-    public List<Pawn> getPawns(Player player) {
-        List<Pawn> pawns = new ArrayList<>();
-        for (GameElement element : elements) {
-            if (element instanceof Pawn) {
-                Pawn pawn = (Pawn) element;
-                if (pawn.getColor() == 1 && (player.getName().equals("computer") || player.getName().equals("computer2") || player.getName().equals("PlayerRed")) || pawn.getColor() == 0 && (player.getName().equals("computer1") || player.getName().equals("PlayerBlue"))){
-                    //System.out.println("Pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getRow()+" col="+pawn.getCol());
-                    pawns.add(pawn);
-                }
-            }
-        }
-        return pawns;
-    }
 }

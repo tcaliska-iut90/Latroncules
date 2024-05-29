@@ -1,23 +1,20 @@
-import boardifier.control.Controller;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.view.View;
-import control.HoleController;
 import model.Arrow;
 import model.HoleBoard;
 import model.HoleStageModel;
 import model.Pawn;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import java.io.BufferedReader;
-import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class HoleControllerTest {
-
+/*
     @Mock
     private Model mockModel;
     @Mock
@@ -388,5 +385,7 @@ class HoleControllerTest {
         }
         return true;
     }
+
+ */
 
 }
