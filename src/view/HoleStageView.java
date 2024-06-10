@@ -21,8 +21,6 @@ public class HoleStageView extends GameStageView {
     public void createLooks() {
         HoleStageModel model = (HoleStageModel)gameStageModel;
 
-        // create a TextLook for the text element
-        addLook(new TextLook(24, "0x000000", model.getPlayerName()));
         // create a ClassicBoardLook (with borders and coordinates) for the main board.
         addLook(new HoleBoardLook(600, model.getBoard()));
         addLook(new BlackPawnPotLook(model.getHoleBluePawnPot()));
@@ -59,26 +57,9 @@ public class HoleStageView extends GameStageView {
             addLook(new ArrowLook(model.getArrows()[i]));
         }
 
+        // create a TextLook for the text element
+        addLook(new TextLook(24, "0x000000", model.getPlayerName()));
 
-
-
-
-
-        /*
-        Example using a main container (see HoleStageFactory),
-
-
-        // create a look for the main container element, with flexible cell size and no borders
-        // NB: no need to recreate spanning for the container look: they are deduced from the main container element
-        ContainerLook mainLook = new ContainerLook(model.getMainContainer(), -1);
-        // set padding to 1
-        mainLook.setPadding(1);
-        // center the looks within the cells
-        mainLook.setVerticalAlignment(ContainerLook.ALIGN_MIDDLE);
-        mainLook.setHorizontalAlignment(ContainerLook.ALIGN_CENTER);
-        // add the look to the gane stage view.
-        addLook(mainLook);
-        */
         Logger.debug("finished creating game stage looks", this);
     }
 }

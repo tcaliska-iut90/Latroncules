@@ -91,10 +91,15 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
                 play.start();
-                board.takingPawn(stageModel, board, model, dest[0], dest[1], pawn.getColor());
-                checkMoveController.changeInfantrymanToHorseman(pawn, dest[0]);
+                /*
+                Les méthodes en dessous sont sensé se lancé après le play.start mais le thread prend plus ou moins de temp pour modifier la position du pion
+                 donc les méthodes se lancent avant que le thread est fini sont action, problème à résoudre.
+                 */
+
                 board.setCellReachable(from[0], from[1], true);
                 board.setCellReachable(dest[0], dest[1], false);
+                board.takingPawn(stageModel, board, model, dest[0], dest[1], pawn.getColor());
+                checkMoveController.changeInfantrymanToHorseman(pawn, dest[0]);
 
             }
         }

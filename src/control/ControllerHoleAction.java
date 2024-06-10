@@ -42,6 +42,7 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
         holeView.getMenuStart().setOnAction(e -> {
             holeView.setup();
             setButtonHandler();
+            setMenuHandlers();
         });
         // set event handler on the MenuIntro item
         holeView.getMenuIntro().setOnAction(e -> {
@@ -60,6 +61,7 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
         holeView.getButtonJvJ().setOnAction(e ->{
             holeView.setupChoice();
             setButoonChoiceHandler();
+            setMenuHandlers();
         });
 
         holeView.getButtonJvC().setOnAction(e -> {

@@ -222,8 +222,8 @@ public class HoleBoard extends ContainerElement {
 
         System.out.println("checkPiece(board, row - 1, col - 1, playerColor) = " + checkPiece(board, row - 1, col - 1, playerColor));
         System.out.println("checkPiece(board, row + 1, col + 1, playerColor) = " +  checkPiece(board, row + 1, col + 1, playerColor));
-        System.out.println("ColorPawn = "+ playerColor);
         System.out.println("isCapturable: Row = " + row + " col = " + col);
+        System.out.println("Row + 1: " + (row + 1) + ", col + 1: " + (col+1));
         // Vérifie alignement oblique haut-gauche à bas-droite
         if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row - 1, col - 1, playerColor) && checkPiece(board, row +1, col + 1, playerColor)) {
             return true;
@@ -258,8 +258,13 @@ public class HoleBoard extends ContainerElement {
     }
 
     public boolean checkPiece(HoleBoard board, int row, int col, int playerColor){
+
+        System.out.println("CheckPiece1: Row = "+ row + " col= " + col);
         Pawn p = (Pawn) board.getElement(row, col);
-        if (p!=null) System.out.println("CheckPiece: Row = "+ row + " col= " + col);
+        if (p!=null) {
+            System.out.println("CheckPiece2: Row = "+ row + " col= " + col);
+            System.out.println("Pawn color: " + p.getColor() + ", pawn role: " + p.getRole());
+        }
 
         return p != null && p.getColor() == playerColor;
     }

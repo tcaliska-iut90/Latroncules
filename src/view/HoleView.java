@@ -90,7 +90,8 @@ public class HoleView extends View {
         imageView.setFitHeight(200);
         imageView.setFitWidth(200);
 
-        VBox vBox = new VBox(imageView, buttonJvJ, buttonJvC, buttonCvC);
+        createMenuBar();
+        VBox vBox = new VBox(menuBar,imageView, buttonJvJ, buttonJvC, buttonCvC);
         vBox.setSpacing(10);
         vBox.setAlignment(Pos.CENTER);
 
@@ -115,7 +116,8 @@ public class HoleView extends View {
         imageView.setFitHeight(200);
         imageView.setFitWidth(200);
 
-        VBox vBox = new VBox(imageView, hBox);
+
+        VBox vBox = new VBox(menuBar,imageView, hBox);
         vBox.setSpacing(10);
         vBox.setAlignment(Pos.CENTER);
         rootPane.getChildren().addAll(vBox);

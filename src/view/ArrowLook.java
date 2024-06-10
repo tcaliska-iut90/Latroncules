@@ -10,13 +10,17 @@ import model.Pawn;
 public class ArrowLook extends ElementLook {
 
     private Line line;
+    private int col;
+    private int row;
     public ArrowLook(GameElement element){
         super(element);
     }
 
     @Override
     protected void render() {
+        /*
         Arrow arrow = (Arrow) element;
+
 
         if (arrow.getDirection() == Arrow.VERTICAL) {
             line = new Line(200, 50, 200, 350);
@@ -31,7 +35,9 @@ public class ArrowLook extends ElementLook {
             line = new Line(350, 50, 50, 350);
         }
 
-        //addShape(line);
+        line = new Line(30, 30, 130, 130);
+        addShape(line);
+        */
 
     }
 }

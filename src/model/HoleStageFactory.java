@@ -42,11 +42,11 @@ public class HoleStageFactory extends StageElementsFactory {
 
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(0, 1);
+        text.setLocation(10, 900);
         stageModel.setPlayerName(text);
 
         // create the board, in 0,1 in the virtual space
-        HoleBoard board = new HoleBoard(0, 2, stageModel);
+        HoleBoard board = new HoleBoard(0, 0, stageModel);
 
 
         // assign the board to the game stage model
@@ -59,7 +59,7 @@ public class HoleStageFactory extends StageElementsFactory {
             arrows[i] = i == 0 ? new Arrow(Arrow.VERTICAL, stageModel) : i == 1 ? new Arrow(Arrow.HORIZONTAL, stageModel) : i == 2 ? new Arrow(Arrow.MAJOR_DIAGONAL, stageModel) : new Arrow(Arrow.MINOR_DIAGONAL, stageModel);
         }
         stageModel.setArrows(arrows);
-        setupArrows(arrows);
+        setupArrows(arrows, board);
 
 
         if (testVict == 1) {
@@ -120,7 +120,7 @@ public class HoleStageFactory extends StageElementsFactory {
         }
     }
 
-    private void setupArrows(Arrow[] arrows){
+    private void setupArrows(Arrow[] arrows, HoleBoard board){
 
         Arrow[][] boardArrow1 = new Arrow[8][8];
         Arrow[][] boardArrow2 = new Arrow[8][8];
