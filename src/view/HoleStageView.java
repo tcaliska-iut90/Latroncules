@@ -22,7 +22,7 @@ public class HoleStageView extends GameStageView {
         HoleStageModel model = (HoleStageModel)gameStageModel;
 
         // create a ClassicBoardLook (with borders and coordinates) for the main board.
-        addLook(new HoleBoardLook(600, model.getBoard()));
+        addLook(new HoleBoardLook(300, model.getBoard()));
         addLook(new BlackPawnPotLook(model.getHoleBluePawnPot()));
         addLook(new BlackPawnPotLook(model.getHoleRedPawnPot()));
 

@@ -45,10 +45,12 @@ public class ClassicBoardLook extends GridLook{
     protected void render() {
         super.render();
         // create frame
+
         Rectangle frame = new Rectangle(colWidth*nbCols+2*frameWidth, rowHeight*nbRows+2*frameWidth, frameColor);
         frame.setX(gapXToCells-frameWidth);
         frame.setY(gapYToCells-frameWidth);
         addShape(frame);
+
         // create numbering if needed
         if (showCoords) {
             colCoords = new Text[nbCols];
