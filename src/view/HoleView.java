@@ -4,13 +4,15 @@ import boardifier.model.Model;
 import boardifier.view.RootPane;
 import boardifier.view.View;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import utils.FileUtils;
+
+import java.io.File;
 
 public class HoleView extends View {
 
@@ -85,7 +87,7 @@ public class HoleView extends View {
         buttonJvC = new Button("Mode joueur v Computer");
         buttonCvC = new Button("Mode Computer v Computer");
 
-        Image image = new Image("file:/home/userdepinfo/S2/SAE/SAE126/Latroncules(Graphique)/Images/logo.jpeg");
+        Image image  = new Image("file:" + FileUtils.getFileFromResources("Images/logo.jpeg").getAbsolutePath());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(200);
         imageView.setFitWidth(200);
@@ -111,7 +113,7 @@ public class HoleView extends View {
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
 
-        Image image = new Image("file:/home/userdepinfo/S2/SAE/SAE126/Latroncules(Graphique)/Images/logo.jpeg");
+        Image image  = new Image("file:" + FileUtils.getFileFromResources("Images/logo.jpeg").getAbsolutePath());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(200);
         imageView.setFitWidth(200);
