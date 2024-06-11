@@ -37,7 +37,6 @@ public class Hole extends Application {
         if (mode == 0) {
 
 
-
         }
         else if (mode == 1) {
 
