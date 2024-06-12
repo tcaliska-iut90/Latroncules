@@ -42,7 +42,7 @@ public class HoleStageFactory extends StageElementsFactory {
 
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
-        text.setLocation(10, 900);
+        text.setLocation(10, 700);
         stageModel.setPlayerName(text);
 
         // create the board, in 0,1 in the virtual space
