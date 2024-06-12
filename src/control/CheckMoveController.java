@@ -1,15 +1,20 @@
 package control;
 
 import boardifier.model.Model;
+import boardifier.view.View;
 import model.HoleBoard;
 import model.HoleStageModel;
 import model.Pawn;
+import view.HoleView;
 
 public class CheckMoveController {
     private Model model;
+    private HoleView holeView;
 
-    public CheckMoveController(Model model){
+    public CheckMoveController(Model model, View view){
         this.model= model;
+        this.holeView = (HoleView)view;
+
     }
 
 
@@ -26,7 +31,7 @@ public class CheckMoveController {
     public boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
         //Test mouvement possible en fonction de la couleur
         if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
-            System.out.println("Un pion peut aller que tout droit");
+            holeView.dialogError("Un pion peut aller que tout droit");
             return false;
         }
 

@@ -74,7 +74,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
         try {
             pawn = (Pawn) model.getSelected().get(0);
         }catch (IndexOutOfBoundsException e){
-            System.out.println("Le pion n'est pas votre pion");
+           holeView.dialogError("Le pion n'est pas votre pion");
             return;
         }
         int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
@@ -91,12 +91,14 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 || pawn.getRole() == Pawn.HORSEMAN && checkMoveController.verifMoveCavalier(board, pawn.getColor(), from[1], from[0], dest[0], dest[1], stageModel)) {
 
                 Logger.debug("move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
+                pawn.setRow(dest[0]);
+                pawn.setCol(dest[1]);
+
                 ActionList actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", dest[0], dest[1], AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
                 stageModel.unselectAll();
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
-                System.out.println("CurrentPlayer:" + model.getCurrentPlayerName());
 
                 ExecutorService executor = Executors.newFixedThreadPool(1);
                 Future<?> futureTask1 = executor.submit(() ->{
@@ -107,7 +109,6 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                         throw new RuntimeException(e);
                     }
                 });
-                System.out.println("CurrentPlayer2:" + model.getCurrentPlayerName());
 
                 executor.submit(() -> {
                     try {

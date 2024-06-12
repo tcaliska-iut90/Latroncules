@@ -13,8 +13,7 @@ import boardifier.model.animation.AnimationStep;
  */
 public class Pawn extends GameElement {
 
-    private int role;
-    private int color;
+    private int role, color, row, col;
     public static int PAWN_BLUE = 0;
     public static int PAWN_RED = 1;
 
@@ -42,20 +41,18 @@ public class Pawn extends GameElement {
         return color;
     }
 
-    public int getRow() {
-        return (int)((this.getY()-1)/2);
-    }
+    public int getRow() {return row;}
 
     public int getCol() {
-        return (int)((this.getX()-3)/6);
+        return col;
     }
 
-    public int getRow2() {
-        return (int)(this.getY()/80.1);
+    public void setCol(int col) {
+        this.col = col;
     }
 
-    public int getCol2() {
-        return (int)(this.getX()/71.1);
+    public void setRow(int row) {
+        this.row = row;
     }
 
     public void update() {
