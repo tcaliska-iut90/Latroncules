@@ -13,7 +13,7 @@ public class ControllerHole extends Controller {
     public ControllerHole(Model model, View view) {
         super(model, view);
         setControlKey(new ControllerHoleKey(model, view, this));
-        setControlMouse(new ControllerHoleMouse(model, view, this, new CheckMoveController(model)));
+        setControlMouse(new ControllerHoleMouse(model, view, this, new CheckMoveController(model, view)));
         setControlAction (new ControllerHoleAction(model, view, this));
     }
 

@@ -46,13 +46,12 @@ public class HoleStageFactory extends StageElementsFactory {
         stageModel.setPlayerName(text);
 
         // create the board, in 0,1 in the virtual space
-        HoleBoard board = new HoleBoard(0, 0, stageModel);
-
-
+        HoleBoard board = new HoleBoard(150, 0, stageModel);
         // assign the board to the game stage model
         stageModel.setBoard(board);
-        stageModel.setHoleRedPawnPot(new HolePawnPot(55, 2, stageModel));
-        stageModel.setHoleBluePawnPot(new HolePawnPot(55, 15, stageModel));
+        stageModel.setHoleRedPawnPot(new HolePawnPot(0, 30, stageModel));
+        stageModel.setHoleBluePawnPot(new HolePawnPot(850, 30, stageModel));
+
 
         Arrow[] arrows = new Arrow[4];
         for (int i = 0; i < arrows.length; i++) {
@@ -205,10 +204,20 @@ public class HoleStageFactory extends StageElementsFactory {
             if (i<8){
                 board.addElement(redPawns[i], 6, i);
                 board.addElement(bluePawns[i], 0, i);
+
+                redPawns[i].setRow(6);
+                redPawns[i].setCol(i);
+                bluePawns[i].setRow(0);
+                bluePawns[i].setCol(i);
             }
             else {
                 board.addElement(redPawns[i], 7, 15-i);
                 board.addElement(bluePawns[i], 1, 15-i);
+
+                redPawns[i].setRow(7);
+                redPawns[i].setCol(15 - i);
+                bluePawns[i].setRow(1);
+                bluePawns[i].setCol(15 - i);
             }
         }
     }

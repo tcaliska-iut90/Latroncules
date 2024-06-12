@@ -1,15 +1,20 @@
 package control;
 
 import boardifier.model.Model;
+import boardifier.view.View;
 import model.HoleBoard;
 import model.HoleStageModel;
 import model.Pawn;
+import view.HoleView;
 
 public class CheckMoveController {
     private Model model;
+    private HoleView holeView;
 
-    public CheckMoveController(Model model){
+    public CheckMoveController(Model model, View view){
         this.model= model;
+        this.holeView = (HoleView)view;
+
     }
 
 
@@ -24,17 +29,12 @@ public class CheckMoveController {
      * @return true si coup possible, false sinon
      */
     public boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
-
         //Test mouvement possible en fonction de la couleur
         if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
-            System.out.println("Un pion peut aller que tout droit");
+            holeView.dialogError("Un pion peut aller que tout droit");
             return false;
         }
-        //Test pion devant le pion joueur
-        if (board.getElement(finRow, finCol) != null) {
-            System.out.println("Un pion se trouve devant ce pion");
-            return false;
-        }
+
 
         return testCoupInterdit(finCol, finRow, board, color);
     }
@@ -215,6 +215,12 @@ public class CheckMoveController {
         return true;
     }
 
+    /**
+     * Permet de savoir si l'adversaire peut encore joué
+     * @param stage
+     * @param board
+     * @return
+     */
     public boolean moveIsOk(HoleStageModel stage, HoleBoard board){
         boolean result = false;
 
@@ -263,14 +269,11 @@ public class CheckMoveController {
     }
 
     public boolean moveIsOkInfantryman(Pawn pawn, int row, int col, HoleBoard board){
-
-        System.out.println("moveIsOkInfantryman: row = " + row + ", col =" + col + ", role =" + pawn.getRole() + "ContainerElement = " + pawn.getContainer().getName());
         if (pawn.getColor() == Pawn.PAWN_BLUE) return verifPawnMove(board, pawn.getColor(), col, row, row+1, col);
         else return verifPawnMove(board, pawn.getColor(), col, row, row-1, col);
     }
 
     public boolean moveIsOkHorseman(Pawn pawn, int row, int col, HoleBoard board, HoleStageModel holeStageModel){
-        System.out.println("moveIsOkHorseman: row = " + row + ", col =" + col + ", role =" + pawn.getRole() + "ContainerElement = " + pawn.getContainer().getName());
 
         int[][] temp;
         boolean result = false;

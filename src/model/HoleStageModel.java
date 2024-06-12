@@ -119,19 +119,21 @@ public class HoleStageModel extends GameStageModel {
     Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe bleue
      */
     public void addBluePawnsTaking(Pawn p){
-        for (int i = 0; i < HoleRedPawnPot.getNbCols(); i++) {
-            if (HoleRedPawnPot.getElement(0, i) == null){
-                HoleRedPawnPot.addElement(p, 0, i);
+        for (int j = 0; j < HoleRedPawnPot.getNbCols(); j++) {
+            if (HoleRedPawnPot.getElement(0, j) == null){
+                HoleRedPawnPot.addElement(p, 0, j);
                 break;
             }
         }
+
+
     }
     /*
     Permet de retirer le pion passé en paramètre du tableau des pions bleue
      */
     public void removeBluePawns(Pawn p){
         for (int i = 0; i < bluePawns.length; i++) {
-            if (bluePawns[i] != null && bluePawns[i].getCol() == p.getCol() && bluePawns[i].getRow() == p.getRow()) {
+            if (bluePawns[i].equals(p)) {
                 bluePawns[i] = null;
                 p.removeFromStage();
             }
@@ -157,22 +159,31 @@ public class HoleStageModel extends GameStageModel {
     }
 
     /*
-                Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
-                 */
+     Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
+    */
     public void addRedPawnsTaking(Pawn p){
-        for (int i = 0; i < HoleBluePawnPot.getNbCols(); i++) {
-            if (HoleBluePawnPot.getElement(0, i)== null){
-                HoleBluePawnPot.addElement(p, 0, i);
+        for (int j = 0; j < HoleBluePawnPot.getNbCols(); j++) {
+            if (HoleBluePawnPot.getElement(0, j)== null){
+                HoleBluePawnPot.addElement(p, 0, j);
                 break;
             }
         }
+
+
+        System.out.println("Les pions capturés par l'équipe rouge");
+        for (int i = 0; i <HoleBluePawnPot.getNbRows() ; i++) {
+            for (int j = 0; j <HoleBluePawnPot.getNbCols() ; j++) {
+                System.out.println(HoleBluePawnPot.getElement(i, j));
+            }
+        }
     }
+
     /*
     Permet de retirer le pion passé en paramètre du tableau des pions rouges
      */
     public void removeRedPawns(Pawn p){
         for (int i = 0; i < redPawns.length; i++) {
-            if (redPawns[i] != null && redPawns[i].getCol() == p.getCol() && redPawns[i].getRow() == p.getRow()) {
+            if (redPawns[i].equals(p)) {
                 redPawns[i] = null;
                 p.removeFromStage();
             }

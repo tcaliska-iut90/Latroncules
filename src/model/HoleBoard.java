@@ -212,29 +212,20 @@ public class HoleBoard extends ContainerElement {
     public boolean isCapturable(HoleBoard board, int row, int col, int playerColor) {
         // Vérifie alignement vertical
         if (row > 0 && row < 7 && checkPiece(board, row - 1, col, playerColor) && checkPiece(board, row + 1, col, playerColor)) {
-            System.out.println(playerColor);
-            System.out.println(row + ", " + col);
-            System.out.println("Vertical");
             return true;
         }
         // Vérifie alignement horizontal
         if (col > 0 && col < 7 && checkPiece(board, row, col - 1, playerColor) && checkPiece(board, row, col + 1, playerColor)) {
-            System.out.println(playerColor);
-            System.out.println(row + ", " + col);
-            System.out.println("horizontal");
             return true;
         }
 
 
         // Vérifie alignement oblique haut-gauche à bas-droite
         if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row - 1, col - 1, playerColor) && checkPiece(board, row +1, col + 1, playerColor)) {
-            System.out.println("oblique haut-gauche à bas-droite");
             return true;
         }
         // Vérifie alignement oblique haut-droit à bas-gauche
         if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row + 1, col - 1, playerColor) && checkPiece(board, row - 1, col + 1, playerColor)) {
-            System.out.println("oblique haut-droit à bas-gauche");
-
             return true;
         }
         // Vérifie les coins pour former un L
@@ -250,7 +241,8 @@ public class HoleBoard extends ContainerElement {
 
     private void deletePawnsTaking(HoleStageModel stageModel, Pawn pawnEnemy, HoleBoard board, int colorPawn) {
         board.removeElement(pawnEnemy);
-            if (colorPawn == Pawn.PAWN_BLUE){
+        board.setCellReachable(pawnEnemy.getRow(), pawnEnemy.getCol(), true);
+        if (colorPawn == Pawn.PAWN_BLUE){
             stageModel.removeRedPawns(pawnEnemy);
             stageModel.addBluePawnsTaking(pawnEnemy);
 
@@ -259,6 +251,7 @@ public class HoleBoard extends ContainerElement {
             stageModel.removeBluePawns(pawnEnemy);
             stageModel.addRedPawnsTaking(pawnEnemy);
         }
+
 
     }
 
