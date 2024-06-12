@@ -23,7 +23,7 @@ public class HoleBoardLook extends ClassicBoardLook {
 
         ImagePattern imagePattern = new ImagePattern(new Image("file:" + FileUtils.getFileFromResources("latroncules-assets/latroncules-plateau.png").getAbsolutePath()));
 
-        Rectangle rectangle = new Rectangle((8*colWidth + gapXToCells) -15 , (8*rowHeight + gapYToCells) - 15);
+        Rectangle rectangle = new Rectangle((8*colWidth + gapXToCells) - 15 , (8*rowHeight + gapYToCells) - 22);
         rectangle.setX(gapXToCells - frameWidth);
         rectangle.setY(gapYToCells - frameWidth);
         rectangle.setFill(imagePattern);
