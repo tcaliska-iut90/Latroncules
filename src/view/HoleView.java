@@ -118,7 +118,7 @@ public class HoleView extends View {
         imageView.setFitHeight(200);
         imageView.setFitWidth(200);
 
-
+        createMenuBar();
         VBox vBox = new VBox(menuBar,imageView, hBox);
         vBox.setSpacing(10);
         vBox.setAlignment(Pos.CENTER);

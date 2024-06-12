@@ -67,6 +67,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
 
     private void changePositionPawn(HoleStageModel stageModel, Coord2D clic){
         HoleBoard board = stageModel.getBoard();
+        HoleView holeView = (HoleView) view;
         // by default get black pot
 
         Pawn pawn;
@@ -115,6 +116,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                         board.setCellReachable(dest[0], dest[1], false);
                         board.takingPawn(stageModel, board, model, dest[0], dest[1], pawn.getColor(), colorEnemy);
                         checkMoveController.changeInfantrymanToHorseman(pawn, dest[0]);
+                        checkMoveController.moveIsOk(stageModel, board);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     } catch (ExecutionException e) {
@@ -124,15 +126,9 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 });
                 executor.shutdown();
 
-
-
-                /*
-                Les méthodes en dessous sont sensé se lancé après le play.start mais le thread prend plus ou moins de temp pour modifier la position du pion
-                 donc les méthodes se lancent avant que le thread est fini sont action, problème à résoudre.
-                 */
-
-
             }
+        }else {
+            holeView.dialogError("Un pion se trouve sur cette case");
         }
     }
 
