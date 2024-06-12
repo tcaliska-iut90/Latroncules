@@ -18,6 +18,10 @@ import model.Pawn;
 import view.HoleView;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * A basic mouse controller that just grabs the mouse clicks and prints out some informations.
@@ -71,7 +75,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             System.out.println("Le pion n'est pas votre pion");
             return;
         }
-
+        int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
         // thirdly, get the clicked cell in the 3x3 board
         GridLook lookBoard = (GridLook) control.getElementLook(board);
@@ -90,16 +94,42 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 stageModel.unselectAll();
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
-                play.start();
+                System.out.println("CurrentPlayer:" + model.getCurrentPlayerName());
+
+                ExecutorService executor = Executors.newFixedThreadPool(1);
+                Future<?> futureTask1 = executor.submit(() ->{
+                    play.start();
+                    try {
+                        play.join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                System.out.println("CurrentPlayer2:" + model.getCurrentPlayerName());
+
+                executor.submit(() -> {
+                    try {
+                        futureTask1.get();
+                        board.setCellReachable(from[0], from[1], true);
+                        board.setCellReachable(dest[0], dest[1], false);
+                        board.takingPawn(stageModel, board, model, dest[0], dest[1], pawn.getColor(), colorEnemy);
+                        checkMoveController.changeInfantrymanToHorseman(pawn, dest[0]);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
+                executor.shutdown();
+
+
+
                 /*
                 Les méthodes en dessous sont sensé se lancé après le play.start mais le thread prend plus ou moins de temp pour modifier la position du pion
                  donc les méthodes se lancent avant que le thread est fini sont action, problème à résoudre.
                  */
 
-                board.setCellReachable(from[0], from[1], true);
-                board.setCellReachable(dest[0], dest[1], false);
-                board.takingPawn(stageModel, board, model, dest[0], dest[1], pawn.getColor());
-                checkMoveController.changeInfantrymanToHorseman(pawn, dest[0]);
 
             }
         }
