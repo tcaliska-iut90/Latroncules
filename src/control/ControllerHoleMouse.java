@@ -143,19 +143,14 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                     stageModel.setState(HoleStageModel.STATE_SELECTDEST);
                     // call method green rectangle not full at the cell selected by the player
                     System.out.println("x et y du pion choisi : "+pawn.getX()+"  "+pawn.getY()+"   Col : "+pawn.getCol()+" Row : "+pawn.getRow());
-                    // Change la couleur du rectangle seléctionné en vert
+                    //TODO Change la couleur du rectangle seléctionné en vert
                     // ...
 
-                    // Change la couleur des cases atteignables en orange
-                    stageModel.getBoard().setCellReachable(pawn.getCol(), pawn.getRow(), true);
-                    boolean[][] reachable = stageModel.getBoard().getReachableCells();
-                    for (int i = 0; i < reachable.length; i++) {
-                        for (int j = 0; j < reachable[i].length; j++) {
-                            if (reachable[i][j]) {
-                                System.out.println("x et y des cases atteignables : "+i+"  "+j);
-                                // ...
-                            }
-                        }
+                    //TODO Change la couleur des cases atteignables en orange
+                    int [][] reachable = stageModel.getBoard().getValidCellFinal(model, pawn.getRow(), pawn.getCol());
+                    for (int i=0; i< reachable.length; i++){
+                        System.out.println("row et col des cases atteignables : "+reachable[i][0]+"  "+reachable[i][1]);
+                        // ...
                     }
 
                     return true; // do not allow another element to be selected
@@ -171,6 +166,11 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             if (element.isSelected()) {
                 element.toggleSelected();
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
+
+                //TODO
+                // Enlève les couleurs des cases atteignables et seléctionné
+                // ...
+
                 return false;
             }
         }

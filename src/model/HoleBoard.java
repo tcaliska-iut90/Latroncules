@@ -94,6 +94,37 @@ public class HoleBoard extends ContainerElement {
         return ValidCell;
     }
 
+    public int [][] getValidCellFinal(Model model, int row, int col){
+        Pawn p = (Pawn)this.getElement(row, col);
+        if (p.getRole()==Pawn.HORSEMAN){
+            Arrow [][] arrow1 = ((HoleStageModel)gameStageModel).getBoardArrows1();
+            Arrow [][] arrow2 = ((HoleStageModel)gameStageModel).getBoardArrows2();
+            Arrow a1 = arrow1[row][col];
+            Arrow a2 = arrow2[row][col];
+            if (a1 != null && a2 != null){
+                return getValidCell(model, a1, a2, row, col);
+            } else {
+                return getValidCell(model, row, col);
+            }
+        } else if (p.getRole() == Pawn.INFANTRYMAN){
+            int [][] validCell = new int[1][2];
+            if (p.getColor()==Pawn.PAWN_BLUE){
+                //Test mouvement possible en fonction du joueur
+                //if (analyseCorrectMove(p.getCol(), p.getRow(), p.getCol(), p.getRow() + 1)) {
+                    validCell[0][0] = p.getRow() + 1;
+                    validCell[0][1] = p.getCol();
+                //}
+            } else if (p.getColor() == Pawn.PAWN_RED){
+                //Test mouvement possible en fonction du joueur
+                //if (analyseCorrectMove(p.getCol(), p.getRow(), p.getCol(), p.getRow() - 1)) {
+                    validCell[0][0] = p.getRow() - 1;
+                    validCell[0][1] = p.getCol();
+                //}
+            }
+            return validCell;
+        }
+        return null;
+    }
 
     /**
      * Récupère les cases jouables avec une flèches verticale
