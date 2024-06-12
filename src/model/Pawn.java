@@ -50,6 +50,14 @@ public class Pawn extends GameElement {
         return (int)((this.getX()-3)/6);
     }
 
+    public int getRow2() {
+        return (int)(this.getY()/80.1);
+    }
+
+    public int getCol2() {
+        return (int)(this.getX()/71.1);
+    }
+
     public void update() {
         // if must be animated, move the pawn
         if (animation != null) {
