@@ -17,6 +17,7 @@ import model.HoleStageModel;
 import model.Pawn;
 import view.HoleView;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -113,6 +114,11 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 if (pawn.getColor() == model.getCurrentPlayer().getColor()) {
                     element.toggleSelected();
                     stageModel.setState(HoleStageModel.STATE_SELECTDEST);
+                    System.out.println("x et y du pion choisi : "+pawn.getX()+"  "+pawn.getY());
+                    int rowHeight = pawn.getRow();
+                    int colWidth = pawn.getCol();
+
+                    //Rectangle rectangleSelected = new Rectangle((8*colWidth - 5) , (8*rowHeight - 12), Color.GREEN);
                     return true; // do not allow another element to be selected
                 }
             }
