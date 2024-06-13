@@ -101,6 +101,21 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
 
+                Color c;
+                HoleBoardLook lookboard = (HoleBoardLook) control.getElementLook(stageModel.getBoard());
+                Rectangle[][] cells = lookboard.getCells();
+                for (int i=0; i<cells.length; i++){
+                    for (int j=0; j<cells[i].length; j++){
+                        if ((i+j)%2 == 0) {
+                            c = Color.BEIGE;
+                        }
+                        else {
+                            c = Color.DARKGRAY;
+                        }
+                        cells[i][j].setFill(c);
+                    }
+                }
+
                 ExecutorService executor = Executors.newFixedThreadPool(2);
                 Future<?> futureTask1 = executor.submit(() ->{
                     play.start();
@@ -119,22 +134,6 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                         board.takingPawn(stageModel, board, model, dest[0], dest[1], pawn.getColor(), colorEnemy);
                         checkMoveController.changeInfantrymanToHorseman(pawn, dest[0]);
                         checkMoveController.moveIsOk(stageModel, board);
-
-                        Color c;
-                        HoleBoardLook lookboard = (HoleBoardLook) control.getElementLook(stageModel.getBoard());
-                        Rectangle[][] cells = lookboard.getCells();
-                        for (int i=0; i<cells.length; i++){
-                            for (int j=0; j<cells[i].length; j++){
-                                if ((i+j)%2 == 0) {
-                                    c = Color.BEIGE;
-                                }
-                                else {
-                                    c = Color.DARKGRAY;
-                                }
-                                cells[i][j].setFill(c);
-                            }
-                        }
-
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     } catch (ExecutionException e) {
