@@ -11,10 +11,13 @@ import boardifier.view.GridLook;
 import boardifier.view.View;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import model.HoleBoard;
 import model.HolePawnPot;
 import model.HoleStageModel;
 import model.Pawn;
+import view.HoleBoardLook;
 import view.HoleView;
 
 import java.awt.*;
@@ -143,14 +146,26 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                     stageModel.setState(HoleStageModel.STATE_SELECTDEST);
                     // call method green rectangle not full at the cell selected by the player
                     System.out.println("x et y du pion choisi : "+pawn.getX()+"  "+pawn.getY()+"   Col : "+pawn.getCol()+" Row : "+pawn.getRow());
-                    //TODO Change la couleur du rectangle seléctionné en vert
-                    // ...
+                    HoleBoardLook lookboard = (HoleBoardLook) control.getElementLook(stageModel.getBoard());
+                    Rectangle[][] cells = lookboard.getCells();
+                    Rectangle selectedRect = cells[pawn.getRow()][pawn.getCol()];
+                    selectedRect.setFill(Color.GREEN);
 
-                    //TODO Change la couleur des cases atteignables en orange
                     int [][] reachable = stageModel.getBoard().getValidCellFinal(model, pawn.getRow(), pawn.getCol());
                     for (int i=0; i< reachable.length; i++){
-                        System.out.println("row et col des cases atteignables : "+reachable[i][0]+"  "+reachable[i][1]);
-                        // ...
+                        if (pawn.getRole()==Pawn.INFANTRYMAN){
+                            if (checkMoveController.verifPawnMove(stageModel.getBoard(), pawn.getColor(), pawn.getCol(), pawn.getRow(), reachable[i][0], reachable[i][1])){
+                                System.out.println("row et col des cases atteignables : "+reachable[i][0]+"  "+reachable[i][1]);
+                                Rectangle rect = cells[reachable[i][0]][reachable[i][1]];
+                                rect.setFill(Color.ORANGE);
+                            }
+                        } else if (pawn.getRole()==Pawn.HORSEMAN){
+                            if (checkMoveController.verifMoveCavalier(stageModel.getBoard(), pawn.getColor(), pawn.getCol(), pawn.getRow(), reachable[i][0], reachable[i][1], stageModel)){
+                                System.out.println("row et col des cases atteignables : "+reachable[i][0]+"  "+reachable[i][1]);
+                                Rectangle rect = cells[reachable[i][0]][reachable[i][1]];
+                                rect.setFill(Color.ORANGE);
+                            }
+                        }
                     }
 
                     return true; // do not allow another element to be selected

@@ -30,4 +30,10 @@ public class HoleBoardLook extends ClassicBoardLook {
 
         addShape(rectangle);
     }
+
+
+    public Rectangle[][] getCells() {
+        return cells;
+    }
+
 }

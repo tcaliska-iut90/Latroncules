@@ -64,7 +64,7 @@ public class HoleStageView extends GameStageView {
         textElement.setLocation(20,10);
         addLook(new TextLook(12, "0x000000", textElement));
 
-        TextElement textElement2 = new TextElement("Pion capturé \npar les bleue", gameStageModel);
+        TextElement textElement2 = new TextElement("Pion capturé \npar les bleus", gameStageModel);
         textElement2.setLocation(870,10);
         addLook(new TextLook(12, "0x000000", textElement2));
 
