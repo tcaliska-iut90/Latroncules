@@ -204,6 +204,8 @@ public class HoleStageFactory extends StageElementsFactory {
             if (i<8){
                 board.addElement(redPawns[i], 6, i);
                 board.addElement(bluePawns[i], 0, i);
+                board.setCellReachable(6, i, false);
+                board.setCellReachable(0, i , false);
 
                 redPawns[i].setRow(6);
                 redPawns[i].setCol(i);
@@ -213,6 +215,8 @@ public class HoleStageFactory extends StageElementsFactory {
             else {
                 board.addElement(redPawns[i], 7, 15-i);
                 board.addElement(bluePawns[i], 1, 15-i);
+                board.setCellReachable(7, 15-i, false);
+                board.setCellReachable(1, 15-i , false);
 
                 redPawns[i].setRow(7);
                 redPawns[i].setCol(15 - i);
