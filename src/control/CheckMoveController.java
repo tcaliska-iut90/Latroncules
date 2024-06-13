@@ -11,6 +11,7 @@ import view.HoleView;
 public class CheckMoveController {
     private Model model;
     private HoleView holeView;
+    protected boolean check = false;
 
     public CheckMoveController(Model model, View view){
         this.model= model;
@@ -33,7 +34,7 @@ public class CheckMoveController {
     public boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
         //Test mouvement possible en fonction de la couleur
         if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
-            holeView.dialogError("Un pion peut aller que tout droit");
+            makeMessage("Un pion peut aller que tout droit");
             return false;
         }
 
@@ -68,7 +69,7 @@ public class CheckMoveController {
             }
         }
         if (!valueFound) {
-            System.out.println("Mouvement impossible sur cette case");
+            makeMessage("Mouvement impossible sur cette case");
             return false;
         }
         return testCoupInterdit(finCol, finRow, board, color);
@@ -110,7 +111,7 @@ public class CheckMoveController {
         Pawn p2 =(Pawn) board.getElement(finRow, finCol + 1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow, finCol - 1, color) || !board.isCapturable(board, finRow, finCol + 1, color)) {
-                System.out.println("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit");
                 return false;
             }
         }
@@ -122,7 +123,7 @@ public class CheckMoveController {
         Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow + 1, finCol, color) || !board.isCapturable(board, finRow - 1, finCol, color)) {
-                System.out.println("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit");
                 return false;
             }
         }
@@ -134,7 +135,7 @@ public class CheckMoveController {
         Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol+1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow + 1, finCol +1, color) || !board.isCapturable(board, finRow - 1, finCol - 1, color)) {
-                System.out.println("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit");
                 return false;
             }
         }
@@ -143,7 +144,7 @@ public class CheckMoveController {
         p2 =(Pawn) board.getElement(finRow + 1, finCol-1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow - 1, finCol +1, color) || !board.isCapturable(board, finRow + 1, finCol - 1, color)) {
-                System.out.println("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit");
                 return false;
             }
         }
@@ -175,7 +176,7 @@ public class CheckMoveController {
         Pawn p2 = (Pawn) board.getElement(finRow + 1, finCol);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow, finCol + 1, color) || !board.isCapturable(board, finRow + 1, finCol, color)) {
-                System.out.println("Impossible, coup interdit au coin supérieur gauche");
+                makeMessage("Impossible, coup interdit au coin supérieur gauche");
                 return false;
             }
         }
@@ -187,7 +188,7 @@ public class CheckMoveController {
         Pawn p2 = (Pawn) board.getElement(finRow + 1, finCol);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow, finCol - 1, color) || !board.isCapturable(board, finRow + 1, finCol, color)) {
-                System.out.println("Impossible, coup interdit au coin supérieur droit");
+                makeMessage("Impossible, coup interdit au coin supérieur droit");
                 return false;
             }
         }
@@ -199,7 +200,7 @@ public class CheckMoveController {
         Pawn p2 = (Pawn) board.getElement(finRow, finCol + 1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow - 1, finCol, color) || !board.isCapturable(board, finRow, finCol + 1, color)) {
-                System.out.println("Impossible, coup interdit au coin inférieur gauche");
+                makeMessage("Impossible, coup interdit au coin inférieur gauche");
                 return false;
             }
         }
@@ -211,7 +212,7 @@ public class CheckMoveController {
         Pawn p2 = (Pawn) board.getElement(finRow, finCol - 1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.isCapturable(board, finRow - 1, finCol, color) || !board.isCapturable(board, finRow, finCol - 1, color)) {
-                System.out.println("Impossible, coup interdit au coin inférieur droit");
+                makeMessage("Impossible, coup interdit au coin inférieur droit");
                 return false;
             }
         }
@@ -235,6 +236,7 @@ public class CheckMoveController {
         }
 
         if (!result) callPartyResult(stage, HoleStageModel.Equality);
+
         return result;
     }
 
@@ -294,5 +296,9 @@ public class CheckMoveController {
             i++;
         }
         return result;
+    }
+
+    private void makeMessage(String message){
+        if (check)holeView.dialogError(message);
     }
 }

@@ -88,6 +88,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
         Logger.debug("try to move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
         // if the destination cell is valid for for the selected pawn
         if (board.canReachCell(dest[0], dest[1])) {
+            checkMoveController.check = true;
             if ((pawn.getRole() == Pawn.INFANTRYMAN && checkMoveController.verifPawnMove(board, pawn.getColor(), from[1], from[0], dest[0], dest[1]))
                 || pawn.getRole() == Pawn.HORSEMAN && checkMoveController.verifMoveCavalier(board, pawn.getColor(), from[1], from[0], dest[0], dest[1], stageModel)) {
 
@@ -98,6 +99,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 ActionList actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", dest[0], dest[1], AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
                 stageModel.unselectAll();
+                checkMoveController.check = false;
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
 
