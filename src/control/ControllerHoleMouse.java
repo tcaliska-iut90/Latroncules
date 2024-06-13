@@ -127,7 +127,6 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
 
                 });
                 executor.shutdown();
-
             }
         }else {
             holeView.dialogError("Un pion se trouve sur cette case");

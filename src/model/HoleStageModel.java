@@ -121,8 +121,7 @@ public class HoleStageModel extends GameStageModel {
         for (int i = 0; i < HoleRedPawnPot.getNbRows(); i++) {
             for (int j = 0; j < HoleRedPawnPot.getNbCols(); j++) {
                 if (HoleRedPawnPot.getElement(i, j) == null){
-                    //HoleRedPawnPot.addElement(p, i, j);
-                    p.addPutInContainerEvent(HoleRedPawnPot, i, j);
+                    HoleRedPawnPot.addElement(p, i, j);
                     return;
                 }
             }
@@ -139,7 +138,6 @@ public class HoleStageModel extends GameStageModel {
         for (int i = 0; i < bluePawns.length; i++) {
             if (bluePawns[i].equals(p)) {
                 bluePawns[i] = null;
-                p.removeFromStage();
             }
         }
     }
@@ -169,8 +167,7 @@ public class HoleStageModel extends GameStageModel {
         for (int i = 0; i < HoleBluePawnPot.getNbRows(); i++) {
             for (int j = 0; j < HoleBluePawnPot.getNbCols(); j++) {
                 if (HoleBluePawnPot.getElement(i, j) == null){
-                    //HoleBluePawnPot.addElement(p, i, j);
-                    p.addPutInContainerEvent(HoleBluePawnPot, i, j);
+                    HoleBluePawnPot.addElement(p, i, j);
                     return;
                 }
             }
@@ -184,7 +181,6 @@ public class HoleStageModel extends GameStageModel {
         for (int i = 0; i < redPawns.length; i++) {
             if (redPawns[i].equals(p)) {
                 redPawns[i] = null;
-                p.removeFromStage();
             }
         }
     }
