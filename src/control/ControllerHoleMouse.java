@@ -14,13 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.HoleBoard;
-import model.HolePawnPot;
 import model.HoleStageModel;
 import model.Pawn;
 import view.HoleBoardLook;
 import view.HoleView;
 
-import java.awt.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -103,7 +101,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
 
-                ExecutorService executor = Executors.newFixedThreadPool(1);
+                ExecutorService executor = Executors.newFixedThreadPool(2);
                 Future<?> futureTask1 = executor.submit(() ->{
                     play.start();
                     try {

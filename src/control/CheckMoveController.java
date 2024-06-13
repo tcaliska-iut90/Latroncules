@@ -1,5 +1,6 @@
 package control;
 
+import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.view.View;
 import model.HoleBoard;
@@ -14,8 +15,9 @@ public class CheckMoveController {
     public CheckMoveController(Model model, View view){
         this.model= model;
         this.holeView = (HoleView)view;
-
     }
+
+    public CheckMoveController(Model model){this.model = model;}
 
 
     /**
@@ -34,7 +36,6 @@ public class CheckMoveController {
             holeView.dialogError("Un pion peut aller que tout droit");
             return false;
         }
-
 
         return testCoupInterdit(finCol, finRow, board, color);
     }
@@ -79,11 +80,13 @@ public class CheckMoveController {
      * @param p
      * @param finRow
      */
-    public void changeInfantrymanToHorseman(Pawn p, int finRow){
+    public boolean changeInfantrymanToHorseman(Pawn p, int finRow){
         //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
         if((p.getRole() == Pawn.INFANTRYMAN && (p.getColor() == Pawn.PAWN_BLUE && finRow == 7) || (p.getColor() == Pawn.PAWN_RED && finRow == 0))){
             p.setRole(Pawn.HORSEMAN);
+            return true;
         }
+        return false;
     }
 
     private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
@@ -232,7 +235,6 @@ public class CheckMoveController {
         }
 
         if (!result) callPartyResult(stage, HoleStageModel.Equality);
-        System.out.println(result);
         return result;
     }
 

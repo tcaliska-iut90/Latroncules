@@ -29,18 +29,19 @@ public class PawnLook extends ElementLook {
     @Override
     public void onSelectionChange() {
         Pawn pawn = (Pawn)getElement();
-        /*
+
         if (pawn.isSelected()) {
-            circle.setStrokeWidth(3);
-            circle.setStrokeMiterLimit(10);
-            circle.setStrokeType(StrokeType.CENTERED);
-            circle.setStroke(Color.valueOf("0x333333"));
-        }
-        else {
+            if (pawn.getRole() == Pawn.HORSEMAN) {
+                circle.setStrokeWidth(3);
+                circle.setStrokeMiterLimit(10);
+                circle.setStrokeType(StrokeType.CENTERED);
+                circle.setStroke(Color.valueOf("0x333333"));
+            }
+        }else if (pawn.getRole() == Pawn.HORSEMAN){
             circle.setStrokeWidth(0);
         }
 
-         */
+
     }
 
     @Override
