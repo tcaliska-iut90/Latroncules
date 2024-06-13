@@ -92,6 +92,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             if ((pawn.getRole() == Pawn.INFANTRYMAN && checkMoveController.verifPawnMove(board, pawn.getColor(), from[1], from[0], dest[0], dest[1]))
                 || pawn.getRole() == Pawn.HORSEMAN && checkMoveController.verifMoveCavalier(board, pawn.getColor(), from[1], from[0], dest[0], dest[1], stageModel)) {
 
+                resetColor(stageModel);
                 Logger.debug("move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
                 pawn.setRow(dest[0]);
                 pawn.setCol(dest[1]);
@@ -102,21 +103,6 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 checkMoveController.check = false;
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
                 ActionPlayer play = new ActionPlayer(model, control, actions);
-
-                Color c;
-                HoleBoardLook lookboard = (HoleBoardLook) control.getElementLook(stageModel.getBoard());
-                Rectangle[][] cells = lookboard.getCells();
-                for (int i=0; i<cells.length; i++){
-                    for (int j=0; j<cells[i].length; j++){
-                        if ((i+j)%2 == 0) {
-                            c = Color.BEIGE;
-                        }
-                        else {
-                            c = Color.DARKGRAY;
-                        }
-                        cells[i][j].setFill(c);
-                    }
-                }
 
                 ExecutorService executor = Executors.newFixedThreadPool(2);
                 Future<?> futureTask1 = executor.submit(() ->{
@@ -196,21 +182,6 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             if (element.isSelected()) {
                 element.toggleSelected();
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
-
-                Color c;
-                HoleBoardLook lookboard = (HoleBoardLook) control.getElementLook(stageModel.getBoard());
-                Rectangle[][] cells = lookboard.getCells();
-                for (int i=0; i<cells.length; i++){
-                    for (int j=0; j<cells[i].length; j++){
-                        if ((i+j)%2 == 0) {
-                            c = Color.BEIGE;
-                        }
-                        else {
-                            c = Color.DARKGRAY;
-                        }
-                        cells[i][j].setFill(c);
-                    }
-                }
                 return false;
             }
         }
@@ -225,5 +196,21 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
         // get the board, pot,  and the selected pawn to simplify code in the following
     }
 
+    private void resetColor(HoleStageModel stageModel){
+        Color c;
+        HoleBoardLook lookboard = (HoleBoardLook) control.getElementLook(stageModel.getBoard());
+        Rectangle[][] cells = lookboard.getCells();
+        for (int i=0; i<cells.length; i++){
+            for (int j=0; j<cells[i].length; j++){
+                if ((i+j)%2 == 0) {
+                    c = Color.BEIGE;
+                }
+                else {
+                    c = Color.DARKGRAY;
+                }
+                cells[i][j].setFill(c);
+            }
+        }
+    }
 }
 

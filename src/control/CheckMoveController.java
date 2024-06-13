@@ -1,6 +1,5 @@
 package control;
 
-import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.view.View;
 import model.HoleBoard;
