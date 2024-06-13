@@ -10,7 +10,6 @@ import javafx.scene.text.Text;
 
 public class ClassicBoardLook extends GridLook{
     protected Rectangle[][] cells;
-    protected Rectangle[][] couleurRectangles;
     protected Text[] colCoords;
     protected Text[] rowCoords;
     protected Color oddColor;
@@ -77,7 +76,6 @@ public class ClassicBoardLook extends GridLook{
             }
         }
         cells = new Rectangle[nbRows][nbCols];
-        couleurRectangles = new Rectangle[nbRows][nbCols];
         // create top spots
         for (int i=0;i< nbRows;i++) {
             for(int j=0;j<nbCols;j++) {
@@ -89,23 +87,14 @@ public class ClassicBoardLook extends GridLook{
                     c = oddColor;
                 }
                 cells[i][j] = new Rectangle(colWidth, rowHeight, c);
-                couleurRectangles[i][j] = new Rectangle(colWidth, rowHeight, Color.TRANSPARENT);
                 cells[i][j].setSmooth(false);
-                couleurRectangles[i][j].setSmooth(false);
                 cells[i][j].setStroke(c);
-                couleurRectangles[i][j].setStroke(frameColor);
                 cells[i][j].setStrokeWidth(0);
-                couleurRectangles[i][j].setStrokeWidth(1);
                 cells[i][j].setStrokeMiterLimit(10);
-                couleurRectangles[i][j].setStrokeMiterLimit(10);
                 cells[i][j].setStrokeType(StrokeType.INSIDE);
-                couleurRectangles[i][j].setStrokeType(StrokeType.INSIDE);
                 cells[i][j].setX(j*colWidth+gapXToCells);
-                couleurRectangles[i][j].setX(j*colWidth+gapXToCells);
                 cells[i][j].setY(i*rowHeight+gapYToCells);
-                couleurRectangles[i][j].setY(i*rowHeight+gapYToCells);
                 addShape(cells[i][j]);
-                addShape(couleurRectangles[i][j]);
             }
         }
     }
