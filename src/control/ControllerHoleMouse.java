@@ -157,7 +157,8 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                 if (pawn.getColor() == model.getCurrentPlayer().getColor()) {
                     element.toggleSelected();
                     stageModel.setState(HoleStageModel.STATE_SELECTDEST);
-                    // call method green rectangle not full at the cell selected by the player
+
+
                     System.out.println("x et y du pion choisi : "+pawn.getX()+"  "+pawn.getY()+"   Col : "+pawn.getCol()+" Row : "+pawn.getRow());
                     HoleBoardLook lookboard = (HoleBoardLook) control.getElementLook(stageModel.getBoard());
                     Rectangle[][] cells = lookboard.getCells();
