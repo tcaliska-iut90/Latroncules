@@ -1,6 +1,5 @@
 package model;
 
-import boardifier.model.ContainerElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.StageElementsFactory;
 import boardifier.model.TextElement;
@@ -51,6 +50,7 @@ public class HoleStageFactory extends StageElementsFactory {
         stageModel.setBoard(board);
         stageModel.setHoleRedPawnPot(new HolePawnPot(0, 30, stageModel));
         stageModel.setHoleBluePawnPot(new HolePawnPot(850, 30, stageModel));
+
 
 
         Arrow[] arrows = new Arrow[4];

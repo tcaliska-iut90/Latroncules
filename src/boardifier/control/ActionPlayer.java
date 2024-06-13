@@ -76,11 +76,7 @@ public class ActionPlayer extends Thread {
             Animation[] animations = new Animation[actionPack.size()];
             for(int i=0;i<actionPack.size();i++) {
                 GameAction action = actionPack.get(i);
-
-                Logger.trace("Avant");
                 animations[i] = action.setupAnimation();
-                Logger.trace("Après");
-
                 if (animations[i] != null) {
                     Logger.trace("starting animation "+i);
                     animations[i].start();

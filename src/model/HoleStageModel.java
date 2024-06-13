@@ -2,7 +2,6 @@ package model;
 
 import boardifier.model.*;
 
-import java.util.Arrays;
 
 /**
  * HoleStageModel defines the model for the single stage in "The Hole". Indeed,
@@ -119,12 +118,16 @@ public class HoleStageModel extends GameStageModel {
     Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe bleue
      */
     public void addBluePawnsTaking(Pawn p){
-        for (int j = 0; j < HoleRedPawnPot.getNbCols(); j++) {
-            if (HoleRedPawnPot.getElement(0, j) == null){
-                HoleRedPawnPot.addElement(p, 0, j);
-                break;
+        for (int i = 0; i < HoleRedPawnPot.getNbRows(); i++) {
+            for (int j = 0; j < HoleRedPawnPot.getNbCols(); j++) {
+                if (HoleRedPawnPot.getElement(i, j) == null){
+                    HoleRedPawnPot.addElement(p, i, j);
+                    return;
+                }
             }
         }
+
+
 
 
     }
@@ -135,7 +138,6 @@ public class HoleStageModel extends GameStageModel {
         for (int i = 0; i < bluePawns.length; i++) {
             if (bluePawns[i].equals(p)) {
                 bluePawns[i] = null;
-                p.removeFromStage();
             }
         }
     }
@@ -162,18 +164,12 @@ public class HoleStageModel extends GameStageModel {
      Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe rouge
     */
     public void addRedPawnsTaking(Pawn p){
-        for (int j = 0; j < HoleBluePawnPot.getNbCols(); j++) {
-            if (HoleBluePawnPot.getElement(0, j)== null){
-                HoleBluePawnPot.addElement(p, 0, j);
-                break;
-            }
-        }
-
-
-        System.out.println("Les pions capturés par l'équipe rouge");
-        for (int i = 0; i <HoleBluePawnPot.getNbRows() ; i++) {
-            for (int j = 0; j <HoleBluePawnPot.getNbCols() ; j++) {
-                System.out.println(HoleBluePawnPot.getElement(i, j));
+        for (int i = 0; i < HoleBluePawnPot.getNbRows(); i++) {
+            for (int j = 0; j < HoleBluePawnPot.getNbCols(); j++) {
+                if (HoleBluePawnPot.getElement(i, j) == null){
+                    HoleBluePawnPot.addElement(p, i, j);
+                    return;
+                }
             }
         }
     }
@@ -185,7 +181,6 @@ public class HoleStageModel extends GameStageModel {
         for (int i = 0; i < redPawns.length; i++) {
             if (redPawns[i].equals(p)) {
                 redPawns[i] = null;
-                p.removeFromStage();
             }
         }
     }

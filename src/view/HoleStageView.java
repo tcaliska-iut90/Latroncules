@@ -15,6 +15,7 @@ import model.HoleStageModel;
 
 
 public class HoleStageView extends GameStageView {
+
     public HoleStageView(String name, GameStageModel gameStageModel) {
         super(name, gameStageModel);
     }

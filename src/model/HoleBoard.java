@@ -4,8 +4,6 @@ import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
 import boardifier.model.Model;
 
-import java.util.stream.StreamSupport;
-
 
 /**
  * Hole main board represent the element where pawns are put when played
@@ -276,14 +274,11 @@ public class HoleBoard extends ContainerElement {
         if (colorPawn == Pawn.PAWN_BLUE){
             stageModel.removeRedPawns(pawnEnemy);
             stageModel.addBluePawnsTaking(pawnEnemy);
-
         }
         else {
             stageModel.removeBluePawns(pawnEnemy);
             stageModel.addRedPawnsTaking(pawnEnemy);
         }
-
-
     }
 
     public boolean checkPiece(HoleBoard board, int row, int col, int playerColor){

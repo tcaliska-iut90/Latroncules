@@ -1,45 +1,55 @@
+import boardifier.control.Logger;
 import boardifier.model.Model;
 import boardifier.model.Player;
+import boardifier.view.RootPane;
 import boardifier.view.View;
+import control.CheckMoveController;
+import javafx.stage.Stage;
 import model.Arrow;
 import model.HoleBoard;
 import model.HoleStageModel;
 import model.Pawn;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import view.HoleView;
+
 import java.io.BufferedReader;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class HoleControllerTest {
-/*
+class CheckMoveControllerTest {
+
     @Mock
     private Model mockModel;
     @Mock
-    private View mockView;
+    View mockView;
     @Mock
     private Player mockPlayer;
     @Mock
     private HoleStageModel mockStageModel;
     @Mock
     private HoleBoard mockBoard;
-    @Mock
-    private BufferedReader mockBufferedReader;
-    @Mock
-    private HoleController holeController;
 
     @Mock
-    private Pawn mockPawn, mockPawn2;
+    CheckMoveController controller;
+    @Mock
+    Pawn mockPawn;
+
+    Model model;
+
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        holeController = new HoleController(mockModel, mockView);
-
-        holeController.consoleIn = mockBufferedReader;
-
+        mockModel = mock(Model.class);
+        mockView = mock(View.class);
+        mockPawn = mock(Pawn.class);
+        mockBoard = mock(HoleBoard.class);
+        mockStageModel = mock(HoleStageModel.class);
+        controller = new CheckMoveController(mockModel);
 
         when(mockModel.getGameStage()).thenReturn(mockStageModel);
         when(mockStageModel.getBoard()).thenReturn(mockBoard);
@@ -49,48 +59,47 @@ class HoleControllerTest {
     @Test
     public void testVerifPawnMove() {
         // Test coup possible pion bleu
-        boolean result = holeController.verifPawnMove(mockBoard, Pawn.PAWN_BLUE, 0, 7, 6, 0);
+        boolean result = verifPawnMove(mockBoard, Pawn.PAWN_BLUE, 0, 7, 6, 0);
         assertFalse(result);
 
         // Test coup possible pion rouge
-        boolean result2 = holeController.verifPawnMove(mockBoard, Pawn.PAWN_RED, 0, 0, 1, 0);
+        boolean result2 = verifPawnMove(mockBoard, Pawn.PAWN_RED, 0, 0, 1, 0);
         assertFalse(result2);
 
-        // Test aucun pion devant le pion joueur
-        when(mockBoard.getElement(1, 1)).thenReturn(new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, mockStageModel));
-        boolean result3 = holeController.verifPawnMove(mockBoard, Pawn.PAWN_BLUE, 1, 0, 1, 1);
-        assertFalse(result3);
 
         // Test coup interdit
         when(mockBoard.getElement(1, 1)).thenReturn(null);
         when(mockBoard.getElement(1, 0)).thenReturn(new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, mockStageModel));
         when(mockBoard.getElement(1, 2)).thenReturn(new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, mockStageModel));
-        boolean result4 = holeController.verifPawnMove(mockBoard, Pawn.PAWN_BLUE, 1, 0, 1, 1);
+        boolean result4 = verifPawnMove(mockBoard, Pawn.PAWN_BLUE, 1, 0, 1, 1);
         assertFalse(result4);
 
         // Test coup possible
         when(mockBoard.getElement(1, 0)).thenReturn(null);
         when(mockBoard.getElement(1, 1)).thenReturn(new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, mockStageModel));
-        boolean result5 = holeController.verifPawnMove(mockBoard, Pawn.PAWN_BLUE, 0, 0, 1, 0);
+        boolean result5 = verifPawnMove(mockBoard, Pawn.PAWN_BLUE, 0, 0, 1, 0);
         assertTrue(result5);
     }
 
     @Test
     public void testVerifMoveCavalier() {
+
+
         int[][] validCells = {{2, 1}, {3, 3}};
         Arrow[][] a = new Arrow[8][8];
 
         // Test mouvement impossible sur une case non fléchés
         when(mockStageModel.getBoardArrows1()).thenReturn(a);
         when(mockBoard.getValidCell(any(Model.class), anyInt(), anyInt())).thenReturn(validCells);
-        boolean result = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 2, mockStageModel, Pawn.PAWN_BLUE);
+        boolean result = controller.verifMoveCavalier(mockBoard, Pawn.PAWN_BLUE,1, 1, 2, 2, mockStageModel);
         assertFalse(result);
 
         // Test mouvement possible sur une case non fléchés
         when(mockBoard.getValidCell(any(Model.class), anyInt(), anyInt())).thenReturn(validCells);
         when(mockStageModel.getBoardArrows1()).thenReturn(a);
         when(mockBoard.getElement(2, 1)).thenReturn(null);
-        boolean result2 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
+        //when(testCoupInterdit(anyInt(), anyInt(), any(HoleBoard.class),anyInt())).thenReturn(true);
+        boolean result2 = controller.verifMoveCavalier(mockBoard,Pawn.PAWN_BLUE, 1, 1, 2, 1, mockStageModel );
         assertTrue(result2);
 
         // Test cases fléchés
@@ -100,21 +109,21 @@ class HoleControllerTest {
         when(mockStageModel.getBoardArrows1()).thenReturn(arrows1);
         when(mockStageModel.getBoardArrows2()).thenReturn(arrows1);
         when(mockBoard.getValidCell(any(Model.class), eq(mockArrow), eq(mockArrow), anyInt(), anyInt())).thenReturn(validCells);
-        boolean result3 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
+        boolean result3 = controller.verifMoveCavalier(mockBoard,Pawn.PAWN_BLUE, 1, 1, 2, 1, mockStageModel);
         assertTrue(result3);
 
         // Test mouvement pas possible sur une case non fléchés et un pion sur la case d'arrivée
         when(mockBoard.getValidCell(any(Model.class), anyInt(), anyInt())).thenReturn(validCells);
         when(mockStageModel.getBoardArrows1()).thenReturn(a);
         when(mockBoard.getElement(2, 1)).thenReturn(mockPawn);
-        boolean result4 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
+        boolean result4 = controller.verifMoveCavalier(mockBoard, Pawn.PAWN_BLUE,1, 1, 2, 1, mockStageModel);
         assertFalse(result4);
 
         // Test cases fléchés et un pion sur la case d'arrivée
         when(mockStageModel.getBoardArrows1()).thenReturn(arrows1);
         when(mockStageModel.getBoardArrows2()).thenReturn(arrows1);
         when(mockBoard.getValidCell(any(Model.class), eq(mockArrow), eq(mockArrow), anyInt(), anyInt())).thenReturn(validCells);
-        boolean result5 = holeController.verifMoveCavalier(mockBoard, 1, 1, 2, 1, mockStageModel, Pawn.PAWN_BLUE);
+        boolean result5 = controller.verifMoveCavalier(mockBoard, Pawn.PAWN_BLUE,1, 1, 2, 1, mockStageModel);
         assertFalse(result5);
     }
 
@@ -122,56 +131,33 @@ class HoleControllerTest {
     public void testChangeInfantrymanBlueToHorseman() {
         when(mockPawn.getRole()).thenReturn(Pawn.INFANTRYMAN);
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_BLUE);
-        holeController.changeInfantrymanToHorseman(mockPawn, 7);
-        verify(mockPawn, times(1)).setRole(Pawn.HORSEMAN);
+
+        boolean result = controller.changeInfantrymanToHorseman(mockPawn, 7);
+        assertTrue(result);
+
+        when(mockPawn.getRole()).thenReturn(Pawn.INFANTRYMAN);
+        when(mockPawn.getColor()).thenReturn(Pawn.PAWN_BLUE);
+
+        boolean result2 = controller.changeInfantrymanToHorseman(mockPawn, 5);
+        assertFalse(result2);
     }
 
     @Test
     public void testChangeInfantrymanRedToHorseman(){
         when(mockPawn.getRole()).thenReturn(Pawn.INFANTRYMAN);
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
-        holeController.changeInfantrymanToHorseman(mockPawn, 0);
-        verify(mockPawn, times(1)).setRole(Pawn.HORSEMAN);
-    }
 
-    @Test
-    public void testCoordonnePawnAnalyseAndPlay(){
-        boolean result = holeController.analyseAndPlay("a1B2");
-        assertFalse(result);
+        boolean result = controller.changeInfantrymanToHorseman(mockPawn, 0);
+        assertTrue(result);
 
-        boolean result2 = holeController.analyseAndPlay("Z1B2");
-        assertFalse(result2);
-
-        boolean result3 = holeController.analyseAndPlay("A0B2");
-        assertFalse(result3);
-
-        boolean result4 = holeController.analyseAndPlay("A9B2");
-        assertFalse(result4);
-    }
-
-    @Test
-    public void testCoordonneMovePawnAnalyseAndPlay(){
-        boolean result = holeController.analyseAndPlay("A1a2");
-        assertFalse(result);
-
-        boolean result2 = holeController.analyseAndPlay("B2Z1");
-        assertFalse(result2);
-
-        boolean result3 = holeController.analyseAndPlay("B2A0");
-        assertFalse(result3);
-
-        boolean result4 = holeController.analyseAndPlay("B2A9");
-        assertFalse(result4);
-    }
-
-    @Test
-    public void testColorAnalyseAndPlay(){
-        when(mockModel.getCurrentPlayer().getColor()).thenReturn(0);
+        when(mockPawn.getRole()).thenReturn(Pawn.INFANTRYMAN);
         when(mockPawn.getColor()).thenReturn(Pawn.PAWN_RED);
-        boolean result = holeController.analyseAndPlay("A1A2");
-        assertFalse(result);
 
+        boolean result2 = controller.changeInfantrymanToHorseman(mockPawn, 5);
+        assertFalse(result2);
     }
+
+
 
     @Test
     void testCheckCoupInterditHorizontal() {
@@ -253,6 +239,46 @@ class HoleControllerTest {
         when(mockBoard.getElement(6, 7)).thenReturn(null);
         assertTrue(checkCoinInférieurDroit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit avec seulement un pion adverse autour est autorisé");
     }
+
+    @Disabled
+    public void testMoveIsOk() {
+        Pawn[] p = {mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn};
+
+        when(mockPlayer.getColor()).thenReturn(0);  // Player color RED
+        when(mockStageModel.getRedPawns()).thenReturn(p);
+        when(controller.moveIsOkRed(any(HoleStageModel.class), any(HoleBoard.class))).thenReturn(true);
+
+        boolean result = controller.moveIsOk(mockStageModel, mockBoard);
+        assertTrue(result);
+
+        when(mockPlayer.getColor()).thenReturn(1);  // Player color BLUE
+        when(mockStageModel.getBluePawns()).thenReturn(p);
+        when(controller.moveIsOkBlue(any(HoleStageModel.class), any(HoleBoard.class))).thenReturn(true);
+
+        result = controller.moveIsOk(mockStageModel, mockBoard);
+        assertTrue(result);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -386,6 +412,13 @@ class HoleControllerTest {
         return true;
     }
 
- */
 
+    private boolean verifPawnMove(HoleBoard board, int color, int colPawn, int rowPawn, int finRow, int finCol) {
+        //Test mouvement possible en fonction de la couleur
+        if ((color == Pawn.PAWN_BLUE && (colPawn != finCol || rowPawn + 1 != finRow)) || (color == Pawn.PAWN_RED && (colPawn != finCol || rowPawn - 1 != finRow))) {
+            return false;
+        }
+
+        return testCoupInterdit(finCol, finRow, board, color);
+    }
 }
