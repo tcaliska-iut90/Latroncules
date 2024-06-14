@@ -85,22 +85,30 @@ public class HoleStageFactory extends StageElementsFactory {
         } else if(testVict == 0) {
             setupPawns(board);
         } else if(testVict == 2) {
-            Pawn[] bluePawns = new Pawn[2];
+            Pawn[] bluePawns = new Pawn[3];
             bluePawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
             bluePawns[1] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
+            bluePawns[2] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
             // assign the blue pawns to the game stage model
             stageModel.setBluePawns(bluePawns);
 
-            Pawn[] redPawns = new Pawn[1];
+            Pawn[] redPawns = new Pawn[3];
 
             redPawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
+            redPawns[1] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
+            redPawns[2] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
+
             stageModel.setRedPawns(redPawns);
 
 
-            board.addElement(bluePawns[0], 4, 4);
-            board.addElement(bluePawns[1], 5, 6);
+            board.addElement(bluePawns[0], 4, 3);
+            board.addElement(bluePawns[1], 6, 3);
+            board.addElement(bluePawns[2], 6, 7);
 
-            board.addElement(redPawns[0], 5, 5);
+
+            board.addElement(redPawns[0], 5, 4);
+            board.addElement(redPawns[1], 6, 4);
+            board.addElement(redPawns[2], 6, 6);
 
         } else if (testVict == 3) {
             Pawn[] bluePawns = new Pawn[1];

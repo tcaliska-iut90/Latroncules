@@ -45,10 +45,11 @@ public class HoleStageView extends GameStageView {
                 addLook(new PawnLook(20,model.getRedPawns()[i]));
             }
         } else if (HoleStageFactory.testVict == 2) {
-            for(int i=0;i<2;i++) {
+            for(int i=0;i<3;i++) {
                 addLook(new PawnLook(20,model.getBluePawns()[i]));
+                addLook(new PawnLook(20,model.getRedPawns()[i]));
             }
-            addLook(new PawnLook(20,model.getRedPawns()[0]));
+
         } else if (HoleStageFactory.testVict == 3) {
             addLook(new PawnLook(20,model.getRedPawns()[0]));
             addLook(new PawnLook(20,model.getBluePawns()[0]));

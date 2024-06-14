@@ -1,5 +1,6 @@
 package model;
 
+import boardifier.control.Logger;
 import boardifier.model.*;
 
 
@@ -126,10 +127,6 @@ public class HoleStageModel extends GameStageModel {
                 }
             }
         }
-
-
-
-
     }
     /*
     Permet de retirer le pion passé en paramètre du tableau des pions bleue
@@ -168,10 +165,27 @@ public class HoleStageModel extends GameStageModel {
             for (int j = 0; j < HoleBluePawnPot.getNbCols(); j++) {
                 if (HoleBluePawnPot.getElement(i, j) == null){
                     HoleBluePawnPot.addElement(p, i, j);
+                    /*
+                    System.out.println("HoleBluePawnPot");
+                    for (int k = 0; k < HoleBluePawnPot.getNbRows(); k++) {
+                        for (int a = 0; a < HoleBluePawnPot.getNbCols(); a++) {
+                            if ((HoleBluePawnPot.getElement(k, a) != null)) System.out.println(HoleBluePawnPot.getElement(k, a) + "i: " + k + ", j: " + a);
+                        }
+                    }
+                    System.out.println("bluePawns");
+                    for (int a = 0; a< bluePawns.length; a++) {
+                        System.out.println(bluePawns[a]);
+                    }
+
+                     */
                     return;
                 }
             }
         }
+
+
+
+
     }
 
     /*
@@ -206,19 +220,20 @@ public class HoleStageModel extends GameStageModel {
 
         //System.out.println((holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
-
-
-            System.out.println("Row " + rowDest + " col " + colDest);
-
-            //System.out.println("cellules valides : " + Arrays.deepToString(board.getValidCell(model, rowDest, colDest)));
-
-
-
-            if(isBlueMissing()){
-                computePartyResult(0);
-            }
-            if(isRedMissing()){
-                computePartyResult(1);
+            if(isBlueMissing()) {
+                if (model.getPlayers().get(0).equals("PlayerRed")){
+                    computePartyResult(0);
+                }
+                else{
+                    computePartyResult(1);
+                }
+            } else if (isRedMissing()) {
+                if (model.getPlayers().get(0).equals("PlayerBlue")){
+                    computePartyResult(0);
+                }
+                else{
+                    computePartyResult(1);
+                }
             }
         });
 
@@ -227,12 +242,12 @@ public class HoleStageModel extends GameStageModel {
     }
 
     public void computePartyResult(int idWinner) {
-        if (idWinner == HoleStageModel.Equality)model.stopStage();
+        if (idWinner == HoleStageModel.Equality)model.stopGame();
         else {
             // set the winner
             model.setIdWinner(idWinner);
             // stop the game
-            model.stopStage();
+            model.stopGame();
         }
 
     }

@@ -93,6 +93,7 @@ public class CheckMoveController {
         if ((finRow == 0 || finRow == 7) && (finCol == 0 || finCol == 7)){
             return checkCoupInterditCoin(finCol, finRow, board, color);
         }
+
         if (finRow > 0 && finRow < 7 && !checkCoupInterditVertical(finCol, finRow, board, color)) return false;
 
         if (finCol > 0 && finCol < 7 && !checkCoupInterditHorizontal(finCol, finRow, board, color))return false;
@@ -105,11 +106,13 @@ public class CheckMoveController {
     }
 
     private Boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
+        int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
+
 
         Pawn p1 = (Pawn) board.getElement(finRow, finCol - 1);
         Pawn p2 =(Pawn) board.getElement(finRow, finCol + 1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
-            if (!board.isCapturable(board, finRow, finCol - 1, color) || !board.isCapturable(board, finRow, finCol + 1, color)) {
+            if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)){
                 makeMessage("Impossible, coup interdit");
                 return false;
             }
@@ -118,10 +121,12 @@ public class CheckMoveController {
     }
 
     private boolean checkCoupInterditVertical(int finCol, int finRow, HoleBoard board, int color){
+        int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
+
         Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol );
         Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
-            if (!board.isCapturable(board, finRow + 1, finCol, color) || !board.isCapturable(board, finRow - 1, finCol, color)) {
+            if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)) {
                 makeMessage("Impossible, coup interdit");
                 return false;
             }
@@ -130,10 +135,12 @@ public class CheckMoveController {
     }
 
     private boolean checkCoupInterditDiagonal(int finCol, int finRow, HoleBoard board, int color){
+        int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
+
         Pawn p1 = (Pawn) board.getElement(finRow - 1, finCol-1 );
         Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol+1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
-            if (!board.isCapturable(board, finRow + 1, finCol +1, color) || !board.isCapturable(board, finRow - 1, finCol - 1, color)) {
+            if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)) {
                 makeMessage("Impossible, coup interdit");
                 return false;
             }
@@ -142,7 +149,7 @@ public class CheckMoveController {
         p1 = (Pawn) board.getElement(finRow - 1, finCol+1 );
         p2 =(Pawn) board.getElement(finRow + 1, finCol-1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
-            if (!board.isCapturable(board, finRow - 1, finCol +1, color) || !board.isCapturable(board, finRow + 1, finCol - 1, color)) {
+            if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)) {
                 makeMessage("Impossible, coup interdit");
                 return false;
             }

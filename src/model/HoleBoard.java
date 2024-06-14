@@ -221,7 +221,8 @@ public class HoleBoard extends ContainerElement {
                if ((i >= 0 && i <= 7) && (j >= 0 && j <= 7)) {
                    Pawn p = (Pawn) board.getElement(i, j);
                    if (checkPiece(board, i, j, colorEnemy) && isCapturable(board,i, j, colorPawn)){
-                       deletePawnsTaking(stageModel, p, board, colorPawn);
+                       System.out.println("i: " + i + ", j: " + j );
+                       deletePawnsTaking(stageModel, p, board);
                    }
                }
             }
@@ -243,11 +244,11 @@ public class HoleBoard extends ContainerElement {
         if (row > 0 && row < 7 && checkPiece(board, row - 1, col, playerColor) && checkPiece(board, row + 1, col, playerColor)) {
             return true;
         }
+
         // Vérifie alignement horizontal
         if (col > 0 && col < 7 && checkPiece(board, row, col - 1, playerColor) && checkPiece(board, row, col + 1, playerColor)) {
             return true;
         }
-
 
         // Vérifie alignement oblique haut-gauche à bas-droite
         if (row > 0 && row < 7 && col > 0 && col < 7 && checkPiece(board, row - 1, col - 1, playerColor) && checkPiece(board, row +1, col + 1, playerColor)) {
@@ -266,12 +267,56 @@ public class HoleBoard extends ContainerElement {
         return false;
     }
 
+    public boolean CheckIsCapturableWithoutCoupInterdit(int row, int col, int playerColor, int colorEnemy){
+        if (CheckIsCapturableWithoutCoupInterditHorizontal(row,col,playerColor,colorEnemy)
+            || CheckIsCapturableWithoutCoupInterditVertical(row,col,playerColor,colorEnemy)
+            || CheckIsCapturableWithoutCoupInterditMajorDiagonal(row,col,playerColor,colorEnemy)
+            || CheckIsCapturableWithoutCoupInterditMinorrDiagonal(row,col,playerColor,colorEnemy)
+        ){return true;}
+        return false;
+    }
+
+    public boolean CheckIsCapturableWithoutCoupInterditVertical(int row, int col, int playerColor, int colorEnemy){
+        if (row > 1 && row < 6
+                && (checkPiece(this, row - 1, col, colorEnemy) && (checkPiece(this, row - 2, col, playerColor)))
+                || (checkPiece(this, row + 1, col, colorEnemy) && checkPiece(this, row + 2, col, playerColor))) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean CheckIsCapturableWithoutCoupInterditHorizontal(int row, int col, int playerColor, int colorEnemy){
+        if (col > 1 && col < 6
+                && (checkPiece(this, row, col - 1, colorEnemy) && (checkPiece(this, row, col - 2, playerColor)))
+                ||  (checkPiece(this, row, col + 1, colorEnemy)&& checkPiece(this, row, col + 2, playerColor))) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean CheckIsCapturableWithoutCoupInterditMajorDiagonal(int row, int col, int playerColor, int colorEnemy){
+        if (row > 1 && row < 6 && col > 1 && col < 6
+                && (checkPiece(this, row - 1, col - 1, colorEnemy) && (checkPiece(this, row - 2, col - 2, playerColor)))
+                || (checkPiece(this, row +1, col + 1, colorEnemy) && checkPiece(this, row +2, col + 2, playerColor))) {
+            return true;
+        }
+        return false;
+    }
+    public boolean CheckIsCapturableWithoutCoupInterditMinorrDiagonal(int row, int col, int playerColor, int colorEnemy){
+        if (row > 1 && row < 6 && col > 1 && col < 6
+                && (checkPiece(this, row + 1, col - 1, colorEnemy) && (checkPiece(this, row + 2, col - 2, playerColor)))
+                ||  (checkPiece(this, row - 1, col + 1, colorEnemy)&& checkPiece(this, row - 2, col + 2, playerColor))) {
+            return true;
+        }
+        return false;
+    }
 
 
-    private void deletePawnsTaking(HoleStageModel stageModel, Pawn pawnEnemy, HoleBoard board, int colorPawn) {
+
+    private void deletePawnsTaking(HoleStageModel stageModel, Pawn pawnEnemy, HoleBoard board) {
         board.removeElement(pawnEnemy);
         board.setCellReachable(pawnEnemy.getRow(), pawnEnemy.getCol(), true);
-        if (colorPawn == Pawn.PAWN_BLUE){
+        if (pawnEnemy.getColor() == Pawn.PAWN_BLUE){
             stageModel.removeRedPawns(pawnEnemy);
             stageModel.addBluePawnsTaking(pawnEnemy);
         }
