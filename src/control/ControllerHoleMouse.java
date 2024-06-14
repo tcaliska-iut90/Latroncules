@@ -182,6 +182,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
             if (element.isSelected()) {
                 element.toggleSelected();
                 stageModel.setState(HoleStageModel.STATE_SELECTPAWN);
+                resetColor(stageModel);
                 return false;
             }
         }
