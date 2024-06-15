@@ -22,12 +22,15 @@ public class ControllerHole extends Controller {
         model.setNextPlayer();
         // get the new player
         Player p = model.getCurrentPlayer();
-        // change the text of the TextElement
+        Player adversary = model.getAdversary();
+
+        CheckMoveController checkMove = new CheckMoveController(model, view);
+
         HoleStageModel stageModel = (HoleStageModel) model.getGameStage();
         stageModel.getPlayerName().setText(p.getName());
         if (p.getType() == Player.COMPUTER) {
             Logger.debug("COMPUTER PLAYS");
-            HoleDecider decider = new HoleDecider(model,this);
+            HoleDecider decider = new HoleDecider(model, this, p, adversary, checkMove);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
         }

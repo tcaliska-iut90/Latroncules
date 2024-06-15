@@ -3,6 +3,9 @@ package model;
 import boardifier.control.Logger;
 import boardifier.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * HoleStageModel defines the model for the single stage in "The Hole". Indeed,
@@ -255,5 +258,19 @@ public class HoleStageModel extends GameStageModel {
     @Override
     public StageElementsFactory getDefaultElementFactory() {
         return new HoleStageFactory(this);
+    }
+
+    public List<Pawn> getPawns(Player player) {
+        List<Pawn> pawns = new ArrayList<>();
+        for (GameElement element : elements) {
+            if (element instanceof Pawn) {
+                Pawn pawn = (Pawn) element;
+                if (pawn.getColor() == 1 && (player.getName().equals("computer") || player.getName().equals("computer2") || player.getName().equals("PlayerRed")) || pawn.getColor() == 0 && (player.getName().equals("computer1") || player.getName().equals("PlayerBlue"))){
+                    //System.out.println("Pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getRow()+" col="+pawn.getCol());
+                    pawns.add(pawn);
+                }
+            }
+        }
+        return pawns;
     }
 }

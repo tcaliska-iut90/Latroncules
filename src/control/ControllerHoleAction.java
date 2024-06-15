@@ -54,36 +54,33 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
             System.exit(0);
         });
 
-
     }
 
     private void setButtonHandler(){
         holeView.getButtonJvJ().setOnAction(e ->{
             holeView.setupChoice();
-            setButoonChoiceHandler();
+            setButtonChoiceHandler();
             setMenuHandlers();
         });
 
         holeView.getButtonJvC().setOnAction(e -> {
-            model.addHumanPlayer("PlayerBlue");
-            model.addComputerPlayer("computer");
-            startGame();
+            holeView.setupAIChoice(true);
+            setAIChoiceHandler(true);
+            setMenuHandlers();
         });
 
         holeView.getButtonCvC().setOnAction(e -> {
-            model.addComputerPlayer("computer1");
-            model.addComputerPlayer("computer2");
-            startGame();
+            holeView.setupAIChoice(false);
+            setAIChoiceHandler(false);
+            setMenuHandlers();
         });
     }
 
-
-    private void setButoonChoiceHandler(){
+    private void setButtonChoiceHandler(){
         holeView.getButtonBluePlayer().setOnAction(e ->{
             model.addHumanPlayer("PlayerBlue");
             model.addHumanPlayer("PlayerRed");
             startGame();
-
         });
         holeView.getButtonRedPlayer().setOnAction(e -> {
             model.addHumanPlayer("PlayerRed");
@@ -91,6 +88,38 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
             startGame();
         });
     }
+
+    private void setAIChoiceHandler(boolean isJvC){
+        if (isJvC) {
+            holeView.getButtonJvIA1().setOnAction(e -> {
+                model.addHumanPlayer("Player");
+                model.addComputerPlayer("IA1");
+                startGame();
+            });
+            holeView.getButtonJvIA2().setOnAction(e -> {
+                model.addHumanPlayer("Player");
+                model.addComputerPlayer("IA2");
+                startGame();
+            });
+        } else {
+            holeView.getButtonIA1vIA1().setOnAction(e -> {
+                model.addComputerPlayer("IA1");
+                model.addComputerPlayer("IA1");
+                startGame();
+            });
+            holeView.getButtonIA1vIA2().setOnAction(e -> {
+                model.addComputerPlayer("IA1");
+                model.addComputerPlayer("IA2");
+                startGame();
+            });
+            holeView.getButtonIA2vIA2().setOnAction(e -> {
+                model.addComputerPlayer("IA2");
+                model.addComputerPlayer("IA2");
+                startGame();
+            });
+        }
+    }
+
     private void startGame(){
         try {
             control.startGame();
@@ -114,4 +143,3 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
         if (!model.isCaptureActionEvent()) return;
     }
 }
-

@@ -195,6 +195,10 @@ public class Model {
         players.add(Player.createComputerPlayer(name));
     }
 
+    public void addComputerPlayer(String name, int computerType) {
+        players.add(Player.createComputerPlayer(name, computerType));
+    }
+
     public int getIdPlayer() {
         return idPlayer;
     }

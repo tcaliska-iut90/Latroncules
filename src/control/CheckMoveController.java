@@ -50,7 +50,7 @@ public class CheckMoveController {
      * @param holeStageModel
      * @return true si coup possible, false sinon
      */
-    public boolean verifMoveCavalier(HoleBoard board,int color,  int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModel) {
+    public boolean verifMoveCavalier(HoleBoard board, int color,  int colPawn, int rowPawn, int finRow, int finCol, HoleStageModel holeStageModel) {
         int[][] temp;
         boolean valueFound = false;
 

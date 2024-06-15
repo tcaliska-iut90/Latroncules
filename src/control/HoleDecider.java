@@ -7,9 +7,11 @@ import boardifier.model.GameElement;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
+import boardifier.model.animation.AnimationTypes;
 import model.HoleBoard;
 import model.HoleStageModel;
 import model.Pawn;
+import model.PointPosition;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,25 +30,26 @@ public class HoleDecider extends Decider {
     protected int max;
     protected Pawn pawn;
 
-    protected ControllerHole holeController;
+    protected CheckMoveController checkMoveController;
 
     private static final Random loto = new Random(Calendar.getInstance().getTimeInMillis());
 
-    public HoleDecider(Model model, Controller control) {
+    public HoleDecider(Model model, Controller control, CheckMoveController checkMoveController) {
         super(model, control);
+        this.checkMoveController = checkMoveController;
     }
 
-    public HoleDecider(Model model, Controller control, Player currentPlayer, Player adversary, ControllerHole holeController) {
+    public HoleDecider(Model model, Controller control, Player currentPlayer, Player adversary, CheckMoveController holeController) {
         super(model, control);
         this.currentPlayer = currentPlayer;
         this.adversary = adversary;
-        this.holeController = holeController;
+        this.checkMoveController = holeController;
     }
 
 
     @Override
     public ActionList decide() {
-        /*
+
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel) model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
@@ -187,16 +190,14 @@ public class HoleDecider extends Decider {
                     }
                 }
             }
-            /*
             for (int i = 0; i < bestMove.size(); i++) {
                 System.out.println("Score : " + bestMove.get(i).getScore() + " Col : " + bestMove.get(i).getCol() + " Row : " + bestMove.get(i).getRow());
             }
             for (int i = 0; i < pawnIndex.size(); i++) {
                 System.out.println(pawns.get(pawnIndex.get(i)).getCol() + " " + pawns.get(pawnIndex.get(i)).getRow());
             }
-            */
 
-        /*
+
             if (bestMove.size() >= 1) {
                 l = loto.nextInt(bestMove.size());  // if there are several best moves, choose one randomly
             }
@@ -205,7 +206,7 @@ public class HoleDecider extends Decider {
             colDest = bestMove.get(l).getCol();
             pawn = pawns.get(pawnIndex.get(l));
             System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
-            actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
+            actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", rowDest, colDest,  AnimationTypes.MOVE_LINEARPROP, 10);
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         } else if (currentPlayer.getComputerType() == 2) {
             ArrayList<ArrayList<PointPosition>> possibleMove = new ArrayList<ArrayList<PointPosition>>();
@@ -242,7 +243,6 @@ public class HoleDecider extends Decider {
             /*
             2nde IA : Stratégie défensive (stratégie défensive qui consiste a avancer en ligne)
             */
-        /*
             ArrayList<Integer> pawnIndex = new ArrayList<Integer>();
             ArrayList<PointPosition> PossibleMoveOnTheFrontLine = new ArrayList<PointPosition>();
             min = 2;
@@ -277,7 +277,7 @@ public class HoleDecider extends Decider {
                 colDest = PossibleMoveOnTheFrontLine.get(l).getCol();
                 pawn = pawns.get(pawnIndex.get(l));
                 System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
-                actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
+                actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", rowDest, colDest, AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
             } else {
                 int l = loto.nextInt(possibleMove.size());
@@ -286,7 +286,7 @@ public class HoleDecider extends Decider {
                 colDest = possibleMove.get(l).get(m).getCol();
                 pawn = pawns.get(l);
                 System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
-                actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
+                actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", rowDest, colDest, AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
             }
         }
@@ -318,9 +318,9 @@ public class HoleDecider extends Decider {
 
         //Vérifier le type du pion
         if (p.getRole() == Pawn.INFANTRYMAN) {
-            if (!holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
+            if (!checkMoveController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol)) return false;
         } else {
-            if (!holeController.verifMoveCavalier(board, colPawn, rowPawn, finRow, finCol, gameStage, color)) return false;
+            if (!checkMoveController.verifMoveCavalier(board, color, colPawn, rowPawn, finRow, finCol, gameStage)) return false;
         }
 
         return true;
@@ -349,8 +349,5 @@ public class HoleDecider extends Decider {
             }
         }
         return false;
-    }
-    */
-        return null;
     }
 }
