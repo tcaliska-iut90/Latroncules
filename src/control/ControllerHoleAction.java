@@ -93,28 +93,28 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
         if (isJvC) {
             holeView.getButtonJvIA1().setOnAction(e -> {
                 model.addHumanPlayer("Player");
-                model.addComputerPlayer("IA1");
+                model.addComputerPlayer("IA1", 1);
                 startGame();
             });
             holeView.getButtonJvIA2().setOnAction(e -> {
                 model.addHumanPlayer("Player");
-                model.addComputerPlayer("IA2");
+                model.addComputerPlayer("IA2", 2);
                 startGame();
             });
         } else {
             holeView.getButtonIA1vIA1().setOnAction(e -> {
-                model.addComputerPlayer("IA1");
-                model.addComputerPlayer("IA1");
+                model.addComputerPlayer("IA1", 1);
+                model.addComputerPlayer("IA1, 1");
                 startGame();
             });
             holeView.getButtonIA1vIA2().setOnAction(e -> {
-                model.addComputerPlayer("IA1");
-                model.addComputerPlayer("IA2");
+                model.addComputerPlayer("IA1, 1");
+                model.addComputerPlayer("IA2", 2);
                 startGame();
             });
             holeView.getButtonIA2vIA2().setOnAction(e -> {
-                model.addComputerPlayer("IA2");
-                model.addComputerPlayer("IA2");
+                model.addComputerPlayer("IA2", 2);
+                model.addComputerPlayer("IA2", 2);
                 startGame();
             });
         }
