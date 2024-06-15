@@ -34,16 +34,6 @@ public class Hole extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Model model = new Model();
-        if (mode == 0) {
-
-
-        }
-        else if (mode == 1) {
-
-        }
-        else if (mode == 2) {
-
-        }
 
         StageFactory.registerModelAndView("hole", "model.HoleStageModel", "view.HoleStageView");
         HoleRootPane rootPane = new HoleRootPane();
