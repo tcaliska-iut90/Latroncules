@@ -104,11 +104,11 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
         } else {
             holeView.getButtonIA1vIA1().setOnAction(e -> {
                 model.addComputerPlayer("IA1", 1);
-                model.addComputerPlayer("IA1, 1");
+                model.addComputerPlayer("IA1", 1);
                 startGame();
             });
             holeView.getButtonIA1vIA2().setOnAction(e -> {
-                model.addComputerPlayer("IA1, 1");
+                model.addComputerPlayer("IA1", 1);
                 model.addComputerPlayer("IA2", 2);
                 startGame();
             });
