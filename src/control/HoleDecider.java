@@ -169,7 +169,7 @@ public class HoleDecider extends Decider {
             //Sélection du mouvement :
             //◦ Choisir le mouvement avec le score le plus élevé parmi les mouvements évalués.
             //◦ Exécuter le mouvement sélectionné.
-            int max = -10000;
+            max = -10000;
             int k = 0;
             int l = 0;
             ArrayList<Integer> pawnIndex = new ArrayList<Integer>();
