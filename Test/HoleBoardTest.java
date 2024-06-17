@@ -28,7 +28,7 @@ class HoleBoardTest {
         mockPlayer = mock(Player.class);
         mockStageModel = mock(HoleStageModel.class);
 
-        holeBoard = new HoleBoard(0, 0, mockStageModel);  // assuming some GameStageModel is used
+        holeBoard = new HoleBoard(0, 0, mockStageModel);
     }
 
     @Test
@@ -226,5 +226,161 @@ class HoleBoardTest {
 
         boolean result = holeBoard.checkPiece(holeBoard, 3, 3, Pawn.PAWN_RED);
         assertTrue(result);
+    }
+
+    @Test
+    public void testCheckIsCapturableWithoutCoupInterditVertical() {
+        Pawn pawnBlue = mock(Pawn.class);
+        Pawn pawnRed = mock(Pawn.class);
+
+        holeBoard.addElement(pawnBlue, 7,7);
+
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(1,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(7,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        when(pawnBlue.getColor()).thenReturn(Pawn.PAWN_BLUE);
+        when(pawnRed.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        holeBoard.addElement(pawnBlue, 1,3);
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.addElement(pawnRed, 2,3);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+
+
+        holeBoard.addElement(pawnBlue, 5,3);
+        holeBoard.addElement(pawnRed, 4,3);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+    }
+
+    @Test
+    public void testCheckIsCapturableWithoutCoupInterditHorizontal() {
+        Pawn pawnBlue = mock(Pawn.class);
+        Pawn pawnRed = mock(Pawn.class);
+
+        holeBoard.addElement(pawnBlue, 7,7);
+
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,1, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,7, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        when(pawnBlue.getColor()).thenReturn(Pawn.PAWN_BLUE);
+        when(pawnRed.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        holeBoard.addElement(pawnBlue, 3,1);
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.addElement(pawnRed, 3,2);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+
+
+        holeBoard.addElement(pawnBlue, 3,5);
+        holeBoard.addElement(pawnRed, 3,4);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+    }
+
+    @Test
+    public void testCheckIsCapturableWithoutCoupInterditMajorDiagonal() {
+        Pawn pawnBlue = mock(Pawn.class);
+        Pawn pawnRed = mock(Pawn.class);
+
+        holeBoard.addElement(pawnBlue, 7,7);
+
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,1, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,7, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(1,1, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(7,7, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        when(pawnBlue.getColor()).thenReturn(Pawn.PAWN_BLUE);
+        when(pawnRed.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        holeBoard.addElement(pawnBlue, 1,1);
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.addElement(pawnRed, 2,2);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+
+
+        holeBoard.addElement(pawnBlue, 5,5);
+        holeBoard.addElement(pawnRed, 4,4);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+    }
+
+    @Test
+    public void testCheckIsCapturableWithoutCoupInterditMinorrDiagonal() {
+        Pawn pawnBlue = mock(Pawn.class);
+        Pawn pawnRed = mock(Pawn.class);
+
+        holeBoard.addElement(pawnBlue, 7,7);
+
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,1, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,7, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(1,1, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(7,7, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        when(pawnBlue.getColor()).thenReturn(Pawn.PAWN_BLUE);
+        when(pawnRed.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        holeBoard.addElement(pawnBlue, 1,5);
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.addElement(pawnRed, 2,4);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+
+
+        holeBoard.addElement(pawnBlue, 5,1);
+        holeBoard.addElement(pawnRed, 4,2);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+    }
+
+
+    @Test
+    public void testCheckIsCapturableWithoutCoupInterdit(){
+        Pawn pawnBlue = mock(Pawn.class);
+        Pawn pawnRed = mock(Pawn.class);
+        when(pawnBlue.getColor()).thenReturn(Pawn.PAWN_BLUE);
+        when(pawnRed.getColor()).thenReturn(Pawn.PAWN_RED);
+
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.addElement(pawnRed, 2,2);
+        holeBoard.addElement(pawnBlue, 1,1);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+        holeBoard.addElement(pawnRed, 2,3);
+        holeBoard.addElement(pawnBlue, 1, 3);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+        holeBoard.addElement(pawnRed, 2,4);
+        holeBoard.addElement(pawnBlue, 1,5);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+        holeBoard.addElement(pawnRed, 3,2);
+        holeBoard.addElement(pawnBlue, 3,1);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
     }
 }

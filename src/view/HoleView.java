@@ -144,7 +144,7 @@ public class HoleView extends View {
         return buttonIA2vIA2;
     }
     public void setup(){
-
+        rootPane.setClip(null);
         Group group = new Group(frame, text, imageView);
 
         HBox hBox = new HBox(buttonJvJ, buttonJvC, buttonCvC);
@@ -160,6 +160,7 @@ public class HoleView extends View {
 
     public void setupChoice(){
         rootPane.resetToDefault();
+        rootPane.setClip(null);
 
 
         Group group = new Group(frame, text, imageView);
@@ -178,6 +179,7 @@ public class HoleView extends View {
 
     public void setupAIChoice(boolean isJvC){
         rootPane.resetToDefault();
+        rootPane.setClip(null);
 
         Group group = new Group(frame, text, imageView);
 

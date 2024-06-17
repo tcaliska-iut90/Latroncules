@@ -240,24 +240,7 @@ class CheckMoveControllerTest {
         assertTrue(checkCoinInférieurDroit(0, 7, mockBoard, Pawn.PAWN_BLUE), "Coin inférieur droit avec seulement un pion adverse autour est autorisé");
     }
 
-    @Disabled
-    public void testMoveIsOk() {
-        Pawn[] p = {mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn, mockPawn};
 
-        when(mockPlayer.getColor()).thenReturn(0);  // Player color RED
-        when(mockStageModel.getRedPawns()).thenReturn(p);
-        when(controller.moveIsOkRed(any(HoleStageModel.class), any(HoleBoard.class))).thenReturn(true);
-
-        boolean result = controller.moveIsOk(mockStageModel, mockBoard, mockPawn);
-        assertTrue(result);
-
-        when(mockPlayer.getColor()).thenReturn(1);  // Player color BLUE
-        when(mockStageModel.getBluePawns()).thenReturn(p);
-        when(controller.moveIsOkBlue(any(HoleStageModel.class), any(HoleBoard.class))).thenReturn(true);
-
-        result = controller.moveIsOk(mockStageModel, mockBoard, mockPawn);
-        assertTrue(result);
-    }
 
 
 
