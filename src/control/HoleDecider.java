@@ -139,7 +139,6 @@ public class HoleDecider extends Decider {
                         }
                     }
                     //Éloignement des bords
-
                     if (pawns.get(i).getRole() == 0 && (p.getCol() == 0 || p.getCol() == 7 || p.getRow() == 0 || p.getRow() == 7)) {
                         score -= 7;
                     }
@@ -205,6 +204,8 @@ public class HoleDecider extends Decider {
             rowDest = bestMove.get(l).getRow();
             colDest = bestMove.get(l).getCol();
             pawn = pawns.get(pawnIndex.get(l));
+            pawn.setRow(rowDest);
+            pawn.setCol(colDest);
             System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
             actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", rowDest, colDest,  AnimationTypes.MOVE_LINEARPROP, 10);
             actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
@@ -276,6 +277,8 @@ public class HoleDecider extends Decider {
                 rowDest = PossibleMoveOnTheFrontLine.get(l).getRow();
                 colDest = PossibleMoveOnTheFrontLine.get(l).getCol();
                 pawn = pawns.get(pawnIndex.get(l));
+                pawn.setRow(rowDest);
+                pawn.setCol(colDest);
                 System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
                 actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", rowDest, colDest, AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
@@ -285,6 +288,8 @@ public class HoleDecider extends Decider {
                 rowDest = possibleMove.get(l).get(m).getRow();
                 colDest = possibleMove.get(l).get(m).getCol();
                 pawn = pawns.get(l);
+                pawn.setRow(rowDest);
+                pawn.setCol(colDest);
                 System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
                 actions = ActionFactory.generatePutInContainer(control, model, pawn, "holeboard", rowDest, colDest, AnimationTypes.MOVE_LINEARPROP, 10);
                 actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.

@@ -36,6 +36,10 @@ public class CheckMoveController {
             makeMessage("Un pion peut aller que tout droit");
             return false;
         }
+        if (board.getElement(finRow, finCol) != null) {
+            makeMessage("Impossible, case occupée");
+            return false;
+        }
 
         return testCoupInterdit(finCol, finRow, board, color);
     }
