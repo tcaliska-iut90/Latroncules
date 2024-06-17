@@ -81,4 +81,8 @@ public class Pawn extends GameElement {
             }
         }
     }
+
+    public void dead(){
+        clickable = false;
+    }
 }

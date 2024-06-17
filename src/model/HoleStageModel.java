@@ -123,12 +123,8 @@ public class HoleStageModel extends GameStageModel {
      */
     public void addBluePawnsTaking(Pawn p){
         for (int i = 0; i < HoleRedPawnPot.getNbRows(); i++) {
-            System.out.println("i = "+i);
             for (int j = 0; j < HoleRedPawnPot.getNbCols(); j++) {
-                System.out.println("j = "+j);
-                System.out.println("HoleRedPawnPot.getElement(i, j) = "+HoleRedPawnPot.getElement(i, j));
                 if (HoleRedPawnPot.getElement(i, j) == null){
-                    System.out.println("Ajout du pion place en "+p.getRow()+" "+p.getCol()+" dans le trou bleu en "+i+" "+j);
                     HoleRedPawnPot.addElement(p, i, j);
                     return;
                 }
@@ -141,7 +137,6 @@ public class HoleStageModel extends GameStageModel {
     public void removeBluePawns(Pawn p){
         for (int i = 0; i < bluePawns.length; i++) {
             if (bluePawns[i].equals(p)) {
-                System.out.println("Suppression du pion place en "+p.getRow()+" "+p.getCol()+" dans le trou bleu");
                 bluePawns[i] = null;
                 return;
             }
@@ -170,18 +165,10 @@ public class HoleStageModel extends GameStageModel {
      Ajoute le pion passé en paramètre dans le tableau de pion capturé par l'équipe bleue
     */
     public void addRedPawnsTaking(Pawn p){
-        System.out.println("addRedPawnsTaking");
         for (int i = 0; i < HoleBluePawnPot.getNbRows(); i++) {
             for (int j = 0; j < HoleBluePawnPot.getNbCols(); j++) {
-                System.out.println(HoleBluePawnPot.getElement(i, j) == null);
                 if (HoleBluePawnPot.getElement(i, j) == null){
                     HoleBluePawnPot.addElement(p, i, j);
-                    System.out.println("addRedPawnsTaking2");
-                    for (int k = 0; k < HoleBluePawnPot.getNbRows(); k++) {
-                        for (int a = 0; a < HoleBluePawnPot.getNbCols(); a++) {
-                            System.out.println("" + HoleBluePawnPot.getElement(k, a));
-                        }
-                    }
                     return;
                 }
             }

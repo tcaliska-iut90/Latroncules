@@ -294,7 +294,7 @@ public class HoleBoard extends ContainerElement {
     public boolean CheckIsCapturableWithoutCoupInterditVertical(int row, int col, int playerColor, int colorEnemy){
         if (row > 1 && row < 6
                 && ((checkPiece(this, row - 1, col, colorEnemy) && (checkPiece(this, row - 2, col, playerColor)))
-                || (checkPiece(this, row + 1, col, colorEnemy) && checkPiece(this, row + 2, col, playerColor)))) {
+                && (checkPiece(this, row + 1, col, colorEnemy) && checkPiece(this, row + 2, col, playerColor)))) {
             return true;
         }
         return false;
@@ -303,7 +303,7 @@ public class HoleBoard extends ContainerElement {
     public boolean CheckIsCapturableWithoutCoupInterditHorizontal(int row, int col, int playerColor, int colorEnemy){
         if (col > 1 && col < 6
                 && ((checkPiece(this, row, col - 1, colorEnemy) && (checkPiece(this, row, col - 2, playerColor)))
-                ||  (checkPiece(this, row, col + 1, colorEnemy)&& checkPiece(this, row, col + 2, playerColor)))) {
+                &&  (checkPiece(this, row, col + 1, colorEnemy)&& checkPiece(this, row, col + 2, playerColor)))) {
             return true;
         }
         return false;
@@ -312,7 +312,7 @@ public class HoleBoard extends ContainerElement {
     public boolean CheckIsCapturableWithoutCoupInterditMajorDiagonal(int row, int col, int playerColor, int colorEnemy){
         if (row > 1 && row < 6 && col > 1 && col < 6
                 && ((checkPiece(this, row - 1, col - 1, colorEnemy) && (checkPiece(this, row - 2, col - 2, playerColor)))
-                || (checkPiece(this, row +1, col + 1, colorEnemy) && checkPiece(this, row +2, col + 2, playerColor)))) {
+                && (checkPiece(this, row +1, col + 1, colorEnemy) && checkPiece(this, row +2, col + 2, playerColor)))) {
             return true;
         }
         return false;
@@ -320,7 +320,7 @@ public class HoleBoard extends ContainerElement {
     public boolean CheckIsCapturableWithoutCoupInterditMinorrDiagonal(int row, int col, int playerColor, int colorEnemy){
         if (row > 1 && row < 6 && col > 1 && col < 6
                 && ((checkPiece(this, row + 1, col - 1, colorEnemy) && (checkPiece(this, row + 2, col - 2, playerColor)))
-                ||  (checkPiece(this, row - 1, col + 1, colorEnemy)&& checkPiece(this, row - 2, col + 2, playerColor)))) {
+                &&  (checkPiece(this, row - 1, col + 1, colorEnemy)&& checkPiece(this, row - 2, col + 2, playerColor)))) {
             return true;
         }
         return false;
@@ -341,11 +341,13 @@ public class HoleBoard extends ContainerElement {
             stageModel.addBluePawnsTaking(pawnEnemy);
             stageModel.removeBluePawns(pawnEnemy);
             pawnEnemy.setAlive(false);
+            pawnEnemy.dead();
         }
         else {
             stageModel.addRedPawnsTaking(pawnEnemy);
             stageModel.removeRedPawns(pawnEnemy);
             pawnEnemy.setAlive(false);
+            pawnEnemy.dead();
         }
     }
 
