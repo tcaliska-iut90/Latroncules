@@ -41,6 +41,7 @@ public class CheckMoveController {
             return false;
         }
 
+
         return testCoupInterdit(finCol, finRow, board, color);
     }
 
@@ -235,17 +236,22 @@ public class CheckMoveController {
      * @param board
      * @return
      */
-    public boolean moveIsOk(HoleStageModel stage, HoleBoard board){
+    public boolean moveIsOk(HoleStageModel stage, HoleBoard board, Pawn p){
         boolean result = false;
 
-        if (model.getCurrentPlayer().getColor() == 0){
+        if (p.getColor() == Pawn.PAWN_BLUE){
             result = moveIsOkRed(stage, board);
         }
         else {
+            System.out.println("bleu");
             result = moveIsOkBlue(stage, board);
         }
 
-        if (!result) callPartyResult(stage, HoleStageModel.Equality);
+
+        System.out.println(result);
+        if (!result) {
+            callPartyResult(stage, HoleStageModel.Equality);
+        }
 
         return result;
     }
@@ -268,6 +274,8 @@ public class CheckMoveController {
         boolean result = false;
         for (int i = 0; i < stage.getRedPawns().length; i++) {
             if (stage.getRedPawns()[i] != null) {
+                boolean t = moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board);
+                System.out.println("moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board) : " + t);
                 if (stage.getRedPawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board)) {
                     result = true;
                 } else if (stage.getRedPawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board, stage)) {
@@ -283,6 +291,8 @@ public class CheckMoveController {
     }
 
     public boolean moveIsOkInfantryman(Pawn pawn, int row, int col, HoleBoard board){
+        System.out.println("verifPawnMove(board, pawn.getColor(), col, row, row-1, col): "  +verifPawnMove(board, pawn.getColor(), col, row, row-1, col));
+
         if (pawn.getColor() == Pawn.PAWN_BLUE) return verifPawnMove(board, pawn.getColor(), col, row, row+1, col);
         else return verifPawnMove(board, pawn.getColor(), col, row, row-1, col);
     }

@@ -88,10 +88,10 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
         Logger.debug("try to move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
         // if the destination cell is valid for for the selected pawn
         if (board.canReachCell(dest[0], dest[1])) {
-            checkMoveController.check = true;
             if ((pawn.getRole() == Pawn.INFANTRYMAN && checkMoveController.verifPawnMove(board, pawn.getColor(), from[1], from[0], dest[0], dest[1]))
                 || pawn.getRole() == Pawn.HORSEMAN && checkMoveController.verifMoveCavalier(board, pawn.getColor(), from[1], from[0], dest[0], dest[1], stageModel)) {
 
+                checkMoveController.check = true;
                 resetColor(stageModel);
                 Logger.debug("move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
                 pawn.setRow(dest[0]);
@@ -121,7 +121,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                         board.setCellReachable(dest[0], dest[1], false);
                         board.takingPawn(stageModel, board, model, dest[0], dest[1], pawn.getColor(), colorEnemy);
                         checkMoveController.changeInfantrymanToHorseman(pawn, dest[0]);
-                        checkMoveController.moveIsOk(stageModel, board);
+                        checkMoveController.moveIsOk(stageModel, board, pawn);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     } catch (ExecutionException e) {
