@@ -27,7 +27,7 @@ public class HoleStageFactory extends StageElementsFactory {
     //2 pour le test où il ne reste plus de pions rouges
     //0 pour le jeu normal
     //3 pour le jeu avec les pions bloqués
-    public static int testVict = 0;
+    public static int testVict = 4;
 
 
     public HoleStageFactory(GameStageModel gameStageModel) {
@@ -76,10 +76,21 @@ public class HoleStageFactory extends StageElementsFactory {
 
             board.addElement(bluePawns[0], 7, 2);
             board.addElement(bluePawns[1], 2, 3);
-
+            board.setCellReachable(7,2, false);
+            board.setCellReachable(2, 3, false);
+            bluePawns[0].setRow(7);
+            bluePawns[0].setCol(2);
+            bluePawns[1].setRow(2);
+            bluePawns[1].setCol(3);
 
             board.addElement(redPawns[0], 2,2);
             board.addElement(redPawns[1], 4,4);
+            board.setCellReachable(2,2, false);
+            board.setCellReachable(4, 4, false);
+            redPawns[0].setRow(2);
+            redPawns[0].setCol(2);
+            redPawns[1].setRow(4);
+            redPawns[1].setCol(4);
 
 
         } else if(testVict == 0) {
@@ -104,26 +115,87 @@ public class HoleStageFactory extends StageElementsFactory {
             board.addElement(bluePawns[0], 4, 3);
             board.addElement(bluePawns[1], 6, 3);
             board.addElement(bluePawns[2], 6, 7);
+            board.setCellReachable(4,3, false);
+            board.setCellReachable(6, 3, false);
+            board.setCellReachable(6,7, false);
+            bluePawns[0].setRow(4);
+            bluePawns[0].setCol(3);
+            bluePawns[1].setRow(6);
+            bluePawns[1].setCol(3);
+            bluePawns[2].setRow(6);
+            bluePawns[2].setCol(7);
+
 
 
             board.addElement(redPawns[0], 5, 4);
             board.addElement(redPawns[1], 6, 4);
             board.addElement(redPawns[2], 6, 6);
+            board.setCellReachable(5,4, false);
+            board.setCellReachable(6, 4, false);
+            board.setCellReachable(6,6, false);
+            redPawns[0].setRow(5);
+            redPawns[0].setCol(4);
+            redPawns[1].setRow(6);
+            redPawns[1].setCol(4);
+            redPawns[2].setRow(6);
+            redPawns[2].setCol(6);
 
         } else if (testVict == 3) {
             Pawn[] bluePawns = new Pawn[1];
-            bluePawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_BLUE, stageModel);
+            bluePawns[0] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
             // assign the blue pawns to the game stage model
             stageModel.setBluePawns(bluePawns);
 
             Pawn[] redPawns = new Pawn[1];
 
-            redPawns[0] = new Pawn(Pawn.HORSEMAN, Pawn.PAWN_RED, stageModel);
+            redPawns[0] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, stageModel);
             stageModel.setRedPawns(redPawns);
 
 
             board.addElement(bluePawns[0], 3, 5);
             board.addElement(redPawns[0], 5, 5);
+            board.setCellReachable(3,3, false);
+            board.setCellReachable(5, 5, false);
+
+            bluePawns[0].setRow(3);
+            bluePawns[0].setCol(5);
+            redPawns[0].setRow(5);
+            redPawns[0].setCol(5);
+        } else if (testVict == 4) {
+            Pawn[] bluePawns = new Pawn[2];
+            bluePawns[0] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
+            bluePawns[1] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_BLUE, stageModel);
+
+            // assign the blue pawns to the game stage model
+            stageModel.setBluePawns(bluePawns);
+
+            Pawn[] redPawns = new Pawn[1];
+
+            redPawns[0] = new Pawn(Pawn.INFANTRYMAN, Pawn.PAWN_RED, stageModel);
+            stageModel.setRedPawns(redPawns);
+
+            board.addElement(bluePawns[0], 2, 2);
+            board.addElement(bluePawns[1], 3, 4);
+
+            board.addElement(redPawns[0], 3, 3);
+
+            board.setCellReachable(2,2, false);
+            board.setCellReachable(3, 4, false);
+            board.setCellReachable(3, 3, false);
+
+
+            bluePawns[0].setRow(2);
+            bluePawns[0].setCol(2);
+            bluePawns[1].setRow(3);
+            bluePawns[1].setCol(4);
+            redPawns[0].setRow(3);
+            redPawns[0].setCol(3);
+
+            System.out.println(bluePawns[0]);
+            System.out.println(bluePawns[1]);
+            System.out.println(redPawns[0]);
+            System.out.println(board.getElement(3,3));
+            System.out.println(board.getElement(3,2));
         }
     }
 

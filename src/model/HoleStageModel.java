@@ -168,19 +168,6 @@ public class HoleStageModel extends GameStageModel {
             for (int j = 0; j < HoleBluePawnPot.getNbCols(); j++) {
                 if (HoleBluePawnPot.getElement(i, j) == null){
                     HoleBluePawnPot.addElement(p, i, j);
-                    /*
-                    System.out.println("HoleBluePawnPot");
-                    for (int k = 0; k < HoleBluePawnPot.getNbRows(); k++) {
-                        for (int a = 0; a < HoleBluePawnPot.getNbCols(); a++) {
-                            if ((HoleBluePawnPot.getElement(k, a) != null)) System.out.println(HoleBluePawnPot.getElement(k, a) + "i: " + k + ", j: " + a);
-                        }
-                    }
-                    System.out.println("bluePawns");
-                    for (int a = 0; a< bluePawns.length; a++) {
-                        System.out.println(bluePawns[a]);
-                    }
-
-                     */
                     return;
                 }
             }
@@ -220,18 +207,16 @@ public class HoleStageModel extends GameStageModel {
 
 
     private void setupCallbacks() {
-
-        //System.out.println((holeController.verifPawnMove(board, color, colPawn, rowPawn, finRow, finCol));
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
             if(isBlueMissing()) {
-                if (model.getPlayers().get(0).equals("PlayerRed")){
+                if (model.getPlayers().get(0).getName().equals("PlayerRed")){
                     computePartyResult(0);
                 }
                 else{
                     computePartyResult(1);
                 }
             } else if (isRedMissing()) {
-                if (model.getPlayers().get(0).equals("PlayerBlue")){
+                if (model.getPlayers().get(0).getName().equals("PlayerBlue")){
                     computePartyResult(0);
                 }
                 else{

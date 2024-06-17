@@ -248,14 +248,14 @@ class CheckMoveControllerTest {
         when(mockStageModel.getRedPawns()).thenReturn(p);
         when(controller.moveIsOkRed(any(HoleStageModel.class), any(HoleBoard.class))).thenReturn(true);
 
-        boolean result = controller.moveIsOk(mockStageModel, mockBoard);
+        boolean result = controller.moveIsOk(mockStageModel, mockBoard, mockPawn);
         assertTrue(result);
 
         when(mockPlayer.getColor()).thenReturn(1);  // Player color BLUE
         when(mockStageModel.getBluePawns()).thenReturn(p);
         when(controller.moveIsOkBlue(any(HoleStageModel.class), any(HoleBoard.class))).thenReturn(true);
 
-        result = controller.moveIsOk(mockStageModel, mockBoard);
+        result = controller.moveIsOk(mockStageModel, mockBoard, mockPawn);
         assertTrue(result);
     }
 
