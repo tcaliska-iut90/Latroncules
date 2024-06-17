@@ -55,7 +55,7 @@ public class ControllerHole extends Controller {
             executor.submit(() -> {
                 try {
                     futureTask1.get();
-                    board.setCellReachable(decider.getRowDest(), decider.getColDest(), true);
+                    board.setCellReachable(decider.getRowStart(), decider.getColStart(), true);
                     board.setCellReachable(decider.getRowDest(), decider.getColDest(), false);
                     board.takingPawn(stageModel, board, model, decider.getRowDest(), decider.getColDest(), decider.getPawn().getColor(), adversary.getColor());
                     checkMove.changeInfantrymanToHorseman(decider.getPawn(), decider.getRowDest());

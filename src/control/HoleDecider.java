@@ -26,6 +26,8 @@ public class HoleDecider extends Decider {
     protected Player adversary;
     protected int colDest;
     protected int rowDest;
+    protected int colStart;
+    protected int rowStart;
     protected int min;
     protected int max;
     protected Pawn pawn;
@@ -205,6 +207,8 @@ public class HoleDecider extends Decider {
             rowDest = bestMove.get(l).getRow();
             colDest = bestMove.get(l).getCol();
             pawn = pawns.get(pawnIndex.get(l));
+            rowStart = pawn.getRow();
+            colStart = pawn.getCol();
             pawn.setRow(rowDest);
             pawn.setCol(colDest);
             System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
@@ -278,6 +282,8 @@ public class HoleDecider extends Decider {
                 rowDest = PossibleMoveOnTheFrontLine.get(l).getRow();
                 colDest = PossibleMoveOnTheFrontLine.get(l).getCol();
                 pawn = pawns.get(pawnIndex.get(l));
+                rowStart = pawn.getRow();
+                colStart = pawn.getCol();
                 pawn.setRow(rowDest);
                 pawn.setCol(colDest);
                 System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
@@ -289,6 +295,8 @@ public class HoleDecider extends Decider {
                 rowDest = possibleMove.get(l).get(m).getRow();
                 colDest = possibleMove.get(l).get(m).getCol();
                 pawn = pawns.get(l);
+                rowStart = pawn.getRow();
+                colStart = pawn.getCol();
                 pawn.setRow(rowDest);
                 pawn.setCol(colDest);
                 System.out.println("Colonne d'arrivée = " + colDest + ", Ligne d'arrivée = " + rowDest + ". Pion de départ : Col = " + pawn.getCol() + ", Row = " + pawn.getRow());
@@ -338,6 +346,14 @@ public class HoleDecider extends Decider {
 
     public int getRowDest() {
         return rowDest;
+    }
+
+    public int getColStart() {
+        return colStart;
+    }
+
+    public int getRowStart() {
+        return rowStart;
     }
 
     public Pawn getPawn() {
