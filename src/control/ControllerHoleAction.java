@@ -18,6 +18,7 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
 
     // to avoid lots of casts, create an attribute that matches the instance type.
     private HoleView holeView;
+    private boolean start = true;
 
     public ControllerHoleAction(Model model, View view, Controller control) {
         super(model, view, control);
@@ -40,9 +41,14 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
 
         // set event handler on the MenuStart item
         holeView.getMenuStart().setOnAction(e -> {
-            holeView.setup();
-            setButtonHandler();
-            setMenuHandlers();
+            if (start) {
+                holeView.setup();
+                setButtonHandler();
+                setMenuHandlers();
+                start = false;
+            }else {
+                startGame();
+            }
         });
         // set event handler on the MenuIntro item
         holeView.getMenuIntro().setOnAction(e -> {

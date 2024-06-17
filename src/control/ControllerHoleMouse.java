@@ -88,10 +88,10 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
         Logger.debug("try to move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
         // if the destination cell is valid for for the selected pawn
         if (board.canReachCell(dest[0], dest[1])) {
+            checkMoveController.check = true;
             if ((pawn.getRole() == Pawn.INFANTRYMAN && checkMoveController.verifPawnMove(board, pawn.getColor(), from[1], from[0], dest[0], dest[1]))
                 || pawn.getRole() == Pawn.HORSEMAN && checkMoveController.verifMoveCavalier(board, pawn.getColor(), from[1], from[0], dest[0], dest[1], stageModel)) {
 
-                checkMoveController.check = true;
                 resetColor(stageModel);
                 Logger.debug("move pawn from pot "+from[0]+","+from[1]+ " to board "+ dest[0]+","+dest[1]);
                 pawn.setRow(dest[0]);
@@ -134,6 +134,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
         }else {
             holeView.dialogError("Un pion se trouve sur cette case");
         }
+        checkMoveController.check = false;
     }
 
     private boolean checkSTATE_SELECTPAWN(List<GameElement> list, HoleStageModel stageModel){
@@ -155,6 +156,7 @@ public class ControllerHoleMouse extends ControllerMouse implements EventHandler
                     int [][] reachable = stageModel.getBoard().getValidCellFinal(model, pawn.getRow(), pawn.getCol());
                     for (int i=0; i< reachable.length; i++){
                         if (pawn.getRole()==Pawn.INFANTRYMAN){
+                            System.out.println(stageModel.getBoard().getElement(reachable[i][0], reachable[i][1]));
                             if (checkMoveController.verifPawnMove(stageModel.getBoard(), pawn.getColor(), pawn.getCol(), pawn.getRow(), reachable[i][0], reachable[i][1])){
                                 System.out.println("row et col des cases atteignables : "+reachable[i][0]+"  "+reachable[i][1]);
                                 Rectangle rect = cells[reachable[i][0]][reachable[i][1]];

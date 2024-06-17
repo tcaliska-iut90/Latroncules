@@ -118,7 +118,7 @@ public class CheckMoveController {
         Pawn p2 =(Pawn) board.getElement(finRow, finCol + 1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)){
-                makeMessage("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit horizontal");
                 return false;
             }
         }
@@ -132,7 +132,7 @@ public class CheckMoveController {
         Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)) {
-                makeMessage("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit vertical");
                 return false;
             }
         }
@@ -146,7 +146,7 @@ public class CheckMoveController {
         Pawn p2 =(Pawn) board.getElement(finRow + 1, finCol+1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)) {
-                makeMessage("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit diagonal majeur");
                 return false;
             }
         }
@@ -155,7 +155,7 @@ public class CheckMoveController {
         p2 =(Pawn) board.getElement(finRow + 1, finCol-1);
         if ((p1 != null && p1.getColor() != color) && (p2 != null && p2.getColor() != color)) {
             if (!board.CheckIsCapturableWithoutCoupInterdit(finRow, finCol, color, colorEnemy)) {
-                makeMessage("Impossible, coup interdit");
+                makeMessage("Impossible, coup interdit diagonal mineur");
                 return false;
             }
         }
@@ -243,7 +243,6 @@ public class CheckMoveController {
             result = moveIsOkRed(stage, board);
         }
         else {
-            System.out.println("bleu");
             result = moveIsOkBlue(stage, board);
         }
 
@@ -275,7 +274,6 @@ public class CheckMoveController {
         for (int i = 0; i < stage.getRedPawns().length; i++) {
             if (stage.getRedPawns()[i] != null) {
                 boolean t = moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board);
-                System.out.println("moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board) : " + t);
                 if (stage.getRedPawns()[i].getRole() == Pawn.INFANTRYMAN && moveIsOkInfantryman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board)) {
                     result = true;
                 } else if (stage.getRedPawns()[i].getRole() == Pawn.HORSEMAN && moveIsOkHorseman(stage.getRedPawns()[i], stage.getRedPawns()[i].getRow(), stage.getRedPawns()[i].getCol(), board, stage)) {
@@ -291,8 +289,6 @@ public class CheckMoveController {
     }
 
     public boolean moveIsOkInfantryman(Pawn pawn, int row, int col, HoleBoard board){
-        System.out.println("verifPawnMove(board, pawn.getColor(), col, row, row-1, col): "  +verifPawnMove(board, pawn.getColor(), col, row, row-1, col));
-
         if (pawn.getColor() == Pawn.PAWN_BLUE) return verifPawnMove(board, pawn.getColor(), col, row, row+1, col);
         else return verifPawnMove(board, pawn.getColor(), col, row, row-1, col);
     }
