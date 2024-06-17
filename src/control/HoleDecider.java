@@ -87,6 +87,7 @@ public class HoleDecider extends Decider {
                         temp = board.getValidCell(model, p.getRow(), p.getCol());
                     }
                     for (int i = 0; i < temp.length; i++) {
+                        System.out.println("i : " + i + " Col : " + temp[i][1] + " Row : " + temp[i][0]+ " Colonne de départ : " + p.getCol() + " Ligne de départ : " + p.getRow());
                         if (analyseCorrectMove(p.getCol(), p.getRow(), temp[i][1], temp[i][0])) {
                             possibleMove.get(possibleMove.size() - 1).add(new PointPosition(temp[i][0], temp[i][1]));
                         }

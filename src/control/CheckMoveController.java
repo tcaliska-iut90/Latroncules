@@ -109,7 +109,7 @@ public class CheckMoveController {
         return true;
     }
 
-    private Boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
+    private boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
         int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
 
