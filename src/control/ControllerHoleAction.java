@@ -54,6 +54,8 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
         holeView.getMenuIntro().setOnAction(e -> {
             control.stopGame();
             holeView.resetView();
+            start = true;
+            model.getPlayers().clear();
         });
         // set event handler on the MenuQuit item
         holeView.getMenuQuit().setOnAction(e -> {
