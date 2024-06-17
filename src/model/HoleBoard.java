@@ -27,7 +27,7 @@ public class HoleBoard extends ContainerElement {
      * @param a2 Deuxième flèche
      * @param row Ligne de la case du pion
      * @param col Colonne de la case du pion
-     * @return
+     * @return un tableau à 2 dimensions contenant les coordonées
      */
     public int[][] getValidCell(Model model, Arrow a1, Arrow a2, int row, int col){
         ValidCell = new int[4][2];
@@ -92,6 +92,13 @@ public class HoleBoard extends ContainerElement {
         return ValidCell;
     }
 
+    /**
+     *
+     * @param model
+     * @param row
+     * @param col
+     * @return
+     */
     public int [][] getValidCellFinal(Model model, int row, int col){
         Pawn p = (Pawn)this.getElement(row, col);
         if (p.getRole()==Pawn.HORSEMAN){
@@ -267,6 +274,14 @@ public class HoleBoard extends ContainerElement {
         return false;
     }
 
+    /**
+     * Test si un coup est possible même si c'est un coup interdit à première vue
+     * @param row ligne
+     * @param col colonne
+     * @param playerColor couleur du joueur actuel
+     * @param colorEnemy couleur du joueur ennemi
+     * @return true si le coup est possible
+     */
     public boolean CheckIsCapturableWithoutCoupInterdit(int row, int col, int playerColor, int colorEnemy){
         if (CheckIsCapturableWithoutCoupInterditHorizontal(row,col,playerColor,colorEnemy)
             || CheckIsCapturableWithoutCoupInterditVertical(row,col,playerColor,colorEnemy)
@@ -312,28 +327,33 @@ public class HoleBoard extends ContainerElement {
     }
 
 
-
+    /**
+     * Supprime le pion de la grille et l'ajoute à une prison
+     * @param stageModel
+     * @param pawnEnemy pion à enlever de la grille
+     * @param board grille de jeu
+     */
     private void deletePawnsTaking(HoleStageModel stageModel, Pawn pawnEnemy, HoleBoard board) {
-        System.out.println("pawnEnemy: " + pawnEnemy);
         board.removeElement(pawnEnemy);
         board.setCellReachable(pawnEnemy.getRow(), pawnEnemy.getCol(), true);
+
         if (pawnEnemy.getColor() == Pawn.PAWN_BLUE){
-            stageModel.removeBluePawns(pawnEnemy);
             stageModel.addBluePawnsTaking(pawnEnemy);
+            stageModel.removeBluePawns(pawnEnemy);
         }
         else {
-            stageModel.removeRedPawns(pawnEnemy);
             stageModel.addRedPawnsTaking(pawnEnemy);
+            stageModel.removeRedPawns(pawnEnemy);
         }
     }
 
     /**
      * Vérifie si un pion est présent sur la case de coordonnée row, col
-     * @param board
-     * @param row
-     * @param col
-     * @param playerColor
-     * @return
+     * @param board grille de jeu
+     * @param row ligne
+     * @param col colonne
+     * @param playerColor couleur du joueur actuel
+     * @return un booléen
      */
     public boolean checkPiece(HoleBoard board, int row, int col, int playerColor){
         Pawn p = (Pawn) board.getElement(row, col);

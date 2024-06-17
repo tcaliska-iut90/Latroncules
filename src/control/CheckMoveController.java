@@ -81,9 +81,9 @@ public class CheckMoveController {
     }
 
     /**
-     * Modifie de role du pion si un infantryman est
-     * @param p
-     * @param finRow
+     * Modifie de role du pion si un infantryman est du coté adverse
+     * @param p pion à vérifier
+     * @param finRow ligne à vérifier
      */
     public boolean changeInfantrymanToHorseman(Pawn p, int finRow){
         //regarde le role d'un pion et si c'est un fantassin et qu'il a atteint l'autre extrême du plateau, le change en cavalier
@@ -94,6 +94,14 @@ public class CheckMoveController {
         return false;
     }
 
+    /**
+     * Test si le coup est interdit
+     * @param finCol colonne d'arrivée
+     * @param finRow ligne d'arrivée
+     * @param board grille de jeu
+     * @param color couleur du pion
+     * @return true si le coup n'est pas interdit
+     */
     private boolean testCoupInterdit(int finCol, int finRow, HoleBoard board, int color){
         if ((finRow == 0 || finRow == 7) && (finCol == 0 || finCol == 7)){
             return checkCoupInterditCoin(finCol, finRow, board, color);
@@ -110,6 +118,14 @@ public class CheckMoveController {
         return true;
     }
 
+    /**
+     * Test si le coup est interdit en horizontal
+     * @param finCol colonne d'arrivée
+     * @param finRow ligne d'arrivée
+     * @param board grille de jeu
+     * @param color couleur du pion
+     * @return true si le coup n'est pas interdit
+     */
     private boolean checkCoupInterditHorizontal(int finCol, int finRow, HoleBoard board, int color){
         int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
@@ -125,6 +141,14 @@ public class CheckMoveController {
         return true;
     }
 
+    /**
+     * Test si le coup est interdit en vertical
+     * @param finCol colonne d'arrivée
+     * @param finRow ligne d'arrivée
+     * @param board grille de jeu
+     * @param color couleur du pion
+     * @return true si le coup n'est pas interdit
+     */
     private boolean checkCoupInterditVertical(int finCol, int finRow, HoleBoard board, int color){
         int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
@@ -139,6 +163,14 @@ public class CheckMoveController {
         return true;
     }
 
+    /**
+     * Test si le coup est interdit en diagonale
+     * @param finCol colonne d'arrivée
+     * @param finRow ligne d'arrivée
+     * @param board grille de jeu
+     * @param color couleur du pion
+     * @return true si le coup n'est pas interdit
+     */
     private boolean checkCoupInterditDiagonal(int finCol, int finRow, HoleBoard board, int color){
         int colorEnemy = model.getCurrentPlayer().getColor() == 0 ? Pawn.PAWN_RED : Pawn.PAWN_BLUE;
 
@@ -162,6 +194,14 @@ public class CheckMoveController {
         return true;
     }
 
+    /**
+     * Test si le coup est interdit dans les coins
+     * @param finCol colonne d'arrivée
+     * @param finRow ligne d'arrivée
+     * @param board grille de jeu
+     * @param color couleur du pion
+     * @return true si le coup n'est pas interdit
+     */
     private boolean checkCoupInterditCoin(int finCol, int finRow, HoleBoard board, int color) {
         // Vérification pour le coin supérieur gauche (0, 0)
         if (finCol == 0 && finRow == 0) {
