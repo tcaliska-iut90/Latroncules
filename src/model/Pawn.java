@@ -20,6 +20,8 @@ public class Pawn extends GameElement {
     public static int HORSEMAN = 0;
     public static int INFANTRYMAN = 1;
 
+    public boolean alive = true;
+
     public Pawn(int role, int color, GameStageModel gameStageModel) {
         super(gameStageModel);
         // registering element types defined especially for this game
@@ -53,6 +55,14 @@ public class Pawn extends GameElement {
 
     public void setRow(int row) {
         this.row = row;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public void update() {

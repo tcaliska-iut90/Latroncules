@@ -266,7 +266,7 @@ public class HoleStageModel extends GameStageModel {
             if (element instanceof Pawn) {
                 Pawn pawn = (Pawn) element;
                 if ((pawn.getColor() == 1 && (player.getName().equals("computer") || player.getName().equals("computer2") || player.getName().equals("PlayerRed"))) || (pawn.getColor() == 0 && (player.getName().equals("computer1") || player.getName().equals("PlayerBlue")))){
-                    if (pawn.getRow()>=0 && pawn.getCol()>=0 && pawn.getRow()<=7 && pawn.getCol()<=7) {
+                    if (pawn.isAlive()) {
                         //System.out.println("Pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getRow()+" col="+pawn.getCol());
                         pawns.add(pawn);
                     }

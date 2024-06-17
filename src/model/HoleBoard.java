@@ -340,10 +340,12 @@ public class HoleBoard extends ContainerElement {
         if (pawnEnemy.getColor() == Pawn.PAWN_BLUE){
             stageModel.addBluePawnsTaking(pawnEnemy);
             stageModel.removeBluePawns(pawnEnemy);
+            pawnEnemy.setAlive(false);
         }
         else {
             stageModel.addRedPawnsTaking(pawnEnemy);
             stageModel.removeRedPawns(pawnEnemy);
+            pawnEnemy.setAlive(false);
         }
     }
 
