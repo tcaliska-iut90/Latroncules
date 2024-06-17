@@ -3,15 +3,26 @@ package view;
 import boardifier.model.Model;
 import boardifier.view.RootPane;
 import boardifier.view.View;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import utils.FileUtils;
 
+import java.awt.*;
 import java.io.File;
 
 public class HoleView extends View {
@@ -22,6 +33,10 @@ public class HoleView extends View {
 
     private Button buttonJvJ, buttonJvC, buttonCvC, buttonRedPlayer, buttonBluePlayer;
     private Button buttonJvIA1, buttonJvIA2, buttonIA1vIA1, buttonIA1vIA2, buttonIA2vIA2;
+
+    private Rectangle frame;
+    private ImageView imageView;
+    private Text text;
 
     public HoleView(Model model, Stage stage, RootPane rootPane) {
         super(model, stage, rootPane);
@@ -38,6 +53,35 @@ public class HoleView extends View {
         menu1.getItems().add(menuIntro);
         menu1.getItems().add(menuQuit);
         menuBar.getMenus().add(menu1);
+
+        initWidget();
+    }
+
+    public void initWidget(){
+
+        frame = new Rectangle(600, 150, Color.LIGHTGREY);
+        Image image  = new Image("file:" + FileUtils.getFileFromResources("Images/logo.jpeg").getAbsolutePath());
+        imageView = new ImageView(image);
+        imageView.setFitHeight(150);
+        imageView.setFitWidth(150);
+        imageView.setX((frame.getWidth()/2) - (imageView.getFitWidth()/2));
+        imageView.setY(0);
+
+        text = new Text("LATRONCULES");
+        text.setFont(new Font(20));
+        text.setFill(Color.BLACK);
+        text.setX((frame.getWidth()/2) - 75);
+        text.setY(imageView.getFitHeight()+20);
+
+
+        buttonJvJ = new Button("Mode joueur v Joueur");
+        buttonJvC = new Button("Mode joueur v Computer");
+        buttonCvC = new Button("Mode Computer v Computer");
+
+        buttonBluePlayer = new Button("L'équipe bleue");
+        buttonRedPlayer = new Button("L'équipe rouge");
+
+
     }
 
     public MenuItem getMenuStart() {
@@ -99,81 +143,63 @@ public class HoleView extends View {
     public Button getButtonIA2vIA2() {
         return buttonIA2vIA2;
     }
-
     public void setup(){
-        rootPane.getChildren().clear();
-        vbox.getChildren().clear();
 
-        buttonJvJ = new Button("Mode joueur v Joueur");
-        buttonJvC = new Button("Mode joueur v Computer");
-        buttonCvC = new Button("Mode Computer v Computer");
+        Group group = new Group(frame, text, imageView);
 
-        Image image  = new Image("file:" + FileUtils.getFileFromResources("Images/logo.jpeg").getAbsolutePath());
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(200);
+        HBox hBox = new HBox(buttonJvJ, buttonJvC, buttonCvC);
+        hBox.setSpacing(10);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setPadding(new Insets(10, 0, 10, 0));
 
-        createMenuBar();
-        VBox vBox = new VBox(menuBar, imageView, buttonJvJ, buttonJvC, buttonCvC);
-        vBox.setSpacing(10);
+        VBox vBox =new VBox(group, hBox);
         vBox.setAlignment(Pos.CENTER);
-
         rootPane.getChildren().addAll(vBox);
-        vbox.getChildren().add(rootPane);
         stage.sizeToScene();
     }
 
     public void setupChoice(){
-        rootPane.getChildren().clear();
-        vbox.getChildren().clear();
+        rootPane.resetToDefault();
 
-        buttonBluePlayer = new Button("L'équipe bleue");
-        buttonRedPlayer = new Button("L'équipe rouge");
+
+        Group group = new Group(frame, text, imageView);
+
+
         HBox hBox = new HBox(buttonBluePlayer, buttonRedPlayer);
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
+        hBox.setPadding(new Insets(10, 0, 10, 0));
 
-        Image image  = new Image("file:" + FileUtils.getFileFromResources("Images/logo.jpeg").getAbsolutePath());
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(200);
-
-        createMenuBar();
-        VBox vBox = new VBox(menuBar, imageView, hBox);
-        vBox.setSpacing(10);
+        VBox vBox =new VBox(group, hBox);
         vBox.setAlignment(Pos.CENTER);
         rootPane.getChildren().addAll(vBox);
-        vbox.getChildren().add(rootPane);
         stage.sizeToScene();
     }
 
     public void setupAIChoice(boolean isJvC){
-        rootPane.getChildren().clear();
-        vbox.getChildren().clear();
+        rootPane.resetToDefault();
 
-        Image image  = new Image("file:" + FileUtils.getFileFromResources("Images/logo.jpeg").getAbsolutePath());
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(200);
+        Group group = new Group(frame, text, imageView);
 
-        createMenuBar();
-        VBox vBox = new VBox(menuBar, imageView);
-        vBox.setSpacing(10);
-        vBox.setAlignment(Pos.CENTER);
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setPadding(new Insets(10, 0, 10, 0));
 
         if (isJvC) {
             buttonJvIA1 = new Button("Joueur v IA1");
             buttonJvIA2 = new Button("Joueur v IA2");
-            vBox.getChildren().addAll(buttonJvIA1, buttonJvIA2);
+            hBox.getChildren().addAll(buttonJvIA1, buttonJvIA2);
         } else {
             buttonIA1vIA1 = new Button("IA1 v IA1");
             buttonIA1vIA2 = new Button("IA1 v IA2");
             buttonIA2vIA2 = new Button("IA2 v IA2");
-            vBox.getChildren().addAll(buttonIA1vIA1, buttonIA1vIA2, buttonIA2vIA2);
+            hBox.getChildren().addAll(buttonIA1vIA1, buttonIA1vIA2, buttonIA2vIA2);
         }
 
+        VBox vBox =new VBox(group, hBox);
+        vBox.setAlignment(Pos.CENTER);
         rootPane.getChildren().addAll(vBox);
-        vbox.getChildren().add(rootPane);
         stage.sizeToScene();
     }
 }

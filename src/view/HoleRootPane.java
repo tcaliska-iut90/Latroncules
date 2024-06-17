@@ -29,14 +29,4 @@ public class HoleRootPane extends RootPane {
         group.getChildren().addAll(frame, text);
     }
 
-    /*
-    Button buttonJvJ = new Button("Mode joueur v Joueur");
-
-        Image image = new Image("file:/home/userdepinfo/S2/SAE/SAE126/Latroncules(Graphique)/Images/logo.jpeg");
-        ImageView imageView = new ImageView(image);
-        imageView.setX(50);
-        imageView.setY(0);
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(200);
-     */
 }
