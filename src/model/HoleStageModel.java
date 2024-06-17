@@ -123,8 +123,12 @@ public class HoleStageModel extends GameStageModel {
      */
     public void addBluePawnsTaking(Pawn p){
         for (int i = 0; i < HoleRedPawnPot.getNbRows(); i++) {
+            System.out.println("i = "+i);
             for (int j = 0; j < HoleRedPawnPot.getNbCols(); j++) {
+                System.out.println("j = "+j);
+                System.out.println("HoleRedPawnPot.getElement(i, j) = "+HoleRedPawnPot.getElement(i, j));
                 if (HoleRedPawnPot.getElement(i, j) == null){
+                    System.out.println("Ajout du pion place en "+p.getRow()+" "+p.getCol()+" dans le trou bleu en "+i+" "+j);
                     HoleRedPawnPot.addElement(p, i, j);
                     return;
                 }
@@ -137,6 +141,7 @@ public class HoleStageModel extends GameStageModel {
     public void removeBluePawns(Pawn p){
         for (int i = 0; i < bluePawns.length; i++) {
             if (bluePawns[i].equals(p)) {
+                System.out.println("Suppression du pion place en "+p.getRow()+" "+p.getCol()+" dans le trou bleu");
                 bluePawns[i] = null;
             }
         }
@@ -250,9 +255,11 @@ public class HoleStageModel extends GameStageModel {
         for (GameElement element : elements) {
             if (element instanceof Pawn) {
                 Pawn pawn = (Pawn) element;
-                if (pawn.getColor() == 1 && (player.getName().equals("computer") || player.getName().equals("computer2") || player.getName().equals("PlayerRed")) || pawn.getColor() == 0 && (player.getName().equals("computer1") || player.getName().equals("PlayerBlue"))){
-                    //System.out.println("Pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getRow()+" col="+pawn.getCol());
-                    pawns.add(pawn);
+                if ((pawn.getColor() == 1 && (player.getName().equals("computer") || player.getName().equals("computer2") || player.getName().equals("PlayerRed"))) || (pawn.getColor() == 0 && (player.getName().equals("computer1") || player.getName().equals("PlayerBlue")))){
+                    if (pawn.getRow()>=0 && pawn.getCol()>=0 && pawn.getRow()<=7 && pawn.getCol()<=7) {
+                        //System.out.println("Pion appartant au joueur "+player.getName()+" trouvé, dans les coordonnées row="+pawn.getRow()+" col="+pawn.getCol());
+                        pawns.add(pawn);
+                    }
                 }
             }
         }
