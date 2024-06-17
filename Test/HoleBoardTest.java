@@ -246,7 +246,7 @@ class HoleBoardTest {
         assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.addElement(pawnRed, 2,3);
-        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.removeElement(pawnBlue);
         holeBoard.removeElement(pawnRed);
@@ -254,6 +254,8 @@ class HoleBoardTest {
 
         holeBoard.addElement(pawnBlue, 5,3);
         holeBoard.addElement(pawnRed, 4,3);
+        holeBoard.addElement(pawnBlue, 1,3);
+        holeBoard.addElement(pawnRed, 2,3);
         assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditVertical(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
     }
 
@@ -275,7 +277,7 @@ class HoleBoardTest {
         assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.addElement(pawnRed, 3,2);
-        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.removeElement(pawnBlue);
         holeBoard.removeElement(pawnRed);
@@ -283,6 +285,8 @@ class HoleBoardTest {
 
         holeBoard.addElement(pawnBlue, 3,5);
         holeBoard.addElement(pawnRed, 3,4);
+        holeBoard.addElement(pawnBlue, 3,1);
+        holeBoard.addElement(pawnRed, 3,2);
         assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditHorizontal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
     }
 
@@ -306,7 +310,7 @@ class HoleBoardTest {
         assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.addElement(pawnRed, 2,2);
-        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.removeElement(pawnBlue);
         holeBoard.removeElement(pawnRed);
@@ -314,6 +318,8 @@ class HoleBoardTest {
 
         holeBoard.addElement(pawnBlue, 5,5);
         holeBoard.addElement(pawnRed, 4,4);
+        holeBoard.addElement(pawnBlue, 1,1);
+        holeBoard.addElement(pawnRed, 2,2);
         assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMajorDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
     }
 
@@ -337,7 +343,7 @@ class HoleBoardTest {
         assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.addElement(pawnRed, 2,4);
-        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.removeElement(pawnBlue);
         holeBoard.removeElement(pawnRed);
@@ -345,6 +351,8 @@ class HoleBoardTest {
 
         holeBoard.addElement(pawnBlue, 5,1);
         holeBoard.addElement(pawnRed, 4,2);
+        holeBoard.addElement(pawnBlue, 1,5);
+        holeBoard.addElement(pawnRed, 2,4);
         assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterditMinorrDiagonal(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
     }
 
@@ -360,12 +368,14 @@ class HoleBoardTest {
 
         holeBoard.addElement(pawnRed, 2,2);
         holeBoard.addElement(pawnBlue, 1,1);
-        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+        assertFalse(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
         holeBoard.removeElement(pawnBlue);
         holeBoard.removeElement(pawnRed);
         holeBoard.addElement(pawnRed, 2,3);
         holeBoard.addElement(pawnBlue, 1, 3);
+        holeBoard.addElement(pawnRed, 4,3);
+        holeBoard.addElement(pawnBlue, 5, 3);
         assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
 
@@ -373,6 +383,8 @@ class HoleBoardTest {
         holeBoard.removeElement(pawnRed);
         holeBoard.addElement(pawnRed, 2,4);
         holeBoard.addElement(pawnBlue, 1,5);
+        holeBoard.addElement(pawnRed, 4,2);
+        holeBoard.addElement(pawnBlue, 5, 1);
         assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
 
@@ -380,6 +392,16 @@ class HoleBoardTest {
         holeBoard.removeElement(pawnRed);
         holeBoard.addElement(pawnRed, 3,2);
         holeBoard.addElement(pawnBlue, 3,1);
+        holeBoard.addElement(pawnRed, 3,4);
+        holeBoard.addElement(pawnBlue, 3, 5);
+        assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
+
+        holeBoard.removeElement(pawnBlue);
+        holeBoard.removeElement(pawnRed);
+        holeBoard.addElement(pawnRed, 2,2);
+        holeBoard.addElement(pawnBlue, 1,1);
+        holeBoard.addElement(pawnRed, 4,4);
+        holeBoard.addElement(pawnBlue, 5, 5);
         assertTrue(holeBoard.CheckIsCapturableWithoutCoupInterdit(3,3, Pawn.PAWN_BLUE, Pawn.PAWN_RED));
 
     }
