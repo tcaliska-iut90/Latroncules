@@ -78,8 +78,8 @@ public class HoleView extends View {
         buttonJvC = new Button("Mode joueur v Computer");
         buttonCvC = new Button("Mode Computer v Computer");
 
-        buttonBluePlayer = new Button("L'équipe bleue");
-        buttonRedPlayer = new Button("L'équipe rouge");
+        buttonBluePlayer = new Button("L'équipe rouge");
+        buttonRedPlayer = new Button("L'équipe bleue");
 
 
     }

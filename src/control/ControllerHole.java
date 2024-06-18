@@ -3,6 +3,7 @@ package control;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.control.Logger;
+import boardifier.model.GameException;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.view.View;
@@ -21,6 +22,14 @@ public class ControllerHole extends Controller {
         setControlKey(new ControllerHoleKey(model, view, this));
         setControlMouse(new ControllerHoleMouse(model, view, this, new CheckMoveController(model, view)));
         setControlAction (new ControllerHoleAction(model, view, this));
+    }
+
+    @Override
+    public void startGame() throws GameException {
+        if (firstStageName.isEmpty()) throw new GameException("The name of the first stage have not been set. Abort");
+        Logger.trace("START THE GAME");
+        startStage(firstStageName);
+        endOfTurn();
     }
 
     public void endOfTurn() {
