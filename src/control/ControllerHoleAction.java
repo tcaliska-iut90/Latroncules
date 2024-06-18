@@ -62,6 +62,14 @@ public class ControllerHoleAction extends ControllerAction implements EventHandl
             System.exit(0);
         });
 
+        holeView.getMenuHelp().setOnAction(e -> {
+            control.stopGame();
+            holeView.resetView();
+            start = true;
+            model.getPlayers().clear();
+            holeView.help();
+        });
+
     }
 
     private void setButtonHandler(){
